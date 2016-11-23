@@ -1,6 +1,6 @@
 {
     "name": "px-datetime-field",
-    "version": "0.5.9",
+    "version": "0.5.10",
     "main": [
         "px-datetime-field.html"
     ],
@@ -16,7 +16,7 @@
     ],
     "dependencies": {
         "polymer": "^1.6.1",
-        "px-theme": "~1.1.2",
+        "px-theme": "^2.0.1",
         "px-datetime-common": "~0.6.1"
     },
     "devDependencies": {
