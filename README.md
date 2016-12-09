@@ -27,7 +27,7 @@ https://predixdev.github.io/px-datetime-field/
 
 ### LiveReload
 
-By default grunt depserve is configured to enable LiveReload and will be watching for modifications in your root directory as well as `/css`.
+By default gulp serve is configured to enable LiveReload and will be watching for modifications in your root directory as well as `/css`.
 
 Your browser will also need to have the LiveReload extension installed and enabled. For instructions on how to do this please refer to [livereload.com/extensions/](http://livereload.com/extensions/).
 
@@ -43,45 +43,6 @@ depserve: {
     }
 }
 ```
-
-Disable LiveReload by removing the `livereload` key from the configuration object.
-
-### DevMode
-
-From the component's directory run:
-
-```
-$ grunt devmode
-```
-
-Starts a local server exactly the same as if you had run `grunt depserve` however in addition it also runs `grunt watch` concurrently which will execute commands on file change according to the specified matching patterns.
-
-This is an example `grunt watch` configuration which watches for changes to SASS files, then on changes executes SASS compilation and automatic prefixing:
-
-```
-watch: {
-    sass: {
-        files: ['sass/**/*.scss'],
-        tasks: ['sass', 'autoprefixer'],
-        options: {
-            interrupt: true
-        }
-    }
-}
-```
-
-### Options
-
-Does this component have runtime configuration options?  If so, they should be able to be passed as attributes on the element with examples shown below.
-
-### Function calls
-
-What is the public API of this component?
-
-### Extending styles
-
-Documented CSS extension points?
-
 ### Extending behavior
 
 See Polymer composition patterns
@@ -92,4 +53,6 @@ GE Coding Style Guide
 [GE JS Developer's Guide](https://github.com/GeneralElectric/javascript)
 
 
-### Known Issues
+## Known Issues
+
+Please use [Github Issues](https://github.com/PredixDev/px-datetime-field/issues) to submit any bugs you might find.
