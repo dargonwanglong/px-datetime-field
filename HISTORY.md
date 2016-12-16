@@ -1,3 +1,7 @@
+v0.6.2
+==================
+* Add theme variable for backgroun colour of component
+
 v0.6.1
 ==================
 * Update missed design depndencies
