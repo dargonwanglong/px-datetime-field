@@ -1,3 +1,7 @@
+v0.6.3
+==================
+* changing ghp.sh to account for Alpha releases
+
 v0.6.2
 ==================
 * Add theme variable for backgroun colour of component
