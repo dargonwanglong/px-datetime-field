@@ -1,3 +1,7 @@
+v0.6.3
+==================
+* updated to px-demo
+
 v0.6.2
 ==================
 * Add theme variable for backgroun colour of component
