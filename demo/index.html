@@ -48,31 +48,24 @@
       <!-- Component ---------------------------------------------------------->
       <px-demo-component>
         <!--Figure out how to make this work with the new demo-->
-        <!--<template is="dom-if" if="{{props.preventRangeSelection.value}}">
-          <p><strong>px-calendar-selected</strong> fired <strong>0</strong> time(s)</p>
-          <p id="dateTimeString{{indexPlusOne(index)}}">Current dateTime object:</p>
-        </template>
+        <!--<span id="counter{{indexPlusOne(index)}}"><strong>px-datetime-submitted</strong> fired <strong>0</strong> time(s)</span>
+        <div>
+          Current dateTime object: <strong>{{item.dateTime}}</strong>
+        </div>-->
 
-        <template is="dom-if" if="{{!props.preventRangeSelection.value}}">
-          <p id="counterRange"><strong>px-calendar-range-selected</strong> fired <strong>0</strong> time(s)</p>
-          <p id="rangeString">Current range object:</p>
-        </template>-->
-
-        <div style="width:250px">
-          <px-datetime-field
-              date-time="{{props.dateTime.value}}"
-              date-format="{{props.dateFormat.value}}"
-              time-format="{{props.timeFormat.value}}"
-              show-buttons="{{props.showButtons.value}}"
-              block-future-dates="{{props.blockFutureDates.value}}"
-              block-past-dates="{{props.blockPastDates.value}}"
-              hide-time="{{props.hideTime.value}}"
-              hide-date="{{props.hideDate.value}}"
-              show-time-zone="{{props.showTimeZone.value}}"
-              hide-icon="{{props.hideIcon.value}}"
-              time-zone="{{props.timeZone.value}}">
-          </px-datetime-field>
-        </div>
+        <px-datetime-field
+            date-time="{{props.dateTime.value}}"
+            date-format="{{props.dateFormat.value}}"
+            time-format="{{props.timeFormat.value}}"
+            show-buttons="{{props.showButtons.value}}"
+            block-future-dates="{{props.blockFutureDates.value}}"
+            block-past-dates="{{props.blockPastDates.value}}"
+            hide-time="{{props.hideTime.value}}"
+            hide-date="{{props.hideDate.value}}"
+            show-time-zone="{{props.showTimeZone.value}}"
+            hide-icon="{{props.hideIcon.value}}"
+            time-zone="{{props.timeZone.value}}">
+        </px-datetime-field>
       </px-demo-component>
       <!-- END Component ------------------------------------------------------>
 
@@ -248,7 +241,7 @@
         defaultValue: '2016-01-01T01:00:00.000Z',
         inputType: 'text',
         inputPlaceholder: 'ISO 8601 String',
-        readonly: false
+        inputDisabled: true
       }
     },
 
@@ -262,7 +255,7 @@
       //   }
       // });
 
-      // template.linksIncludes = ['px-datetime-common/px-polygit-imports-datetime.html', 'px-polymer-font-awesome/polymer-font-awesome.html'];
+      template.linksIncludes = ['px-datetime-common/px-polygit-imports-datetime.html', 'px-polymer-font-awesome/polymer-font-awesome.html'];
     }
   });
 </script>
