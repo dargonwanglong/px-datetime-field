@@ -1,18 +1,22 @@
+v0.6.5
+==================
+* updated to px-demo
+
+v0.6.4
+==================
+* Update colors design to pick up new colors
+
 v0.6.3
 ==================
-<<<<<<< HEAD
-* updated to px-demo
-=======
 * changing ghp.sh to account for Alpha releases
->>>>>>> 0506d6a8eaf04401e18daea20373c5dde0141d04
 
 v0.6.2
 ==================
-* Add theme variable for backgroun colour of component
+* Add theme variable for background colour of component
 
 v0.6.1
 ==================
-* Update missed design depndencies
+* Update missed design dependencies
 
 v0.6.0
 ==================
@@ -105,7 +109,7 @@ v0.4.6
 
 v0.4.5
 ==================
-* Updated component discription in demo
+* Updated component description in demo
 
 v0.4.4
 ==================
