@@ -12,10 +12,10 @@
 <link rel="import" href="../../px-demo/px-demo-component-snippet.html" />
 
 <!-- Light theme -->
-<!--<link rel="import" href="../../px-theme/px-theme-styles.html">-->
+<link rel="import" href="../../px-theme/px-theme-styles.html">
 <!-- Dark theme -->
- <link rel="import" href="../../px-dark-theme/px-dark-theme-styles.html"> 
- <link rel="import" href="../../px-dark-demo-theme/px-dark-demo-theme-styles.html"> 
+ <!--<link rel="import" href="../../px-dark-theme/px-dark-theme-styles.html"> -->
+ <!--<link rel="import" href="../../px-dark-demo-theme/px-dark-demo-theme-styles.html"> -->
 
 <!-- Imports for this componnent -->
 <link rel="import" href="../../px-demo/css/px-demo-styles.html" />
@@ -34,7 +34,13 @@
     <!-- Header -->
     <px-demo-header
         module-name="px-datetime-field"
-        description="The px-datetime-field component includes various elements used for structuring responsive layouts. This component allows the user to select a date or date range. The main use of this component is to be used in the px-range-panel.">
+        description="The px-datetime-field component includes various elements used for structuring responsive layouts.
+          This component allows the user to select a date and time precisely to the second or millisecond.
+          The counter represents when the px-datetime-field event/date property of the
+        field is being fired/updated. The behavior depends on whether the field uses
+        buttons. It is defined as followed:
+        - If it has buttons then it is fired when the user clicks the apply button AND the date/time is valid
+        - If it doesn't have buttons then it is fired every time a valid change is made to the date or time">
     </px-demo-header>
 
     <!-- Interactive -->
@@ -142,8 +148,8 @@
               dateFormat: "MM/DD/YY",
               timeFormat: "hh:mm:ss A",
               showButtons: false,
-              blockFutureDates: false,
-              blockPastDates: true,
+              blockFutureDates: true,
+              blockPastDates: false,
               hideTime: false,
               hideDate: true,
               hideIcon: false,
@@ -161,7 +167,6 @@
               hideIcon: false,
               showTimeZone: "dropdown",
               timeZone: "America/New_York"},
-
             
           ]
         }
@@ -255,7 +260,7 @@
       //   }
       // });
 
-      template.linksIncludes = ['px-datetime-common/px-polygit-imports-datetime.html', 'px-polymer-font-awesome/polymer-font-awesome.html'];
+      this.linksIncludes = ['px-datetime-common/px-polygit-imports-datetime.html', 'px-polymer-font-awesome/polymer-font-awesome.html'];
     }
   });
 </script>
