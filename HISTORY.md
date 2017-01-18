@@ -1,3 +1,7 @@
+v0.6.6
+==================
+* fix component link in demo
+
 v0.6.5
 ==================
 * Update to px-demo
