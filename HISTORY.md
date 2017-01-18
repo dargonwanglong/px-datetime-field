@@ -1,12 +1,8 @@
-v0.6.6
+v0.6.5
 ==================
 * Update to px-demo
 * removed demosass
 * Updated to cool grays
-
-v0.6.5
-==================
-* updated to px-demo
 
 v0.6.4
 ==================
