@@ -1,3 +1,7 @@
+v0.6.7
+==================
+* moved theming style includes and updated ghp.sh
+
 v0.6.6
 ==================
 * fix component link in demo
