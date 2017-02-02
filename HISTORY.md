@@ -1,3 +1,7 @@
+v0.6.8
+==================
+* fixed typo in component description
+
 v0.6.7
 ==================
 * moved theming style includes and updated ghp.sh
