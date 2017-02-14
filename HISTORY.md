@@ -1,3 +1,7 @@
+v0.6.9
+==================
+* added styling section to API documentation
+
 v0.6.8
 ==================
 * fixed typo in component description

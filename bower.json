@@ -1,6 +1,6 @@
 {
   "name": "px-datetime-field",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "main": [
     "px-datetime-field.html"
   ],

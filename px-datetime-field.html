@@ -14,9 +14,16 @@
 
 <!--
 
-##### Usage
+#### Usage
 
     <px-datetime-field></px-datetime-field>
+
+#### Styling
+The following custom property is available for styling. Please also refer to px-forms-design for additional variables that can be used to customize the field's appearance.
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--px-datetime-border-color-validation--failed` | Outline color for the field when validation fails | `$alert-red`
 
 @element px-datetime-field
 @blurb Element providing solution to no problem in particular.
@@ -29,7 +36,7 @@
 <dom-module id="px-datetime-field">
   <template>
     <style include="px-datetime-field-styles"></style>
-    
+
     <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, isSelected, _forcedFailedClass)}}">
       <template is="dom-if" if="[[!hideDate]]">
         <px-datetime-entry
