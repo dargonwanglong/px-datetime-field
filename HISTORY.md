@@ -1,3 +1,7 @@
+v0.6.10
+==================
+* add link to Moment documentation
+
 v0.6.9
 ==================
 * added styling section to API documentation
