@@ -34,18 +34,16 @@
     <!-- Interactive -->
     <px-demo-interactive>
       <!-- Configs -->
-      <px-demo-configs configs="[[configs]]" props="{{props}}" chosen-config="{{consenConfig}}"></px-demo-configs>
+      <px-demo-configs configs="[[configs]]" props="{{props}}" chosen-config="{{chosenConfig}}"></px-demo-configs>
 
       <!-- Props -->
       <px-demo-props props="{{props}}" config="[[chosenConfig]]"></px-demo-props>
 
       <!-- Component ---------------------------------------------------------->
       <px-demo-component>
-        <!--Figure out how to make this work with the new demo-->
-        <!--<span id="counter{{indexPlusOne(index)}}"><strong>px-datetime-submitted</strong> fired <strong>0</strong> time(s)</span>
-        <div>
-          Current dateTime object: <strong>{{item.dateTime}}</strong>
-        </div>-->
+        <p class=u-mb0>Event fired: <strong>px-datetime-submitted</strong></p>
+        <p class="zeta u-mt0">See API Reference below for more details</p>
+        <p class="u-mb++">Current dateTime object: <strong>{{props.dateTime.value}}</strong></p>
 
         <px-datetime-field
             date-time="{{props.dateTime.value}}"
@@ -130,7 +128,7 @@
               hideDate: false,
               hideIcon: false,
               showTimeZone: "text",
-              timeZone: "UTC"},
+              timeZone: "UTC" },
 
             { dateTime: "2016-01-01T01:00:00.000Z",
               dateFormat: "MM/DD/YY",
@@ -142,7 +140,7 @@
               hideDate: true,
               hideIcon: false,
               showTimeZone: "abbreviatedText",
-              timeZone: "America/Los_Angeles"},
+              timeZone: "America/Los_Angeles" },
 
             { dateTime: "2016-01-01T01:00:00.000Z",
               dateFormat: "DD/MM/YY",
@@ -154,7 +152,7 @@
               hideDate: false,
               hideIcon: false,
               showTimeZone: "dropdown",
-              timeZone: "America/New_York"},
+              timeZone: "America/New_York" },
 
           ]
         }
@@ -239,16 +237,8 @@
     },
 
     ready: function () {
-
-      // document.addEventListener('px-datetime-submitted', function(evt) {
-      //   counter++;
-      //   for(var i=1; i<=optionsArray.length; i++) {
-      //     var span = document.getElementById('counter'+i);
-      //     span.innerHTML = '<strong>px-datetime-submitted</strong> fired <strong>' + counter + '</strong> time(s)';
-      //   }
-      // });
-
       this.linksIncludes = ['px-datetime-common/px-polygit-imports-datetime.html', 'px-polymer-font-awesome/polymer-font-awesome.html'];
-    }
+    },
+
   });
 </script>
