@@ -1,3 +1,7 @@
+v0.6.12
+==================
+* add Cloud Flare cache reset
+
 v0.6.11
 ==================
 * update Event Fired label
