@@ -1,3 +1,7 @@
+v0.6.13
+==================
+* converted `timeZone` prop in demo to typeahead 
+
 v0.6.12
 ==================
 * add Cloud Flare cache reset
