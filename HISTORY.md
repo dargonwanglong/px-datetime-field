@@ -1,3 +1,7 @@
+v0.6.14
+==================
+* removed the complexities of `timeZone` typeahead prop
+
 v0.6.13
 ==================
 * converted `timeZone` prop in demo to typeahead 

@@ -58,7 +58,7 @@
             hide-date="{{props.hideDate.value}}"
             show-time-zone="{{props.showTimeZone.value}}"
             hide-icon="{{props.hideIcon.value}}"
-            time-zone="[[timeZone]]">
+            time-zone="{{props.timeZone.value}}">
         </px-datetime-field>
       </px-demo-component>
       <!-- END Component ------------------------------------------------------>
@@ -259,13 +259,5 @@
     ready: function () {
       this.linksIncludes = ['px-datetime-common/px-polygit-imports-datetime.html', 'px-polymer-font-awesome/polymer-font-awesome.html'];
     },
-
-    listeners:{
-      'px-typeahead-item-selected' : '_updateTimeZone'
-    },
-    
-    _updateTimeZone(e){
-      this.set('timeZone', e.detail)
-    }
   });
 </script>
