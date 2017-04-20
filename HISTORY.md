@@ -1,10 +1,14 @@
+v0.7.0
+==================
+* added localization through resources, language, formats and Px.moment.changeLocale()
+
 v0.6.14
 ==================
 * removed the complexities of `timeZone` typeahead prop
 
 v0.6.13
 ==================
-* converted `timeZone` prop in demo to typeahead 
+* converted `timeZone` prop in demo to typeahead
 
 v0.6.12
 ==================
