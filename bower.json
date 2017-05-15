@@ -28,7 +28,7 @@
   "dependencies": {
     "polymer": "^1.6.1",
     "px-theme": "^2.0.1",
-    "px-datetime-common": "^1.0.0"
+    "px-datetime-common": "^0.8.0"
   },
   "devDependencies": {
     "px-starter-kit-design": "^0.7.0",
