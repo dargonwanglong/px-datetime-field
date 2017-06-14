@@ -37,7 +37,7 @@ Custom property | Description | Default
   <template>
     <style include="px-datetime-field-styles"></style>
 
-    <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, isSelected, _forcedFailedClass)}}">
+    <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, isSelected, _forcedFailedClass)}} text-input">
       <template is="dom-if" if="[[!hideDate]]">
         <px-datetime-entry
           id="date"
@@ -295,7 +295,7 @@ Custom property | Description | Default
       var classList = "inline--flex dt-text-field ";
 
       if(dateIsValid !== true || timeIsValid !== true || _forcedFailedClass === true) {
-        classList += "validation-failed ";
+        classList += "validation-error ";
       } else if(isSelected) {
         classList += "dt-is-selected "
       }

@@ -24,39 +24,42 @@ Predix branding rules go in px-datetime-input-predix.scss, not in this file.
 // Generic
 @import "px-normalize-design/_generic.normalize.scss";
 @import "px-box-sizing-design/_generic.box-sizing.scss";
-@import "px-helpers-design/_generic.helpers.scss";
 
 // Base
 @import "px-flexbox-design/_base.flexbox.scss";
-@import "px-viewport-design/_base.viewport.scss";
 
+$inuit-enable-validation-states : true;
 @import "px-forms-design/_base.forms.scss";
 
 :host{
-  --dropdown_content_margin: 5px 0px 0px 0px;
   display: inline-flex;
 }
 
 .dt-text-field{
-  margin: 0;
-  border: $inuit-forms-border--outer;
   font: inherit;
   outline: 0;
-  padding: $inuit-base-spacing-unit--tiny;
-  padding-right: $inuit-base-spacing-unit--small;
-  box-shadow: $inuit-forms-border--inner;
+  height: $inuit-base-spacing-unit--huge;
   background-color: $inuit-forms-background;
   color: $inuit-forms-color;
 }
 .dt-is-selected {
   border-color: $inuit-forms-border--outer--focused;
-  box-shadow: $inuit-forms-border--inner--focused;
+  background-color: $inuit-forms-background--focused;
+  color: $inuit-forms-color--focused;
+  &:hover{
+    background-color: $inuit-forms-background--focused;
+  }
+}
+
+.validation-failed {
+  // border: solid 1px var(--px-datetime-border-color-validation--failed, red);
+  &:active{
+    // border: solid 1px var(--px-datetime-border-color-validation--failed, red);
+  }
 }
 
 // Trumps
-$inuit-enable-margins--tiny  : true;
+// $inuit-enable-margins--tiny  : true;
 $inuit-enable-margins--small : true;
-$inuit-enable-margins        : true;
-
-@import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
-@import "px-widths-responsive-design/_trumps.widths-responsive.scss";
+// $inuit-enable-margins        : true;
+@import "px-spacing-design/_trumps.spacing.scss";
