@@ -31,16 +31,17 @@ Predix branding rules go in px-datetime-input-predix.scss, not in this file.
 $inuit-enable-validation-states : true;
 @import "px-forms-design/_base.forms.scss";
 
-:host{
-  display: inline-flex;
-}
-
+//component
 .dt-text-field{
   font: inherit;
   outline: 0;
+  width: auto;
   height: $inuit-base-spacing-unit--huge;
   background-color: $inuit-forms-background;
   color: $inuit-forms-color;
+  &:active{
+    background-color: #eefbff; //<-- needs to match text-input focused
+  }
 }
 .dt-is-selected {
   border-color: $inuit-forms-border--outer--focused;
@@ -49,6 +50,21 @@ $inuit-enable-validation-states : true;
   &:hover{
     background-color: $inuit-forms-background--focused;
   }
+}
+
+.dt-dropdown-is-open {
+  border-color: $inuit-forms-border--outer--focused;
+  background-color: $inuit-forms-background--focused;
+  color: $inuit-forms-color--focused;
+  &:hover{
+    background-color: $inuit-forms-background--focused;
+  }
+}
+
+.dt-validation-text{
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .validation-failed {

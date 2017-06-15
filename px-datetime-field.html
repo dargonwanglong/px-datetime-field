@@ -7,6 +7,7 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-entry.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-behavior.html"/>
+<link rel="import" href="../px-datetime-common/validate.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-buttons.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-button-behavior.html"/>
 
@@ -37,55 +38,61 @@ Custom property | Description | Default
   <template>
     <style include="px-datetime-field-styles"></style>
 
-    <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, isSelected, _forcedFailedClass)}} text-input">
-      <template is="dom-if" if="[[!hideDate]]">
-        <px-datetime-entry
-          id="date"
-          class$="{{_getEntryDateClass(hideDate, hideTime)}}"
-          date-or-time="Date"
-          moment-format="{{dateFormat}}"
-          moment-obj="{{momentObj}}"
-          is-valid="{{dateIsValid}}"
-          is-selected="{{isSelected}}"
-          hide-icon="{{hideIcon}}"
-          time-zone="{{timeZone}}"
-          show-time-zone="{{_showTimeZoneInDate(hideTime, showTimeZone)}}"
-          block-future-dates="{{blockFutureDates}}"
-          block-past-dates="{{blockPastDates}}"
+    <div class$="{{_getWrapClass(buttonWrap)}} inline--flex">
+      <div class$="{{_getButtonMarginClass(showButtons)}}">
+        <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, isSelected, _forcedFailedClass, _dropdownOpened)}} text-input">
+          <template is="dom-if" if="[[!hideDate]]">
+            <px-datetime-entry
+              id="date"
+              class$="{{_getEntryDateClass(hideDate, hideTime)}}"
+              date-or-time="Date"
+              moment-format="{{dateFormat}}"
+              moment-obj="{{momentObj}}"
+              is-valid="{{dateIsValid}}"
+              is-selected="{{isSelected}}"
+              hide-icon="{{hideIcon}}"
+              time-zone="{{timeZone}}"
+              show-time-zone="{{_showTimeZoneInDate(hideTime, showTimeZone)}}"
+              block-future-dates="{{blockFutureDates}}"
+              block-past-dates="{{blockPastDates}}"
+              resources="[[resources]]"
+              language="[[language]]"
+              formats="[[formats]]">
+            </px-datetime-entry>
+          </template>
+          <template is="dom-if" if="[[!hideTime]]">
+            <px-datetime-entry
+              id="time"
+              class="inline--flex"
+              date-or-time="Time"
+              moment-format="{{timeFormat}}"
+              show-time-zone="{{showTimeZone}}"
+              moment-obj="{{momentObj}}"
+              is-valid="{{timeIsValid}}"
+              hide-icon="{{hideIcon}}"
+              time-zone="{{timeZone}}"
+              is-selected="{{isSelected}}"
+              block-future-dates="{{blockFutureDates}}"
+              block-past-dates="{{blockPastDates}}"
+              resources="[[resources]]"
+              language="[[language]]"
+              formats="[[formats]]">
+            </px-datetime-entry>
+          </template>
+        </div>
+        <template is="dom-if" if="{{!isValid}}">
+          <div class="form-field__help validation-error dt-validation-text">{{_validationErrorMessage}}</div>
+        </template>
+      </div>
+      <template is="dom-if" if="{{showButtons}}">
+        <px-datetime-buttons
+          is-submit-button-valid="[[isValid]]"
           resources="[[resources]]"
           language="[[language]]"
           formats="[[formats]]">
-        </px-datetime-entry>
-      </template>
-      <template is="dom-if" if="[[!hideTime]]">
-        <px-datetime-entry
-          id="time"
-          class="inline--flex"
-          date-or-time="Time"
-          moment-format="{{timeFormat}}"
-          show-time-zone="{{showTimeZone}}"
-          moment-obj="{{momentObj}}"
-          is-valid="{{timeIsValid}}"
-          hide-icon="{{hideIcon}}"
-          time-zone="{{timeZone}}"
-          is-selected="{{isSelected}}"
-          block-future-dates="{{blockFutureDates}}"
-          block-past-dates="{{blockPastDates}}"
-          resources="[[resources]]"
-          language="[[language]]"
-          formats="[[formats]]">
-        </px-datetime-entry>
+        </px-datetime-buttons>
       </template>
     </div>
-    <template is="dom-if" if="{{showButtons}}">
-      <px-datetime-buttons
-        class="u-ml-"
-        is-submit-button-valid="[[isValid]]"
-        resources="[[resources]]"
-        language="[[language]]"
-        formats="[[formats]]">
-      </px-datetime-buttons>
-    </template>
   </template>
 </dom-module>
 
@@ -93,8 +100,12 @@ Custom property | Description | Default
   Polymer({
     is: 'px-datetime-field',
 
-    behaviors: [pxDatetimeBehavior,
-                pxDatetimeButtonBehavior],
+    behaviors: [
+      pxDatetimeBehavior,
+      pxDatetimeButtonBehavior,
+      validate
+    ],
+
     properties: {
       /**
        * Moment format string for the DATE format to display/validate this field against
@@ -146,6 +157,14 @@ Custom property | Description | Default
         value: false
       },
       /**
+       * When true the button will wrap under the field if the horizontal
+       * space is too small.
+       */
+      buttonWrap: {
+        type: Boolean,
+        value: false
+      },
+      /**
        * Whether the date shown is valid.
        * @private
        */
@@ -165,13 +184,20 @@ Custom property | Description | Default
       },
       /**
        * If showing only the date whether the date is valid, if showing only the
-       * time whetehr the time is valid, if showing both whether both are valids
+       * time whether the time is valid, if showing both whether both are valids
        *
        */
       isValid: {
         type: Boolean,
         notify: true,
         computed: '_getIsValid(dateIsValid, timeIsValid)'
+      },
+      /**
+       * Used to display the error message when an entry in not valid
+       */
+      _validationErrorMessage: {
+        type: String,
+        value: ''
       },
       /**
        * Used to determine if the 'validation-failed' class need to be applied to '_getWrapperClass'
@@ -207,6 +233,13 @@ Custom property | Description | Default
       preventNotificationOnChange: {
         type: Boolean,
         value: false
+      },
+      /**
+       * used to set the correct classes when the dropdown is open.
+       */
+      _dropdownOpened: {
+        type: Boolean,
+        value: false
       }
     },
     /*
@@ -216,7 +249,9 @@ Custom property | Description | Default
       'px-datetime-entry-icon-clicked':'_iconClicked',
       'px-next-field': '_nextFieldRequired',
       'px-previous-field': '_previousFieldRequired',
-      'px-datetime-button-clicked': '_dateTimeButtons'
+      'px-datetime-button-clicked': '_dateTimeButtons',
+      'px-validation-message' : '_handleValidationMessage',
+      'px-dropdown-opened' : '_handleDropdownOpened'
     },
     /*
      *
@@ -287,17 +322,31 @@ Custom property | Description | Default
       }
     },
     /**
-     *
-     * inline--flex - add to keep the two entries inline
-     *
      */
-    _getWrapperClass: function(dateIsValid, timeIsValid, isSelected, _forcedFailedClass) {
+    _getWrapClass: function(buttonWrap){
+      if(buttonWrap){
+        return "flex--wrap"
+      }
+    },
+    /**
+     */
+    _getButtonMarginClass: function(showButtons) {
+      if(showButtons){
+        return "u-mr-";
+      }
+    },
+    /**
+     * inline--flex - add to keep the two entries inline
+     */
+    _getWrapperClass: function(dateIsValid, timeIsValid, isSelected, _forcedFailedClass, _dropdownOpened) {
       var classList = "inline--flex dt-text-field ";
 
       if(dateIsValid !== true || timeIsValid !== true || _forcedFailedClass === true) {
         classList += "validation-error ";
       } else if(isSelected) {
-        classList += "dt-is-selected "
+        classList += "dt-is-selected ";
+      } else if(_dropdownOpened){
+        classList += "dt-dropdown-is-open ";
       }
 
       return classList;
@@ -318,6 +367,18 @@ Custom property | Description | Default
      */
     _getIsValid: function(dateIsValid, timeIsValid) {
       return dateIsValid && timeIsValid;
+    },
+    /*
+     * Listen for the validation message to change and reflect the changes to _validationErrorMessage
+     */
+    _handleValidationMessage: function(e){
+      this.set('_validationErrorMessage', e.detail.validationErrorMessage)
+    },
+    /**
+     * updates the `_dropdownOpened` based on
+     */
+    _handleDropdownOpened: function(e){
+      this.set('_dropdownOpened', e.detail);
     },
     /*
      *
