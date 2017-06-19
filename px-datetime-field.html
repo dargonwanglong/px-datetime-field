@@ -223,7 +223,6 @@ Custom property | Description | Default
         type: Boolean,
         notify: true
       },
-
       /**
        * Used to prevent this element from firing px-datetime-range-submitted
        * event and prevent changes to range
@@ -233,30 +232,21 @@ Custom property | Description | Default
         value: false
       },
       /**
-       * used to set the correct classes when the dropdown is open.
-       */
-      _dropdownOpened: {
-        type: Boolean,
-        value: false
-      },
-      /**
-       * Used to toggle the `dt-dropdown-is-active` class
+       * Toggles the `dt-dropdown-is-active` class
        */
       _dropdownActive: {
         type: Boolean,
         value: false
       },
       /**
-       * Used to toggle the `dt-dropdown-is-active` class
+       * Toggles the `.dt-text-field--hover-fix` class
        */
       _dropdownHoverFix: {
         type: Boolean,
         value: false
       }
     },
-    /*
-     *
-     */
+
     listeners: {
       'px-datetime-entry-icon-clicked':'_iconClicked',
       'px-next-field': '_nextFieldRequired',
@@ -268,8 +258,11 @@ Custom property | Description | Default
       'px-dropdown-blured': '_handleDropdownBlur'
     },
 
+    observers: ['_momentChanged(momentObj)'],
+
     /*
-     *
+     * Will only show the dropdown in the date entry if `hideTime`
+     * and `showTimeZone` are true
      */
     _showTimeZoneInDate: function(hideTime, showTimeZone) {
       if(hideTime || hideTime === true) {
@@ -278,7 +271,6 @@ Custom property | Description | Default
         return ''
       }
     },
-    observers: ['_momentChanged(momentObj)'],
     /**
      * Key bindings for iron-a11y-keys-behavior
      */
@@ -287,7 +279,7 @@ Custom property | Description | Default
       'enter': '_onEnter'
     },
     /*
-     *
+     * Jumps from the date field to time field when using arrow keys
      */
     _nextFieldRequired: function(evt) {
       var date = this.$$('#date');
@@ -302,7 +294,7 @@ Custom property | Description | Default
       }
     },
     /*
-     *
+     * Jumps from the time field to date field when using arrow keys
      */
     _previousFieldRequired: function(evt) {
       var time = this.$$('#time');
@@ -317,7 +309,7 @@ Custom property | Description | Default
       }
     },
     /*
-     *
+     * Not sure if this is used
      */
     _focusFirstEntry: function(forceTimeFocus) {
       if(!this.hideDate && !forceTimeFocus) {
@@ -327,7 +319,7 @@ Custom property | Description | Default
       }
     },
     /*
-     *
+     * Not sure if this is used
      */
     _focusLastEntry: function() {
       if(!this.hideTime) {
@@ -337,6 +329,7 @@ Custom property | Description | Default
       }
     },
     /**
+     * Toggles classes causing the buttons to wrap under the field
      */
     _getWrapClass: function(buttonWrap){
       if(buttonWrap){
@@ -344,6 +337,7 @@ Custom property | Description | Default
       }
     },
     /**
+     * Adds a margin right if the button are showing
      */
     _getButtonMarginClass: function(showButtons) {
       if(showButtons){
@@ -352,7 +346,6 @@ Custom property | Description | Default
     },
     /**
      * event that watches when the dropdown has focus
-     * to
      */
     _handleDropdownFocus: function(e){
       e.stopPropagation();
@@ -360,7 +353,7 @@ Custom property | Description | Default
       console.log("focus")
     },
     /**
-     * event that watches when the dropdown has focus
+     * event that watches when the dropdown loses focus
      */
     _handleDropdownBlur: function(e){
       e.stopPropagation();
@@ -368,6 +361,10 @@ Custom property | Description | Default
 
       this._handleHoverFix();
     },
+    /**
+     * when dt-field is detached set `_dropdownFocused` to false.
+     * prevents the dropdown from being stuck in a focused state
+     */
     detached: function(){
       this._dropdownFocused = false;
     },
@@ -385,8 +382,8 @@ Custom property | Description | Default
     /**
      * dateIsValid, timeIsValid, & _forcedFailedClass - determine weither to show the validation error classes
      * isSelected - sets the styles when an entryCell is selected
-     * _d
-     *
+     * _dropdownActive - overwrites the styles when the dropdown is focused or opened
+     * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
      */
     _getWrapperClass: function(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix) {
       var classList = "inline--flex dt-text-field ";
@@ -403,33 +400,35 @@ Custom property | Description | Default
       return classList;
     },
     /**
+     * Addes a margin right if both entries are showing
      */
     _getEntryDateClass: function(hideDate, hideTime) {
       var classList = "inline--flex ";
-
       if(hideDate === false && hideTime === false) {
         classList += "u-mr- ";
       }
-
       return classList;
     },
-    /*
-     *
+    /**
+     * Computes the `isValid` prop
      */
     _getIsValid: function(dateIsValid, timeIsValid) {
       return dateIsValid && timeIsValid;
     },
-    /*
-     * Listen for the validation message to change and reflect the changes to _validationErrorMessage
+    /**
+     * Listener for the validation message to change and reflect the changes to _validationErrorMessage
      */
     _handleValidationMessage: function(e){
       this.set('_validationErrorMessage', e.detail.validationErrorMessage)
     },
+    /**
+     * Listener for `dropdown.opened` reflects value to `_dropdownActive`
+     */
     _handleDropdownOpened: function(e){
       this.set('_dropdownActive', e.detail.value);
     },
     /*
-     *
+     * Focuses select to the next cell when an icon is clicked
      */
     _iconClicked: function(evt) {
       if(evt.detail.dateOrTime === "Date") {
@@ -438,22 +437,38 @@ Custom property | Description | Default
         this.$$('#time')._focusCell(0);
       }
     },
+    /**
+     * Observer on the momentObj. If vaid and buttons are hidden apply changes
+     * will not run from `px-datetime-range-submitted`
+     */
     _momentChanged: function(momentObj) {
       if(this.isValid === true && !this.showButtons && !this.preventNotificationOnChange) {
-
         this._applyCurrentValues(true);
       }
     },
+    /**
+     * Listens for a button click and will apply or cancel
+     * based on the event
+     * will not run from `px-datetime-range-submitted`
+     */
     _dateTimeButtons: function(evt) {
       if(!this.preventNotificationOnChange) {
         this._applyCurrentValues(evt.detail.action);
       }
     },
+    /**
+     * When buttons are showing, it will clear changes
+     * will not run from `px-datetime-range-submitted`
+     */
     _onEsc: function(evt) {
       if(this.showButtons && !this.preventNotificationOnChange) {
         this._applyCurrentValues(false);
       }
     },
+    /**
+     * When buttons are showing, it will apply changes
+     * will not run from `px-datetime-range-submitted`
+     */
     _onEnter: function(evt) {
       if(this.showButtons && !this.preventNotificationOnChange) {
         this._applyCurrentValues(true);
