@@ -39,8 +39,8 @@ Custom property | Description | Default
     <style include="px-datetime-field-styles"></style>
 
     <div class$="{{_getWrapClass(buttonWrap)}} inline--flex">
-      <div class$="{{_getButtonMarginClass(showButtons)}}">
-        <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, isSelected, _forcedFailedClass, _dropdownOpened)}} text-input">
+      <div class$="{{_getButtonMarginClass(showButtons)}} u-mb--">
+        <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix)}}">
           <template is="dom-if" if="[[!hideDate]]">
             <px-datetime-entry
               id="date"
@@ -157,7 +157,14 @@ Custom property | Description | Default
         value: false
       },
       /**
-       * When true the button will wrap under the field if the horizontal
+       * Controls whether the calendar/clock icon should be hidden
+       */
+      hideIcon: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Controls whether the buttons will wrap under the field if the horizontal
        * space is too small.
        */
       buttonWrap: {
@@ -165,7 +172,7 @@ Custom property | Description | Default
         value: false
       },
       /**
-       * Whether the date shown is valid.
+       * Reflects if the date shown is valid.
        * @private
        */
       dateIsValid: {
@@ -174,7 +181,7 @@ Custom property | Description | Default
         notify: true
       },
       /**
-       * Whether the time shown is valid.
+       * Reflects if the time shown is valid.
        * @private
        */
       timeIsValid: {
@@ -183,9 +190,9 @@ Custom property | Description | Default
         notify: true
       },
       /**
-       * If showing only the date whether the date is valid, if showing only the
-       * time whether the time is valid, if showing both whether both are valids
-       *
+       * If showing only the date whether the date is valid,
+       * if showing only thetime whether the time is valid,
+       * if showing both whether both are valids
        */
       isValid: {
         type: Boolean,
@@ -202,7 +209,7 @@ Custom property | Description | Default
       /**
        * Used to determine if the 'validation-failed' class need to be applied to '_getWrapperClass'
        * this attribute is set by px-datetime-rage-field
-       *
+       * @private
        */
       _forcedFailedClass: {
         type: Boolean,
@@ -216,17 +223,8 @@ Custom property | Description | Default
         type: Boolean,
         notify: true
       },
+
       /**
-       *
-       * Whether the calendar/clock icon should be hidden
-       *
-       */
-      hideIcon: {
-        type: Boolean,
-        value: false
-      },
-      /**
-       *
        * Used to prevent this element from firing px-datetime-range-submitted
        * event and prevent changes to range
        */
@@ -240,6 +238,20 @@ Custom property | Description | Default
       _dropdownOpened: {
         type: Boolean,
         value: false
+      },
+      /**
+       * Used to toggle the `dt-dropdown-is-active` class
+       */
+      _dropdownActive: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Used to toggle the `dt-dropdown-is-active` class
+       */
+      _dropdownHoverFix: {
+        type: Boolean,
+        value: false
       }
     },
     /*
@@ -251,8 +263,11 @@ Custom property | Description | Default
       'px-previous-field': '_previousFieldRequired',
       'px-datetime-button-clicked': '_dateTimeButtons',
       'px-validation-message' : '_handleValidationMessage',
-      'px-dropdown-opened' : '_handleDropdownOpened'
+      'opened-changed' : '_handleDropdownOpened',
+      'px-dropdown-focused': '_handleDropdownFocus',
+      'px-dropdown-blured': '_handleDropdownBlur'
     },
+
     /*
      *
      */
@@ -336,19 +351,55 @@ Custom property | Description | Default
       }
     },
     /**
-     * inline--flex - add to keep the two entries inline
+     * event that watches when the dropdown has focus
+     * to
      */
-    _getWrapperClass: function(dateIsValid, timeIsValid, isSelected, _forcedFailedClass, _dropdownOpened) {
+    _handleDropdownFocus: function(e){
+      e.stopPropagation();
+      this.set('_dropdownActive', true);
+      console.log("focus")
+    },
+    /**
+     * event that watches when the dropdown has focus
+     */
+    _handleDropdownBlur: function(e){
+      e.stopPropagation();
+      this.set('_dropdownActive', false);
+
+      this._handleHoverFix();
+    },
+    detached: function(){
+      this._dropdownFocused = false;
+    },
+    /**
+     * Inorder to make dt-field look like an input field we have
+     * to force some css.
+     *
+     */
+    _handleHoverFix(){
+      this.set('_dropdownHoverFix', true);
+      this.async(function(){
+        this.set('_dropdownHoverFix', false);
+      },1000);
+    },
+    /**
+     * dateIsValid, timeIsValid, & _forcedFailedClass - determine weither to show the validation error classes
+     * isSelected - sets the styles when an entryCell is selected
+     * _d
+     *
+     */
+    _getWrapperClass: function(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix) {
       var classList = "inline--flex dt-text-field ";
 
       if(dateIsValid !== true || timeIsValid !== true || _forcedFailedClass === true) {
-        classList += "validation-error ";
+        classList += "validation-error validation-failed ";
       } else if(isSelected) {
         classList += "dt-is-selected ";
-      } else if(_dropdownOpened){
-        classList += "dt-dropdown-is-open ";
+      } else if(_dropdownActive){
+        classList += "dt-dropdown-is-active ";
+      } else if (_dropdownHoverFix){
+        classList += "dt-text-field--hover-fix ";
       }
-
       return classList;
     },
     /**
@@ -374,11 +425,8 @@ Custom property | Description | Default
     _handleValidationMessage: function(e){
       this.set('_validationErrorMessage', e.detail.validationErrorMessage)
     },
-    /**
-     * updates the `_dropdownOpened` based on
-     */
     _handleDropdownOpened: function(e){
-      this.set('_dropdownOpened', e.detail);
+      this.set('_dropdownActive', e.detail.value);
     },
     /*
      *

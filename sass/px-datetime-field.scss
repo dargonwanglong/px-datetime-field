@@ -24,7 +24,7 @@ Predix branding rules go in px-datetime-input-predix.scss, not in this file.
 // Generic
 @import "px-normalize-design/_generic.normalize.scss";
 @import "px-box-sizing-design/_generic.box-sizing.scss";
-
+// @import "px-viewport-design/_base.viewport.scss";
 // Base
 @import "px-flexbox-design/_base.flexbox.scss";
 
@@ -37,12 +37,28 @@ $inuit-enable-validation-states : true;
   outline: 0;
   width: auto;
   height: $inuit-base-spacing-unit--huge;
-  background-color: $inuit-forms-background;
+  padding: 0 $inuit-base-spacing-unit--tiny;
   color: $inuit-forms-color;
+  background-color: $inuit-forms-background;
+  height: 2em;
+  line-height: 1;
+  width: 100%;
+  border-bottom: $inuit-forms-border--outer;
+  &:hover{
+    background-color: $inuit-forms-background--hover;
+  }
   &:active{
-    background-color: #eefbff; //<-- needs to match text-input focused
+    background-color: $inuit-forms-background--focused;
   }
 }
+
+.dt-text-field--hover-fix{
+  &:hover{
+    background-color: white;
+    transition: .4s;
+  }
+}
+
 .dt-is-selected {
   border-color: $inuit-forms-border--outer--focused;
   background-color: $inuit-forms-background--focused;
@@ -52,7 +68,7 @@ $inuit-enable-validation-states : true;
   }
 }
 
-.dt-dropdown-is-open {
+.dt-dropdown-is-active {
   border-color: $inuit-forms-border--outer--focused;
   background-color: $inuit-forms-background--focused;
   color: $inuit-forms-color--focused;
@@ -64,18 +80,18 @@ $inuit-enable-validation-states : true;
 .dt-validation-text{
   text-transform: uppercase;
   display: block;
-  margin-bottom: 5px;
 }
 
 .validation-failed {
-  // border: solid 1px var(--px-datetime-border-color-validation--failed, red);
-  &:active{
-    // border: solid 1px var(--px-datetime-border-color-validation--failed, red);
+  border-color: $inuit-forms-validation-error;
+  background-color: $inuit-forms-validation-error-background;
+  color: $inuit-forms-color--focused;
+  &:hover{
+    background-color: $inuit-forms-validation-error-background;
   }
 }
 
 // Trumps
-// $inuit-enable-margins--tiny  : true;
+$inuit-enable-margins--tiny  : true;
 $inuit-enable-margins--small : true;
-// $inuit-enable-margins        : true;
 @import "px-spacing-design/_trumps.spacing.scss";
