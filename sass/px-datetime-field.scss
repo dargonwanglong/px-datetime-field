@@ -24,7 +24,7 @@ Predix branding rules go in px-datetime-input-predix.scss, not in this file.
 // Generic
 @import "px-normalize-design/_generic.normalize.scss";
 @import "px-box-sizing-design/_generic.box-sizing.scss";
-// @import "px-viewport-design/_base.viewport.scss";
+
 // Base
 @import "px-flexbox-design/_base.flexbox.scss";
 
@@ -48,6 +48,7 @@ $inuit-enable-validation-states : true;
     background-color: $inuit-forms-background--hover;
   }
   &:active{
+    color: $inuit-forms-color--focused;
     background-color: $inuit-forms-background--focused;
   }
 }

@@ -1,6 +1,6 @@
 <!-- Common imports -->
 <link rel="import" href="../../polymer/polymer.html" />
-<link rel="import" href="../../px-polymer-font-awesome/polymer-font-awesome.html" />
+<link rel="import" href="../../px-polymer-font-awesome/px-icon-set.html" />
 
 <!-- Common demo imports -->
 <link rel="import" href="../../px-demo/px-demo-header.html" />
@@ -52,6 +52,7 @@
             date-format="{{props.dateFormat.value}}"
             time-format="{{props.timeFormat.value}}"
             show-buttons="{{props.showButtons.value}}"
+            button-wrap="{{props.buttonWrap.value}}"
             block-future-dates="{{props.blockFutureDates.value}}"
             block-past-dates="{{props.blockPastDates.value}}"
             hide-time="{{props.hideTime.value}}"
@@ -127,19 +128,21 @@
             { dateTime: "2016-01-01T01:00:00.000Z",
               dateFormat: "YYYY/MM/DD",
               timeFormat: "hh:mm:ss A",
-              showButtons: true,
+              showButtons: false,
+              buttonWrap: false,
               blockFutureDates: false,
               blockPastDates: false,
               hideTime: false,
               hideDate: false,
               hideIcon: false,
-              showTimeZone: "text",
+              showTimeZone: "dropdown",
               timeZone: "UTC" },
 
             { dateTime: "2016-01-01T01:00:00.000Z",
               dateFormat: "MM/DD/YY",
               timeFormat: "hh:mm:ss A",
-              showButtons: false,
+              showButtons: true,
+              buttonWrap: true,
               blockFutureDates: true,
               blockPastDates: false,
               hideTime: false,
@@ -152,6 +155,7 @@
               dateFormat: "DD/MM/YY",
               timeFormat: "HH:mm:ss.SSS",
               showButtons: false,
+              buttonWrap: false,
               blockFutureDates: true,
               blockPastDates: false,
               hideTime: true,
@@ -206,6 +210,12 @@
         inputType: 'toggle'
       },
 
+      buttonWrap: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
       blockFutureDates: {
         type: Boolean,
         defaultValue: false,
@@ -242,7 +252,7 @@
 
       showTimeZone: {
         type: String,
-        defaultValue: 'day',
+        defaultValue: 'dropdown',
         inputType: 'dropdown',
         inputChoices: ['none', 'dropdown', 'extendedDropdown', 'text', 'abbreviatedText']
       },
@@ -257,7 +267,7 @@
     },
 
     ready: function () {
-      this.linksIncludes = ['px-datetime-common/px-polygit-imports-datetime.html', 'px-polymer-font-awesome/polymer-font-awesome.html'];
+      this.linksIncludes = ['px-datetime-common/px-polygit-imports-datetime.html', 'px-polymer-font-awesome/px-icon-set.html'];
     },
   });
 </script>

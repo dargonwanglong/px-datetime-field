@@ -10,16 +10,39 @@
     <style include="px-theme-styles" is="custom-style"></style>
 
     <link rel="import" href="../px-datetime-field.html" />
+    <style>
+      .dt-demo-layout{
+        display: block;
+        padding-top: 40px;
+        /*padding-left: 20px;*/
+      }
+    </style>
   </head>
 
   <body>
+    <div style="display: block">
+      <px-datetime-field
+          date-time="2016-02-05T05:30:00.000Z"
+          hide-time>
+      </px-datetime-field>
+      <px-datetime-field
+          date-time="2016-02-05T05:30:00.000Z"
+          hide-date
+          hide-icon
+          show-buttons>
+      </px-datetime-field>
+    </div>
     <px-datetime-field
+        class="dt-demo-layout"
         date-time="2016-02-05T05:30:00.000Z"
         block-future-dates
+        time-format="HH:mm:ss"
+        date-format="MM/DD/YY"
         show-time-zone="dropdown"
         >
     </px-datetime-field>
     <px-datetime-field
+        class="dt-demo-layout"
         date-time="2016-02-05T05:30:00.000Z"
         block-future-dates
         hide-date
@@ -27,6 +50,7 @@
         >
     </px-datetime-field>
     <px-datetime-field
+        class="dt-demo-layout"
         date-time="2016-02-05T05:30:00.000Z"
         block-future-dates
         hide-time
@@ -34,6 +58,17 @@
         >
     </px-datetime-field>
     <px-datetime-field
+        class="dt-demo-layout"
+        date-time="2016-02-05T05:30:00.000Z"
+        block-future-dates
+        hide-icon
+        show-buttons
+        button-wrap
+        show-time-zone="dropdown"
+        >
+    </px-datetime-field>
+    <px-datetime-field
+        class="dt-demo-layout"
         date-time="2016-02-05T05:30:00.000Z"
         block-future-dates
         hide-icon

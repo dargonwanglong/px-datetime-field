@@ -15,15 +15,15 @@
 <!--
 The datetime components rely on <a href="https://momentjs.com/" target="_blank">Moment.js</a> and <a href="https://momentjs.com/timezone/" target="_blank">Moment Timezone</a>.
 
-#### Usage
+### Usage
 
     <px-datetime-field></px-datetime-field>
 
-#### Styling
+### Styling
 The following custom property is available for styling. Please also refer to px-forms-design for additional variables that can be used to customize the field's appearance.
 
-Custom property | Description | Default
-----------------|-------------|----------
+Custom property | Description
+:----------------|:-------------
 `--px-datetime-border-color-validation--failed` | Outline color for the field when validation fails | `$alert-red`
 
 @element px-datetime-field
@@ -38,13 +38,13 @@ Custom property | Description | Default
   <template>
     <style include="px-datetime-field-styles"></style>
 
-    <div class$="{{_getWrapClass(buttonWrap)}} inline--flex">
+    <div class$="{{_getWrapClass(buttonWrap)}} flex">
       <div class$="{{_getButtonMarginClass(showButtons)}} u-mb--">
         <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix)}}">
           <template is="dom-if" if="[[!hideDate]]">
             <px-datetime-entry
               id="date"
-              class$="{{_getEntryDateClass(hideDate, hideTime)}}"
+              class$="{{_getEntryDateClass(hideDate, hideTime, hideIcon)}}"
               date-or-time="Date"
               moment-format="{{dateFormat}}"
               moment-obj="{{momentObj}}"
@@ -63,7 +63,6 @@ Custom property | Description | Default
           <template is="dom-if" if="[[!hideTime]]">
             <px-datetime-entry
               id="time"
-              class="inline--flex"
               date-or-time="Time"
               moment-format="{{timeFormat}}"
               show-time-zone="{{showTimeZone}}"
@@ -253,7 +252,6 @@ Custom property | Description | Default
       'px-previous-field': '_previousFieldRequired',
       'px-datetime-button-clicked': '_dateTimeButtons',
       'px-validation-message' : '_handleValidationMessage',
-      'opened-changed' : '_handleDropdownOpened',
       'px-dropdown-focused': '_handleDropdownFocus',
       'px-dropdown-blured': '_handleDropdownBlur'
     },
@@ -312,6 +310,7 @@ Custom property | Description | Default
      * Not sure if this is used
      */
     _focusFirstEntry: function(forceTimeFocus) {
+      debugger
       if(!this.hideDate && !forceTimeFocus) {
         this.$$('#date')._focusCell(0);
       } else {
@@ -322,6 +321,7 @@ Custom property | Description | Default
      * Not sure if this is used
      */
     _focusLastEntry: function() {
+      debugger
       if(!this.hideTime) {
         this.$$('#time')._focusLastCell();
       } else {
@@ -350,7 +350,6 @@ Custom property | Description | Default
     _handleDropdownFocus: function(e){
       e.stopPropagation();
       this.set('_dropdownActive', true);
-      console.log("focus")
     },
     /**
      * event that watches when the dropdown loses focus
@@ -369,9 +368,18 @@ Custom property | Description | Default
       this._dropdownFocused = false;
     },
     /**
-     * Inorder to make dt-field look like an input field we have
-     * to force some css.
+     * This is a quick fix.
+     * Inorder to make dt-field look like an input field we have to overwrite some css on #fieldWrapper.
      *
+     * There is a hover state on #fieldWrapper and px-dropdown is a child of #fieldWrapper;
+     * therefore, when dropdown is opened the hover to #fieldWrapper is extended.
+     * This causes a flash of gray when the user selects a timezone with the mouse.
+     * Inorder to prevent this flash we need to overwrite the hover state by added
+     * `.dt-text-field--hover-fix` to #fieldWrapper.
+     *
+     * The true issue is that we can't listen to px-dropdown.opened because there is a timing issue
+     * when px-dropdown.opened is set to false vs when the dropdown is not longer visable. This causes the flash.
+     * We couldn't find anyother events that don't have a timing issue.
      */
     _handleHoverFix(){
       this.set('_dropdownHoverFix', true);
@@ -382,11 +390,11 @@ Custom property | Description | Default
     /**
      * dateIsValid, timeIsValid, & _forcedFailedClass - determine weither to show the validation error classes
      * isSelected - sets the styles when an entryCell is selected
-     * _dropdownActive - overwrites the styles when the dropdown is focused or opened
+     * _dropdownActive - overwrites the styles when the dropdown is focused
      * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
      */
     _getWrapperClass: function(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix) {
-      var classList = "inline--flex dt-text-field ";
+      var classList = "flex dt-text-field ";
 
       if(dateIsValid !== true || timeIsValid !== true || _forcedFailedClass === true) {
         classList += "validation-error validation-failed ";
@@ -402,11 +410,14 @@ Custom property | Description | Default
     /**
      * Addes a margin right if both entries are showing
      */
-    _getEntryDateClass: function(hideDate, hideTime) {
-      var classList = "inline--flex ";
-      if(hideDate === false && hideTime === false) {
+    _getEntryDateClass: function(hideDate, hideTime, hideIcon) {
+      var classList = "";
+      if(hideDate === false && hideTime === false && hideIcon === true) {
+        classList += "u-mr+ ";
+      } else if (hideDate === false && hideTime === false){
         classList += "u-mr- ";
       }
+
       return classList;
     },
     /**
@@ -420,12 +431,6 @@ Custom property | Description | Default
      */
     _handleValidationMessage: function(e){
       this.set('_validationErrorMessage', e.detail.validationErrorMessage)
-    },
-    /**
-     * Listener for `dropdown.opened` reflects value to `_dropdownActive`
-     */
-    _handleDropdownOpened: function(e){
-      this.set('_dropdownActive', e.detail.value);
     },
     /*
      * Focuses select to the next cell when an icon is clicked
