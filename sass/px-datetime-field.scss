@@ -38,43 +38,44 @@ $inuit-enable-validation-states : true;
   width: auto;
   height: $inuit-base-spacing-unit--huge;
   padding: 0 $inuit-base-spacing-unit--tiny;
-  color: $inuit-forms-color;
-  background-color: $inuit-forms-background;
+  color: var(--px-input-text-color, $inuit-forms-color);
+  background-color: var(--px-input-background-color, $inuit-forms-background);
   height: 2em;
   line-height: 1;
   width: 100%;
-  border-bottom: $inuit-forms-border--outer;
+  border-bottom: 1px solid var(--px-input-border-color--outer, $inuit-forms-border--outer);
   &:hover{
-    background-color: $inuit-forms-background--hover;
+    background-color: var(--px-input-background-color--hover, $inuit-forms-background--hover);
   }
   &:active{
-    color: $inuit-forms-color--focused;
-    background-color: $inuit-forms-background--focused;
+    color: var(--px-input-text-color--focused, $inuit-forms-color--focused);
+    background-color: var(--px-input-background-color--focused, var(--px-input-background-color--focused, $inuit-forms-background--focused));
   }
 }
 
 .dt-text-field--hover-fix{
   &:hover{
-    background-color: white;
+    background-color: var(--dt-field-background-color-fix,white);
     transition: .4s;
   }
 }
 
 .dt-is-selected {
-  border-color: $inuit-forms-border--outer--focused;
-  background-color: $inuit-forms-background--focused;
-  color: $inuit-forms-color--focused;
+  border-color: var(--px-input-border-color--outer--focused, $inuit-forms-border--outer--focused);
+  background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
+  color: var(--px-input-text-color--focused, $inuit-forms-color--focused);
   &:hover{
-    background-color: $inuit-forms-background--focused;
+    background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
   }
 }
 
 .dt-dropdown-is-active {
-  border-color: $inuit-forms-border--outer--focused;
-  background-color: $inuit-forms-background--focused;
-  color: $inuit-forms-color--focused;
+  border-color: var(--px-input-border-color--outer--focused, $inuit-forms-border--outer--focused);
+  background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
+  color: var(--px-input-text-color--focused, $inuit-forms-color--focused);
   &:hover{
-    background-color: $inuit-forms-background--focused;
+    background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
+    // color: salmon
   }
 }
 
@@ -84,11 +85,11 @@ $inuit-enable-validation-states : true;
 }
 
 .validation-failed {
-  border-color: $inuit-forms-validation-error;
-  background-color: $inuit-forms-validation-error-background;
-  color: $inuit-forms-color--focused;
+  border-color: var(--px-validation-error-text-color, $inuit-forms-validation-error);
+  background-color: var(--px-validation-error-background-color, $inuit-forms-validation-error-background);
+  color: var(--px-input-text-color--focused, $inuit-forms-color--focused);
   &:hover{
-    background-color: $inuit-forms-validation-error-background;
+    background-color: var(--px-validation-error-background-color, $inuit-forms-validation-error-background);
   }
 }
 
