@@ -203,7 +203,7 @@ function runCustomTests() {
           dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
           wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper'),
           i = 0;
-debugger
+
       var listener = function(evt) {
         i++;
         //make sure string has been kept in sync

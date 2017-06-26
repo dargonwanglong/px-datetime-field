@@ -101,8 +101,7 @@ Custom property | Description
 
     behaviors: [
       pxDatetimeBehavior,
-      pxDatetimeButtonBehavior,
-      validate
+      pxDatetimeButtonBehavior
     ],
 
     properties: {
@@ -310,7 +309,6 @@ Custom property | Description
      * Not sure if this is used
      */
     _focusFirstEntry: function(forceTimeFocus) {
-      debugger
       if(!this.hideDate && !forceTimeFocus) {
         this.$$('#date')._focusCell(0);
       } else {
@@ -321,7 +319,6 @@ Custom property | Description
      * Not sure if this is used
      */
     _focusLastEntry: function() {
-      debugger
       if(!this.hideTime) {
         this.$$('#time')._focusLastCell();
       } else {
@@ -357,7 +354,6 @@ Custom property | Description
     _handleDropdownBlur: function(e){
       e.stopPropagation();
       this.set('_dropdownActive', false);
-
       this._handleHoverFix();
     },
     /**
