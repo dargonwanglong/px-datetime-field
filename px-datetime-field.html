@@ -39,7 +39,7 @@ Custom property | Description
     <style include="px-datetime-field-styles"></style>
 
     <div class$="{{_getWrapClass(buttonWrap)}} flex">
-      <div class$="{{_getButtonMarginClass(showButtons)}} u-mb--">
+      <div class$="{{_getButtonMarginClass(showButtons, buttonWrap)}}">
         <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix)}}">
           <template is="dom-if" if="[[!hideDate]]">
             <px-datetime-entry
@@ -336,10 +336,16 @@ Custom property | Description
     /**
      * Adds a margin right if the button are showing
      */
-    _getButtonMarginClass: function(showButtons) {
+    _getButtonMarginClass: function(showButtons, buttonWrap) {
+      var classList= ""
       if(showButtons){
-        return "u-mr-";
+        classList += "u-mr- ";
+
+        if(buttonWrap) {
+          classList += "u-mb--";
+        }
       }
+      return classList;
     },
     /**
      * event that watches when the dropdown has focus
