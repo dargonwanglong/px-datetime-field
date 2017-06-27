@@ -52,7 +52,7 @@
             date-format="{{props.dateFormat.value}}"
             time-format="{{props.timeFormat.value}}"
             show-buttons="{{props.showButtons.value}}"
-            button-wrap="{{props.buttonWrap.value}}"
+            allow-wrap="{{props.allowWrap.value}}"
             block-future-dates="{{props.blockFutureDates.value}}"
             block-past-dates="{{props.blockPastDates.value}}"
             hide-time="{{props.hideTime.value}}"
@@ -129,7 +129,7 @@
               dateFormat: "YYYY/MM/DD",
               timeFormat: "hh:mm:ss A",
               showButtons: false,
-              buttonWrap: false,
+              allowWrap: false,
               blockFutureDates: false,
               blockPastDates: false,
               hideTime: false,
@@ -142,7 +142,7 @@
               dateFormat: "MM/DD/YY",
               timeFormat: "hh:mm:ss A",
               showButtons: true,
-              buttonWrap: true,
+              allowWrap: true,
               blockFutureDates: true,
               blockPastDates: false,
               hideTime: false,
@@ -155,7 +155,7 @@
               dateFormat: "DD/MM/YY",
               timeFormat: "HH:mm:ss.SSS",
               showButtons: false,
-              buttonWrap: false,
+              allowWrap: false,
               blockFutureDates: true,
               blockPastDates: false,
               hideTime: true,
@@ -210,7 +210,7 @@
         inputType: 'toggle'
       },
 
-      buttonWrap: {
+      allowWrap: {
         type: Boolean,
         defaultValue: false,
         inputType: 'toggle'

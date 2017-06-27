@@ -38,8 +38,8 @@ Custom property | Description
   <template>
     <style include="px-datetime-field-styles"></style>
 
-    <div class$="{{_getWrapClass(buttonWrap)}} flex">
-      <div class$="{{_getButtonMarginClass(showButtons, buttonWrap)}}">
+    <div class$="{{_getWrapClass(allowWrap)}} flex">
+      <div class$="{{_getButtonMarginClass(showButtons, allowWrap)}}">
         <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix)}}">
           <template is="dom-if" if="[[!hideDate]]">
             <px-datetime-entry
@@ -79,7 +79,7 @@ Custom property | Description
             </px-datetime-entry>
           </template>
         </div>
-        <template is="dom-if" if="{{!isValid}}">
+        <template is="dom-if" if="[[_whichValidation(isValid, isRangeValid)]]">
           <div class="form-field__help validation-error dt-validation-text">{{_validationErrorMessage}}</div>
         </template>
       </div>
@@ -165,7 +165,7 @@ Custom property | Description
        * Controls whether the buttons will wrap under the field if the horizontal
        * space is too small.
        */
-      buttonWrap: {
+      allowWrap: {
         type: Boolean,
         value: false
       },
@@ -196,6 +196,15 @@ Custom property | Description
         type: Boolean,
         notify: true,
         computed: '_getIsValid(dateIsValid, timeIsValid)'
+      },
+      /**
+       * used internally to determine if the range validation error should be displayed
+       * instead of the field validation error
+       * @private
+       */
+      isRangeValid:{
+        type: Boolean,
+        value: true
       },
       /**
        * Used to display the error message when an entry in not valid
@@ -328,20 +337,20 @@ Custom property | Description
     /**
      * Toggles classes causing the buttons to wrap under the field
      */
-    _getWrapClass: function(buttonWrap){
-      if(buttonWrap){
+    _getWrapClass: function(allowWrap){
+      if(allowWrap){
         return "flex--wrap"
       }
     },
     /**
      * Adds a margin right if the button are showing
      */
-    _getButtonMarginClass: function(showButtons, buttonWrap) {
+    _getButtonMarginClass: function(showButtons, allowWrap) {
       var classList= ""
       if(showButtons){
         classList += "u-mr- ";
 
-        if(buttonWrap) {
+        if(allowWrap) {
           classList += "u-mb--";
         }
       }
@@ -433,6 +442,17 @@ Custom property | Description
      */
     _handleValidationMessage: function(e){
       this.set('_validationErrorMessage', e.detail.validationErrorMessage)
+    },
+    /**
+     * Range validation error has peridence over the field validation error
+     * If the range is invalid then display nothing here
+     */
+    _whichValidation:function(isValid, isRangeValid){
+      if(isRangeValid && !isValid){
+        return true;
+      } else {
+        return false;
+      }
     },
     /*
      * Focuses select to the next cell when an icon is clicked
