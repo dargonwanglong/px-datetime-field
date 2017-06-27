@@ -82,6 +82,7 @@ $inuit-enable-validation-states : true;
   text-transform: uppercase;
   display: block;
   position: absolute;
+  white-space: nowrap;
 }
 
 .validation-failed {
