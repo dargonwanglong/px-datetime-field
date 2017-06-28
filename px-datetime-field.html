@@ -79,7 +79,7 @@ Custom property | Description
             </px-datetime-entry>
           </template>
         </div>
-        <template is="dom-if" if="[[_whichValidation(isValid, isRangeValid)]]">
+        <template is="dom-if" if="[[_showValidation(isValid, showValidationMessage)]]">
           <div class="form-field__help validation-error dt-validation-text">{{_validationErrorMessage}}</div>
         </template>
       </div>
@@ -128,12 +128,10 @@ Custom property | Description
       /**
        *
        * Can be set to show the timezone. Can have 2 values:
-       *  'dropdown': shows the time zone as a dropdown which the user can use to
-       * select a different time zone. Only contains a subset of all timezones
-       *  'extendedDropdown': shows the time zone as a dropdown which the user can use to
-       * select a different time zone. Contains all existing timezones (588)
-       *  'text': shows the time zone as text, non editable
-       *  'abbreviatedText': shows the time zone as an abbreviated text, non editable (such as PST, EST...)
+       *  - 'dropdown': shows the time zone as a dropdown which the user can use to select a different time zone. Only contains a subset of all timezones
+       *  - 'extendedDropdown': shows the time zone as a dropdown which the user can use to select a different time zone. Contains all existing timezones (588)
+       *  - 'text': shows the time zone as text, non editable
+       *  - 'abbreviatedText': shows the time zone as an abbreviated text, non editable (such as PST, EST...)
        */
       showTimeZone: {
         type: String,
@@ -198,11 +196,10 @@ Custom property | Description
         computed: '_getIsValid(dateIsValid, timeIsValid)'
       },
       /**
-       * used internally to determine if the range validation error should be displayed
-       * instead of the field validation error
-       * @private
+       * Determines whether to display the validation message or not.
+       * Use mostly by datetime-range-field.
        */
-      isRangeValid:{
+      showValidationMessage:{
         type: Boolean,
         value: true
       },
@@ -447,8 +444,8 @@ Custom property | Description
      * Range validation error has peridence over the field validation error
      * If the range is invalid then display nothing here
      */
-    _whichValidation:function(isValid, isRangeValid){
-      if(isRangeValid && !isValid){
+    _showValidation:function(isValid, showValidationMessage){
+      if(showValidationMessage && !isValid){
         return true;
       } else {
         return false;
