@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Predix UI</title>
+    <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
 
     <link rel="import" href="../../polymer/polymer.html" />
     <link rel="import" href="../../px-theme/px-theme-styles.html">
@@ -13,12 +14,14 @@
   </head>
 
   <body>
+    <h2>px-datetime-field</h2>
     <px-datetime-field
         date-time="2016-02-05T05:30:00.000Z"
         block-future-dates
         time-format="HH:mm:ss"
         date-format="MM/DD/YY"
         show-time-zone="dropdown"
+        allow-wrap
         show-buttons>
     </px-datetime-field>
   </body>
