@@ -271,7 +271,7 @@ Custom property | Description
       if(hideTime || hideTime === true) {
         return showTimeZone;
       }else {
-        return ''
+        return '';
       }
     },
     /**
@@ -336,14 +336,14 @@ Custom property | Description
      */
     _getWrapClass: function(allowWrap){
       if(allowWrap){
-        return "flex--wrap"
+        return "flex--wrap";
       }
     },
     /**
      * Adds a margin right if the button are showing
      */
     _getButtonMarginClass: function(showButtons, allowWrap) {
-      var classList= ""
+      var classList = "";
       if(showButtons){
         classList += "u-mr- ";
 
@@ -389,7 +389,7 @@ Custom property | Description
      * when px-dropdown.opened is set to false vs when the dropdown is not longer visable. This causes the flash.
      * We couldn't find anyother events that don't have a timing issue.
      */
-    _handleHoverFix(){
+    _handleHoverFix: function(){
       this.set('_dropdownHoverFix', true);
       this.async(function(){
         this.set('_dropdownHoverFix', false);
@@ -438,7 +438,7 @@ Custom property | Description
      * Listener for the validation message to change and reflect the changes to _validationErrorMessage
      */
     _handleValidationMessage: function(e){
-      this.set('_validationErrorMessage', e.detail.validationErrorMessage)
+      this.set('_validationErrorMessage', e.detail.validationErrorMessage);
     },
     /**
      * Range validation error has peridence over the field validation error
