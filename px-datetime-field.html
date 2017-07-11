@@ -402,7 +402,7 @@ Custom property | Description
      * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
      */
     _getWrapperClass: function(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix) {
-      var classList = "flex dt-text-field ";
+      var classList = "flex flex--middle dt-text-field ";
 
       if(dateIsValid !== true || timeIsValid !== true || _forcedFailedClass === true) {
         classList += "validation-error validation-failed ";
