@@ -1,0 +1,87 @@
+/*
+ * Copyright (c) 2014 GE Global Research. All rights reserved.
+ *
+ * The copyright to the computer software herein is the property of
+ * GE Global Research. The software may be used and/or copied only
+ * with the written permission of GE Global Research or in accordance
+ * with the terms and conditions stipulated in the agreement/contract
+ * under which the software has been supplied.
+ */
+
+
+// Generic
+@import "px-normalize-design/_generic.normalize.scss";
+@import "px-box-sizing-design/_generic.box-sizing.scss";
+
+// Base
+@import "px-flexbox-design/_base.flexbox.scss";
+
+$inuit-enable-validation-states : true;
+@import "px-forms-design/_base.forms.scss";
+
+//component
+.dt-text-field{
+  font: inherit;
+  outline: 0;
+  width: auto;
+  height: var(--px-datetime-field-height, $inuit-base-spacing-unit--huge);
+  padding: 0 $inuit-base-spacing-unit--tiny;
+  color: var(--px-input-text-color, $inuit-forms-color);
+  background-color: var(--px-input-background-color, $inuit-forms-background);
+  line-height: 1;
+  width: 100%;
+  border-bottom: 1px solid var(--px-input-border-color--outer, $inuit-forms-border--outer);
+  &:hover{
+    background-color: var(--px-input-background-color--hover, $inuit-forms-background--hover);
+  }
+  &:active{
+    color: var(--px-input-text-color--focused, $inuit-forms-color--focused);
+    background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
+  }
+}
+
+.dt-text-field--hover-fix{
+  &:hover{
+    background-color: var(--dt-field-background-color-fix,white);
+    transition: .4s;
+  }
+}
+
+.dt-is-selected {
+  border-color: var(--px-input-border-color--outer--focused, $inuit-forms-border--outer--focused);
+  background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
+  color: var(--px-input-text-color--focused, $inuit-forms-color--focused);
+  &:hover{
+    background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
+  }
+}
+
+.dt-dropdown-is-active {
+  border-color: var(--px-input-border-color--outer--focused, $inuit-forms-border--outer--focused);
+  background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
+  color: var(--px-input-text-color--focused, $inuit-forms-color--focused);
+  &:hover{
+    background-color: var(--px-input-background-color--focused, $inuit-forms-background--focused);
+  }
+}
+
+.dt-validation-text{
+  text-transform: uppercase;
+  display: block;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.validation-failed {
+  border-color: var(--px-validation-error-text-color, $inuit-forms-validation-error);
+  background-color: var(--px-validation-error-background-color, $inuit-forms-validation-error-background);
+  color: var(--px-input-text-color--focused, $inuit-forms-color--focused);
+  &:hover{
+    background-color: var(--px-validation-error-background-color, $inuit-forms-validation-error-background);
+  }
+}
+
+// Trumps
+$inuit-enable-margins--small : true;
+$inuit-enable-margins--large : true;
+@import "px-spacing-design/_trumps.spacing.scss";

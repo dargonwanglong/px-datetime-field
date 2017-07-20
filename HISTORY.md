@@ -1,3 +1,11 @@
+v1.0.0
+==================
+* Updated documentation
+* combined -predix and -sketch sass files
+* Moved validation message to dt-field from dt-common
+* added the option to have the buttons wrap or not
+* added properties to get the refresh style to behave appropriately
+
 v0.7.0
 ==================
 * added localization through resources, language, formats and Px.moment.changeLocale()
