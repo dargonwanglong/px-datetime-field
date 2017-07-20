@@ -1,13 +1,9 @@
-#THIS COMPONENT IS NOT YET RELEASED.
 
-Px-Datetime-field [![Build Status](https://travis-ci.org/PredixDev/px-datetime-field.svg?branch=master)](https://travis-ci.org/PredixDev/px-datetime-field)
------------------------------------------------
-
-[![px-datetime-field demo](px-datetime-field.png?raw=true)](https://github.com/PredixDev/px-datetime-field)
+# px-datetime-field [![Build Status](https://travis-ci.org/PredixDev/px-datetime-field.svg?branch=master)](https://travis-ci.org/PredixDev/px-datetime-field)
 
 ## Overview
 
-Px-Datetime-field is a Predix Experience ('Px') component
+The px-datetime-field component allows the user to select a date and time precisely to the second or millisecond.
 
 ## Getting Started
 
