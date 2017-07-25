@@ -3,7 +3,7 @@
 
 ## Overview
 
-`Px-datetime-field` is a Predic UI component which allows the user to select a date and time precisely to the second or millisecond. 
+`Px-datetime-field` is a Predix UI component which allows the user to select a date and time precisely to the second or millisecond. 
 
 ## Getting Started
 
