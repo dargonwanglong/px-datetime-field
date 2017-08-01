@@ -1,3 +1,7 @@
+v1.0.1
+==================
+* Update demo to remove unused import
+
 v1.0.0
 ==================
 * Updated documentation
