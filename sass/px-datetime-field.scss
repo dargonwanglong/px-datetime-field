@@ -20,6 +20,10 @@ $inuit-enable-validation-states : true;
 @import "px-forms-design/_base.forms.scss";
 
 //component
+.dt-field-validation-wrapper{
+  background-color: var(--px-datetime-field-background-color, transparent);
+}
+
 .dt-text-field{
   font: inherit;
   outline: 0;
@@ -84,4 +88,5 @@ $inuit-enable-validation-states : true;
 // Trumps
 $inuit-enable-margins--small : true;
 $inuit-enable-margins--large : true;
+$inuit-enable-paddings--large : true;
 @import "px-spacing-design/_trumps.spacing.scss";

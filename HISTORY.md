@@ -1,3 +1,7 @@
+v1.0.4
+==================
+* added `--px-datetime-field-background-color` css variable
+
 v1.0.3
 ==================
 * Fix comment for analyzer

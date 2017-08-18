@@ -20,6 +20,7 @@ The following custom property is available for styling. Please also refer to px-
 Custom property | Description
 :----------------|:-------------
 `--px-datetime-border-color-validation--failed` | Outline color for the field when validation fails
+`--px-datetime-field-background-color` | Background color for field and validation
 
 @element px-datetime-field
 @blurb Element providing solution to no problem in particular.
@@ -335,12 +336,12 @@ Custom property | Description
      * Adds a margin right if the button are showing
      */
     _getButtonMarginClass: function(showButtons, allowWrap) {
-      var classList = "";
+      var classList = "dt-field-validation-wrapper ";
       if(showButtons){
         classList += "u-mr- ";
 
         if(allowWrap) {
-          classList += "u-mb+";
+          classList += "u-pb+";
         }
       }
       return classList;
