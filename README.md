@@ -3,7 +3,7 @@
 
 ## Overview
 
-`Px-datetime-field` is a Predix UI component which allows the user to select a date and time precisely to the second or millisecond. 
+`Px-datetime-field` is a Predix UI component which allows the user to select a date and time precisely to the second or millisecond.
 
 ## Getting Started
 
@@ -17,36 +17,22 @@ $ bower install
 $ gulp sass
 ```
 
-### API and examples
-
-https://predixdev.github.io/px-datetime-field/
-
-### LiveReload
-
-By default gulp serve is configured to enable LiveReload and will be watching for modifications in your root directory as well as `/css`.
-
-Your browser will also need to have the LiveReload extension installed and enabled. For instructions on how to do this please refer to [livereload.com/extensions/](http://livereload.com/extensions/).
-
-Add, remove, modify file system patterns specified in the `depserve.options.livereload` array in your `Gruntfile.js`
-
-This is an example depserve configuration:
+From the component's directory, to start a local server run:
 
 ```
-depserve: {
-    options: {
-        open: '&lt;%= depserveOpenUrl %&gt;,
-        livereload: [__dirname + "/js", __dirname + "/css", __dirname]
-    }
-}
+$ gulp serve
 ```
-### Extending behavior
 
-See Polymer composition patterns
+Navigate to the root of that server (e.g. http://localhost:8080/) in a browser to open the API documentation page, with link to the "Demo" / working examples.
 
-GE Coding Style Guide
----------------------
 
+
+
+### GE Coding Style Guide
 [GE JS Developer's Guide](https://github.com/GeneralElectric/javascript)
+
+<br />
+<hr />
 
 
 ## Known Issues

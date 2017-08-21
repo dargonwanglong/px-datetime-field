@@ -9,6 +9,7 @@
 <link rel="import" href="../../px-demo/px-demo-props.html" />
 <link rel="import" href="../../px-demo/px-demo-interactive.html" />
 <link rel="import" href="../../px-demo/px-demo-component-snippet.html" />
+<link rel="import" href="../../px-demo/px-demo-code-editor.html" />
 
 
 
@@ -40,6 +41,8 @@
       <!-- Props -->
       <px-demo-props props="{{props}}" config="[[chosenConfig]]" class="flex__item flex__item--msfix"></px-demo-props>
 
+      <px-demo-code-editor props="{{props}}" config="[[chosenConfig]]" class="flex__item flex__item--msfix"></px-demo-code-editor>
+
       <!-- Component ---------------------------------------------------------->
       <px-demo-component>
         <p class=u-mb0>Event fired: <strong>px-datetime-submitted</strong></p>
@@ -58,7 +61,9 @@
             hide-date="{{props.hideDate.value}}"
             show-time-zone="{{props.showTimeZone.value}}"
             hide-icon="{{props.hideIcon.value}}"
-            time-zone="{{props.timeZone.value}}">
+            time-zone="{{props.timeZone.value}}"
+            min="{{props.min.value}}"
+            max="{{props.max.value}}">
         </px-datetime-field>
       </px-demo-component>
       <!-- END Component ------------------------------------------------------>
@@ -258,10 +263,22 @@
 
       dateTime: {
         type: String,
-        defaultValue: '2016-01-01T01:00:00.000Z',
+        defaultValue: Px.moment(),
         inputType: 'text',
         inputPlaceholder: 'ISO 8601 String',
         inputDisabled: true
+      },
+
+      min: {
+        type: Object,
+        defaultValue: Px.moment().subtract(1, 'year'),
+        inputType: 'code:JSON'
+      },
+
+      max: {
+        type: Object,
+        defaultValue: Px.moment().add(1, 'year'),
+        inputType: 'code:JSON'
       }
     },
 

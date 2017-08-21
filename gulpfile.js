@@ -93,5 +93,5 @@ gulp.task('bump:major', function(){
 });
 
 gulp.task('default', function(callback) {
-  gulpSequence('clean', 'sass', 'demosass')(callback);
+  gulpSequence('clean', 'sass')(callback);
 });
