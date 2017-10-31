@@ -1,3 +1,7 @@
+v1.0.7
+==================
+* add device flags
+
 v1.0.6
 ==================
 * updated css variable documentation
