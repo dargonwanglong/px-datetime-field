@@ -26,19 +26,35 @@
     "px-datetime-field.png"
   ],
   "dependencies": {
-    "polymer": "^1.9.0",
+    "polymer": "#1.9 - 2",
     "px-datetime-common": "^1.0.0"
   },
   "devDependencies": {
-    "px-demo": "^2.0.0",
+    "px-demo": "^3.0.0",
     "px-theme": "^3.0.0",
     "px-normalize-design": "^1.0.0",
     "px-box-sizing-design": "^1.0.0",
     "px-flexbox-design": "^1.0.0",
     "px-forms-design": "^2.0.0",
-    "px-spacing-design": "^1.0.0"
+    "px-spacing-design": "^1.0.0",
+    "web-component-tester": "^6.3.0"
   },
   "resolutions": {
-    "webcomponentsjs": "^0.7.24"
+    "webcomponentsjs": "^1.0.0",
+    "px-dropdown": "#polymer2.0-preview"
+  },
+  "variants": {
+    "1.x": {
+      "dependencies": {
+        "polymer": "^1.9.0"
+      },
+      "devDependencies": {
+        "web-component-tester": "^5.0.0"
+      },
+      "resolutions": {
+        "webcomponentsjs": "^0.7.0",
+        "px-dropdown": "^4.0.0"
+      }
+    }
   }
 }
