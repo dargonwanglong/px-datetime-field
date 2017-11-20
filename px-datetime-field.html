@@ -1,7 +1,7 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-entry.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-behavior.html"/>
-<link rel="import" href="../px-datetime-common/validate.html"/>
+<link rel="import" href="../px-datetime-common/px-datetime-validate.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-buttons.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-button-behavior.html"/>
 <link rel="import" href="css/px-datetime-field-styles.html"/>
@@ -101,7 +101,8 @@ Custom property | Description
 
     behaviors: [
       pxDatetimeBehavior,
-      pxDatetimeButtonBehavior
+      pxDatetimeButtonBehavior,
+      validate
     ],
 
     properties: {
@@ -258,10 +259,9 @@ Custom property | Description
       'px-datetime-button-clicked': '_dateTimeButtons',
       'px-validation-message' : '_handleValidationMessage',
       'px-dropdown-focused': '_handleDropdownFocus',
-      'px-dropdown-blured': '_handleDropdownBlur'
+      'px-dropdown-blurred': '_handleDropdownBlur',
+      'px-moment-valid': '_momentChanged'
     },
-
-    observers: ['_momentChanged(momentObj)'],
 
     /*
      * Will only show the dropdown in the date entry if `hideTime`
@@ -445,11 +445,7 @@ Custom property | Description
      * If the range is invalid then display nothing here
      */
     _showValidation:function(isValid, showValidationMessage){
-      if(showValidationMessage && !isValid){
-        return true;
-      } else {
-        return false;
-      }
+      return (showValidationMessage && !isValid);
     },
     /*
      * Focuses select to the next cell when an icon is clicked
@@ -465,9 +461,9 @@ Custom property | Description
      * Observer on the momentObj. If valid and buttons are hidden apply changes
      * will not run from `px-datetime-range-submitted`
      */
-    _momentChanged: function(momentObj) {
-      if(momentObj !== undefined && this.isValid === true && !this.showButtons && !this.preventNotificationOnChange) {
-        this._applyCurrentValues(true);
+    _momentChanged: function(evt) {
+      if(!this.showButtons && !this.preventNotificationOnChange) {
+        this.set('momentObj', evt.detail.momentObj);
       }
     },
     /**
@@ -477,7 +473,14 @@ Custom property | Description
      */
     _dateTimeButtons: function(evt) {
       if(!this.preventNotificationOnChange) {
-        this._applyCurrentValues(evt.detail.action);
+        //if apply was clicked validate field
+        if(evt.detail.action){
+          var newMomentObj = this.$$('#date')._validateInput();
+          this.set('momentObj', newMomentObj);
+        }else{
+          this.$$('#date').reset();
+          this.$$('#time').reset();
+        }
       }
     },
     /**
@@ -485,8 +488,18 @@ Custom property | Description
      * will not run from `px-datetime-range-submitted`
      */
     _onEsc: function(evt) {
-      if(this.showButtons && !this.preventNotificationOnChange) {
-        this._applyCurrentValues(false);
+      if(!this.preventNotificationOnChange) {
+        if(this.momentObj === undefined) {
+          var entries = Polymer.dom(this.root).querySelectorAll('px-datetime-entry');
+          entries.forEach(function(entry) {
+            entry.clear();
+          });
+        }
+        else {
+          this.$$('#date').reset();
+          this.$$('#date').reset();
+        }
+        this.blur();
       }
     },
     /**

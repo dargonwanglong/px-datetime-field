@@ -50,7 +50,6 @@
       <px-demo-component slot="px-demo-component">
         <p class=u-mb0>Event fired: <strong>px-datetime-submitted</strong></p>
         <p class="zeta u-mt0">See API Reference below for more details</p>
-        <p class="u-mb++">Current dateTime object: <strong>{{props.dateTime.value}}</strong></p>
 
         <px-datetime-field
             date-time="{{props.dateTime.value}}"
@@ -133,8 +132,7 @@
         value: function(){
           return [
 
-            { dateTime: "2016-01-01T01:00:00.000Z",
-              dateFormat: "YYYY/MM/DD",
+            { dateFormat: "YYYY/MM/DD",
               timeFormat: "hh:mm:ss A",
               showButtons: false,
               allowWrap: false,
@@ -146,8 +144,7 @@
               showTimeZone: "dropdown",
               timeZone: "UTC" },
 
-            { dateTime: "2016-01-01T01:00:00.000Z",
-              dateFormat: "MM/DD/YY",
+            { dateFormat: "MM/DD/YY",
               timeFormat: "hh:mm:ss A",
               showButtons: true,
               allowWrap: true,
@@ -159,8 +156,7 @@
               showTimeZone: "abbreviatedText",
               timeZone: "America/Los_Angeles" },
 
-            { dateTime: "2016-01-01T01:00:00.000Z",
-              dateFormat: "DD/MM/YY",
+            { dateFormat: "DD/MM/YY",
               timeFormat: "HH:mm:ss.SSS",
               showButtons: false,
               allowWrap: false,
@@ -263,14 +259,6 @@
         defaultValue: 'dropdown',
         inputType: 'dropdown',
         inputChoices: ['none', 'dropdown', 'extendedDropdown', 'text', 'abbreviatedText']
-      },
-
-      dateTime: {
-        type: String,
-        defaultValue: Px.moment(),
-        inputType: 'text',
-        inputPlaceholder: 'ISO 8601 String',
-        inputDisabled: true
       },
 
       min: {
