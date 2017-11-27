@@ -480,6 +480,7 @@ Custom property | Description
         }else{
           this.$$('#date').reset();
           this.$$('#time').reset();
+          this._validateField();
         }
       }
     },
@@ -498,6 +499,7 @@ Custom property | Description
         else {
           this.$$('#date').reset();
           this.$$('#time').reset();
+          this._validateField();
         }
         this.blur();
       }
