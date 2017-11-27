@@ -475,8 +475,8 @@ Custom property | Description
       if(!this.preventNotificationOnChange) {
         //if apply was clicked validate field
         if(evt.detail.action){
-          var newMomentObj = this.$$('#date')._validateInput();
-          this.set('momentObj', newMomentObj);
+          var newMomentObj = this._validateField();
+          newMomentObj ? this.set('momentObj', newMomentObj) : '';
         }else{
           this.$$('#date').reset();
           this.$$('#time').reset();
@@ -497,7 +497,7 @@ Custom property | Description
         }
         else {
           this.$$('#date').reset();
-          this.$$('#date').reset();
+          this.$$('#time').reset();
         }
         this.blur();
       }
@@ -508,7 +508,8 @@ Custom property | Description
      */
     _onEnter: function(evt) {
       if(this.showButtons && !this.preventNotificationOnChange) {
-        this._applyCurrentValues(true);
+        var newMomentObj = this._validateField();
+        newMomentObj ? this.set('momentObj', newMomentObj) : '';
       }
     },
   });
