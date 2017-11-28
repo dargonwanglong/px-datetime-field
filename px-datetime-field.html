@@ -229,10 +229,10 @@ Custom property | Description
         notify: true
       },
       /**
-       * Used to prevent this element from firing px-datetime-range-submitted
-       * event and prevent changes to range
+       * Used to prevent this elements apply, cancel, enter, and esc from running
+       * Used by `px-datetime-range-field`
        */
-      preventNotificationOnChange: {
+      preventValidation: {
         type: Boolean,
         value: false
       },
@@ -288,8 +288,8 @@ Custom property | Description
       var date = this.$$('#date');
 
       //if this comes from date do some logic, otherwise let it propagate
-      if(date && evt.detail.dateOrTime === 'Date') {
-        if(!this.hideTime) {
+      if (date && evt.detail.dateOrTime === 'Date') {
+        if (!this.hideTime) {
           this.$$('#time')._focusCell(0);
           evt.stopPropagation();
           evt.stopImmediatePropagation();
@@ -299,12 +299,12 @@ Custom property | Description
     /*
      * Jumps from the time field to date field when using arrow keys
      */
-    _previousFieldRequired: function(evt) {
+    _previousFieldRequired: function (evt) {
       var time = this.$$('#time');
 
       //if this comes from time do some logic, otherwise let it propagate
-      if(time && evt.detail.dateOrTime === 'Time') {
-        if(!this.hideDate) {
+      if (time && evt.detail.dateOrTime === 'Time') {
+        if (!this.hideDate) {
           this.$$('#date')._focusLastCell();
           evt.stopPropagation();
           evt.stopImmediatePropagation();
@@ -314,8 +314,8 @@ Custom property | Description
     /*
      * Not sure if this is used
      */
-    _focusFirstEntry: function(forceTimeFocus) {
-      if(!this.hideDate && !forceTimeFocus) {
+    _focusFirstEntry: function (forceTimeFocus) {
+      if (!this.hideDate && !forceTimeFocus) {
         this.$$('#date')._focusCell(0);
       } else {
         this.$$('#time')._focusCell(0);
@@ -324,8 +324,8 @@ Custom property | Description
     /*
      * Not sure if this is used
      */
-    _focusLastEntry: function() {
-      if(!this.hideTime) {
+    _focusLastEntry: function () {
+      if (!this.hideTime) {
         this.$$('#time')._focusLastCell();
       } else {
         this.$$('#date')._focusLastCell();
@@ -334,20 +334,20 @@ Custom property | Description
     /**
      * Toggles classes causing the buttons to wrap under the field
      */
-    _getWrapClass: function(allowWrap){
-      if(allowWrap){
+    _getWrapClass: function (allowWrap) {
+      if (allowWrap) {
         return "flex--wrap";
       }
     },
     /**
      * Adds a margin right if the button are showing
      */
-    _getButtonMarginClass: function(showButtons, allowWrap) {
+    _getButtonMarginClass: function (showButtons, allowWrap) {
       var classList = "dt-field-validation-wrapper ";
-      if(showButtons){
+      if (showButtons) {
         classList += "u-mr- ";
 
-        if(allowWrap) {
+        if (allowWrap) {
           classList += "u-pb+";
         }
       }
@@ -356,14 +356,14 @@ Custom property | Description
     /**
      * event that watches when the dropdown has focus
      */
-    _handleDropdownFocus: function(e){
+    _handleDropdownFocus: function (e) {
       e.stopPropagation();
       this.set('_dropdownActive', true);
     },
     /**
      * event that watches when the dropdown loses focus
      */
-    _handleDropdownBlur: function(e){
+    _handleDropdownBlur: function (e) {
       e.stopPropagation();
       this.set('_dropdownActive', false);
       this._handleHoverFix();
@@ -372,7 +372,7 @@ Custom property | Description
      * when dt-field is detached set `_dropdownFocused` to false.
      * prevents the dropdown from being stuck in a focused state
      */
-    detached: function(){
+    detached: function () {
       this._dropdownFocused = false;
     },
     /**
@@ -389,11 +389,11 @@ Custom property | Description
      * when px-dropdown.opened is set to false vs when the dropdown is not longer visable. This causes the flash.
      * We couldn't find anyother events that don't have a timing issue.
      */
-    _handleHoverFix: function(){
+    _handleHoverFix: function () {
       this.set('_dropdownHoverFix', true);
-      this.async(function(){
+      this.async(function () {
         this.set('_dropdownHoverFix', false);
-      },1000);
+      }, 1000);
     },
     /**
      * dateIsValid, timeIsValid, & _forcedFailedClass - determine weither to show the validation error classes
@@ -401,16 +401,16 @@ Custom property | Description
      * _dropdownActive - overwrites the styles when the dropdown is focused
      * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
      */
-    _getWrapperClass: function(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix) {
+    _getWrapperClass: function (dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix) {
       var classList = "flex flex--middle dt-text-field ";
 
-      if(dateIsValid !== true || timeIsValid !== true || _forcedFailedClass === true) {
+      if (dateIsValid !== true || timeIsValid !== true || _forcedFailedClass === true) {
         classList += "validation-error validation-failed ";
-      } else if(isSelected) {
+      } else if (isSelected) {
         classList += "dt-is-selected ";
-      } else if(_dropdownActive){
+      } else if (_dropdownActive) {
         classList += "dt-dropdown-is-active ";
-      } else if (_dropdownHoverFix){
+      } else if (_dropdownHoverFix) {
         classList += "dt-text-field--hover-fix ";
       }
       return classList;
@@ -418,11 +418,11 @@ Custom property | Description
     /**
      * Addes a margin right if both entries are showing
      */
-    _getEntryDateClass: function(hideDate, hideTime, hideIcon) {
+    _getEntryDateClass: function (hideDate, hideTime, hideIcon) {
       var classList = "";
-      if(hideDate === false && hideTime === false && hideIcon === true) {
+      if (hideDate === false && hideTime === false && hideIcon === true) {
         classList += "u-mr+ ";
-      } else if (hideDate === false && hideTime === false){
+      } else if (hideDate === false && hideTime === false) {
         classList += "u-mr- ";
       }
 
@@ -431,29 +431,30 @@ Custom property | Description
     /**
      * Computes the `isValid` prop
      */
-    _getIsValid: function(dateIsValid, timeIsValid) {
+    _getIsValid: function (dateIsValid, timeIsValid) {
       return dateIsValid && timeIsValid;
     },
     /**
      * Listener for the validation message to change and reflect the changes to _validationErrorMessage
      */
-    _handleValidationMessage: function(e){
+    _handleValidationMessage: function (e) {
       this.set('_validationErrorMessage', e.detail.validationErrorMessage);
     },
     /**
      * Range validation error has precedence over the field validation error
      * If the range is invalid then display nothing here
      */
-    _showValidation:function(isValid, showValidationMessage){
+    _showValidation: function (isValid, showValidationMessage) {
       return (showValidationMessage && !isValid);
     },
     /*
      * Focuses select to the next cell when an icon is clicked
      */
-    _iconClicked: function(evt) {
-      if(evt.detail.dateOrTime === "Date") {
+    _iconClicked: function (evt) {
+      if (evt.detail.dateOrTime === "Date") {
         this.$$('#date')._focusCell(0);
-      } else {
+      }
+      else {
         this.$$('#time')._focusCell(0);
       }
     },
@@ -461,10 +462,9 @@ Custom property | Description
      * Observer on the momentObj. If valid and buttons are hidden apply changes
      * will not run from `px-datetime-range-submitted`
      */
-    _momentChanged: function(evt) {
-      if(!this.showButtons && !this.preventNotificationOnChange) {
-        var newMomentObj = this._validateField();
-        newMomentObj ? this.set('momentObj', newMomentObj) : '';
+    _momentChanged: function (evt) {
+      if (!this.showButtons && !this.preventValidation) {
+        this._applyChanges();
       }
     },
     /**
@@ -472,16 +472,13 @@ Custom property | Description
      * based on the event
      * will not run from `px-datetime-range-submitted`
      */
-    _dateTimeButtons: function(evt) {
-      if(!this.preventNotificationOnChange) {
-        //if apply was clicked validate field
-        if(evt.detail.action){
-          var newMomentObj = this._validateField();
-          newMomentObj ? this.set('momentObj', newMomentObj) : '';
-        }else{
-          this.$$('#date').reset();
-          this.$$('#time').reset();
-          this._validateField();
+    _dateTimeButtons: function (evt) {
+      if (!this.preventValidation) {
+        if (evt.detail.action) {
+          this._applyChanges();
+        }
+        else {
+          this._cancelChanges();
         }
       }
     },
@@ -489,31 +486,44 @@ Custom property | Description
      * When buttons are showing, it will clear changes
      * will not run from `px-datetime-range-submitted`
      */
-    _onEsc: function(evt) {
-      if(!this.preventNotificationOnChange) {
-        if(this.momentObj === undefined) {
-          var entries = Polymer.dom(this.root).querySelectorAll('px-datetime-entry');
-          entries.forEach(function(entry) {
-            entry.clear();
-          });
-        }
-        else {
-          this.$$('#date').reset();
-          this.$$('#time').reset();
-          this._validateField();
-        }
-        this.blur();
+    _onEsc: function () {
+      if (!this.preventValidation) {
+        this._cancelChanges();
       }
     },
     /**
      * When buttons are showing, it will apply changes
      * will not run from `px-datetime-range-submitted`
      */
-    _onEnter: function(evt) {
-      if(!this.preventNotificationOnChange) {
-        var newMomentObj = this._validateField();
-        newMomentObj ? this.set('momentObj', newMomentObj) : '';
+    _onEnter: function () {
+      if (!this.preventValidation) {
+        this._applyChanges();
       }
     },
+    /**
+     * Validate field
+     * If valid set the momentObj
+     */
+    _applyChanges: function () {
+      var newMomentObj = this._validateField();
+      newMomentObj ? this.set('momentObj', newMomentObj) : '';
+    },
+    /**
+     * Clear field or reset to previous moment objs
+     */
+    _cancelChanges: function () {
+      if (this.momentObj === undefined) {
+        var entries = Polymer.dom(this.root).querySelectorAll('px-datetime-entry');
+        entries.forEach(function (entry) {
+          entry.clear();
+        });
+      }
+      else {
+        this.$$('#date').reset();
+        this.$$('#time').reset();
+        this._validateField();
+      }
+      this.blur();
+    }
   });
 </script>
