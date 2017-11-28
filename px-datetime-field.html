@@ -463,7 +463,8 @@ Custom property | Description
      */
     _momentChanged: function(evt) {
       if(!this.showButtons && !this.preventNotificationOnChange) {
-        this.set('momentObj', evt.detail.momentObj);
+        var newMomentObj = this._validateField();
+        newMomentObj ? this.set('momentObj', newMomentObj) : '';
       }
     },
     /**
@@ -509,7 +510,7 @@ Custom property | Description
      * will not run from `px-datetime-range-submitted`
      */
     _onEnter: function(evt) {
-      if(this.showButtons && !this.preventNotificationOnChange) {
+      if(!this.preventNotificationOnChange) {
         var newMomentObj = this._validateField();
         newMomentObj ? this.set('momentObj', newMomentObj) : '';
       }
