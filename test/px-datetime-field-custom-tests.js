@@ -318,3 +318,126 @@ suite('submit with buttons', function() {
     field.removeEventListener('px-moment-changed', listener);
   });
 });
+
+suite('Blocking of dates/times', function() {
+  let field;
+
+  setup(function(done) {
+    field = fixture('px_datetime_field');
+    field.momentObj = Px.moment();
+    flush(()=>{
+      done();
+    });
+  });
+
+  test('blocking of future dates', function() {
+    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[1].root).querySelectorAll('px-datetime-entry-cell'),
+        hourInput = Polymer.dom(dateCells[0].root).querySelector('input'),
+        i = 0,
+        e = document.createEvent('Event');
+
+    var listener = function(evt) {
+      i++;
+    };
+
+    field.addEventListener('px-moment-changed', listener);
+
+    field.blockFutureDates = true;
+    //invalid datetime, should not trigger event
+    hourInput.value = Px.moment.tz(hourInput.value, 'h', field.timeZone).add(1, 'hour').hour();
+    e.initEvent("blur", true, true);
+    hourInput.dispatchEvent(e);
+
+    flush(function() {
+      assert.equal(i, 0);
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'));
+      field.removeEventListener('px-moment-changed', listener);
+      done();
+    });
+  });
+
+  test('blocking of past dates', function() {
+    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[1].root).querySelectorAll('px-datetime-entry-cell'),
+        hourInput = Polymer.dom(dateCells[0].root).querySelector('input'),
+        i = 0,
+        e = document.createEvent('Event');
+
+    var listener = function(evt) {
+      i++;
+    };
+
+    field.addEventListener('px-moment-changed', listener);
+
+    field.blockPastDates = true;
+    //invalid datetime, should not trigger event
+    hourInput.value = Px.moment.tz(hourInput.value, 'h', field.timeZone).subtract(1, 'hour').hour();
+    e.initEvent("blur", true, true);
+    hourInput.dispatchEvent(e);
+
+    flush(function() {
+      assert.equal(i, 0);
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'));
+      field.removeEventListener('px-moment-changed', listener);
+      done();
+    });
+  });
+
+  test('blocking of dates after max', function() {
+    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
+        dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
+        i = 0,
+        e = document.createEvent('Event');
+
+    var listener = function(evt) {
+      i++;
+    };
+
+    field.addEventListener('px-moment-changed', listener);
+
+    field.max = field.momentObj.clone().subtract(1, 'hour');
+    //invalid datetime, should not trigger event
+    e.initEvent("blur", true, true);
+    dateInput.dispatchEvent(e);
+
+    flush(function() {
+      assert.equal(i, 0);
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'));
+      field.removeEventListener('px-moment-changed', listener);
+      done();
+    });
+  });
+
+  test('blocking of dates before min', function() {
+    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
+        dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
+        i = 0,
+        e = document.createEvent('Event');
+
+    var listener = function(evt) {
+      i++;
+    };
+
+    field.addEventListener('px-moment-changed', listener);
+
+    field.min = field.momentObj.clone().add(1, 'hour');
+    //invalid datetime, should not trigger event
+    e.initEvent("blur", true, true);
+    dateInput.dispatchEvent(e);
+
+    flush(function() {
+      assert.equal(i, 0);
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'));
+      field.removeEventListener('px-moment-changed', listener);
+      done();
+    });
+  });
+
+});
