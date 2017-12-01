@@ -172,14 +172,11 @@ suite('Navigation', function() {
 
 suite('submit without buttons', function() {
 
-  let field, fireKeyboardEvent;
+  let field;
 
   setup(function(done) {
     field = fixture('px_datetime_field');
-    fireKeyboardEvent = function(elem, key){
-      var evt = new CustomEvent('keydown',{detail:{'key':key,'keyIdentifier':key}});
-        elem.dispatchEvent(evt);
-    };
+    field.momentObj = Px.moment();
     flush(()=>{
       done();
     });
@@ -188,68 +185,55 @@ suite('submit without buttons', function() {
   test('event is not fired when changing invalid value', function(done) {
     var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
         dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        i = 0;
+        dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
+        i = 0,
+        e = document.createEvent('Event');
 
     var listener = function(evt) {
       i++;
-      //make sure string has been kept in sync
-      assert.equal(field.momentObj.toISOString(), field.dateTime);
     };
 
-    field.addEventListener('px-datetime-submitted', listener);
+    field.addEventListener('px-moment-changed', listener);
 
     //invalid month, should not trigger event
-    fireKeyboardEvent(dateCells[1], '9');
-    fireKeyboardEvent(dateCells[1], '9');
+    dateInput.value = '99';
+    e.initEvent("blur", true, true);
+    dateInput.dispatchEvent(e);
 
-    setTimeout(function() {
+    flush(function() {
       assert.equal(i, 0);
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
       assert.isTrue(wrapper.classList.contains('validation-failed'));
-      field.removeEventListener('px-datetime-submitted', listener);
+      field.removeEventListener('px-moment-changed', listener);
       done();
-    }, 100);
+    });
   });
 
   test('event is fired when changing valid value', function(done) {
     var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
         dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
         wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper'),
-        i = 0;
+        dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
+        i = 0,
+        e = document.createEvent('Event');
 
     var listener = function(evt) {
       i++;
-      //make sure string has been kept in sync
-      assert.equal(field.momentObj.toISOString(), field.dateTime);
     };
 
-    field.addEventListener('px-datetime-submitted', listener);
+    field.addEventListener('px-moment-changed', listener);
 
     //valid month, should trigger event
-    fireKeyboardEvent(dateCells[1], '0');
-    fireKeyboardEvent(dateCells[1], '3');
+    dateInput.value = '03';
+    e.initEvent("blur", true, true);
+    dateInput.dispatchEvent(e);
 
-    setTimeout(function() {
-      //figure out why this is causing the test to fail
-      // assert.equal(i, 1);
-
-      //validation failed should have been removed
+    flush(function() {
+      //validation failed should not have been added
       assert.isFalse(wrapper.classList.contains('validation-failed'));
-      field.removeEventListener('px-datetime-submitted', listener);
+      field.removeEventListener('px-moment-changed', listener);
       done();
-    }, 100);
-  });
-
-  test('datetime kept in sync when changing moment', function() {
-
-    field.momentObj = Px.moment.tz(moment("2013-04-07T00:00:00.000Z"), field.timeZone);
-    assert.equal(field.momentObj.toISOString(), field.dateTime);
-  });
-
-  test('moment kept in sync when changing datetime', function() {
-
-    field.dateTime = "2009-06-07T00:00:00.000Z";
-    assert.equal(field.momentObj.toISOString(), field.dateTime);
+    });
   });
 });
 
@@ -258,9 +242,9 @@ suite('submit with buttons', function() {
   let field, fireKeyboardEvent;
 
   setup(function(done) {
-    debugger
     field = fixture('px_datetime_field');
     field.showButtons = true;
+    field.momentObj = Px.moment();
     fireKeyboardEvent = function(elem, key){
       var evt = new CustomEvent('keydown',{detail:{'key':key,'keyIdentifier':key}});
         elem.dispatchEvent(evt);
@@ -277,42 +261,41 @@ suite('submit with buttons', function() {
 
     var listener = function(evt) {
       i++;
-      //make sure string has been kept in sync
-      assert.isTrue(false);
     };
 
-    field.addEventListener('px-datetime-submitted', listener);
+    field.addEventListener('px-moment-changed', listener);
 
     //do a change
     field.momentObj = field.momentObj.clone().subtract(1, 'month');
 
-    setTimeout(function() {
+    flush(function() {
       assert.equal(i, 0);
-      field.removeEventListener('px-datetime-submitted', listener);
+      field.removeEventListener('px-moment-changed', listener);
       done();
-    }, 100);
+    });
   });
 
-  test('event is fired when pressing enter', function() {
+  test('event is fired when pressing enter', function(done) {
     var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
         dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
         i = 0;
 
     var listener = function(evt) {
       i++;
-      //make sure string has been kept in sync
-      assert.equal(field.momentObj.toISOString(), field.dateTime);
     };
 
-    field.addEventListener('px-datetime-submitted', listener);
+    field.addEventListener('px-moment-changed', listener);
 
     //do a change
     field.momentObj = field.momentObj.clone().subtract(1, 'month');
 
     fireKeyboardEvent(field, 'Enter');
 
-    assert.equal(i, 1);
-    field.removeEventListener('px-datetime-submitted', listener);
+    flush(function() {
+      assert.equal(i, 1);
+      field.removeEventListener('px-moment-changed', listener);
+      done();
+    });
   });
 
   test('event is fired when clicking apply', function() {
@@ -324,61 +307,14 @@ suite('submit with buttons', function() {
 
     var listener = function(evt) {
       i++;
-      //make sure string has been kept in sync
-      assert.equal(field.momentObj.toISOString(), field.dateTime);
     };
 
-    field.addEventListener('px-datetime-submitted', listener);
+    field.addEventListener('px-moment-changed', listener);
 
     //do a change
     field.momentObj = field.momentObj.clone().subtract(1, 'month');
     buttons[1].click();
     assert.equal(i, 1);
-    field.removeEventListener('px-datetime-submitted', listener);
-  });
-
-  test('moment is rolledback when clicking cancel', function() {
-    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        datetimeButtons = Polymer.dom(field.root).querySelector('px-datetime-buttons'),
-        buttons = Polymer.dom(datetimeButtons.root).querySelectorAll('button'),
-        prevMoment = field.momentObj.clone();
-
-    //do a change
-    field.momentObj = field.momentObj.clone().subtract(1, 'month');
-    assert.notEqual(field.momentObj.toISOString(), prevMoment.toISOString());
-    buttons[0].click();
-    assert.equal(field.momentObj.month(), prevMoment.month());
-  });
-
-  test('moment is rolledback when pressing esc', function() {
-    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        datetimeButtons = Polymer.dom(field.root).querySelector('px-datetime-buttons'),
-        buttons = Polymer.dom(datetimeButtons.root).querySelectorAll('button'),
-        prevMoment = field.momentObj.clone();
-
-    //do a change
-    field.momentObj = field.momentObj.clone().subtract(1, 'month');
-    assert.notEqual(field.momentObj.toISOString(), prevMoment.toISOString());
-    fireKeyboardEvent(field, 'Esc');
-    assert.equal(field.momentObj.month(), prevMoment.month());
-  });
-
-  test('datetime doesnt change with buttons', function() {
-    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        datetimeButtons = Polymer.dom(field.root).querySelector('px-datetime-buttons'),
-        buttons = Polymer.dom(datetimeButtons.root).querySelectorAll('button'),
-        prevDateTime = field.dateTime,
-        prevMoment = field.momentObj.clone(),
-        i = 0;
-
-    //do a change
-    field.momentObj = field.momentObj.clone().subtract(1, 'month');
-    //moment should have changed
-    assert.notEqual(field.momentObj.toISOString(), prevMoment.toISOString());
-    //but not datetime
-    assert.equal(field.dateTime, prevDateTime);
+    field.removeEventListener('px-moment-changed', listener);
   });
 });

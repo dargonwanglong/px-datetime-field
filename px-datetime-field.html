@@ -226,6 +226,7 @@ Custom property | Description
        */
       isSelected: {
         type: Boolean,
+        value: false,
         notify: true
       },
       /**
@@ -495,8 +496,8 @@ Custom property | Description
      * When buttons are showing, it will apply changes
      * will not run from `px-datetime-range-submitted`
      */
-    _onEnter: function () {
-      if (!this.preventValidation) {
+    _onEnter: function(evt) {
+      if(!this.preventValidation) {
         this._applyChanges();
       }
     },
@@ -506,7 +507,10 @@ Custom property | Description
      */
     _applyChanges: function () {
       var newMomentObj = this._validateField();
-      newMomentObj ? this.set('momentObj', newMomentObj) : '';
+      if(newMomentObj) {
+        this.set('momentObj', newMomentObj);
+        this.fire('px-moment-changed');
+      }
     },
     /**
      * Clear field or reset to previous moment objs
