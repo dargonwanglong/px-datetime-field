@@ -79,13 +79,12 @@ Custom property | Description
             </px-datetime-entry>
           </template>
         </div>
-        <template is="dom-if" if="[[_showValidation(isValid, showValidationMessage)]]">
+        <template is="dom-if" if="[[_showValidation(dateTimeIsValid, showValidationMessage)]]">
           <div class="form-field__help validation-error dt-validation-text">{{_validationErrorMessage}}</div>
         </template>
       </div>
       <template is="dom-if" if="{{showButtons}}">
         <px-datetime-buttons
-          is-submit-button-valid="[[isValid]]"
           resources="[[resources]]"
           language="[[language]]"
           formats="[[formats]]">
@@ -169,6 +168,13 @@ Custom property | Description
         value: false
       },
       /**
+       * If true validation is error if field is empty
+       */
+      required: {
+        type: Boolean,
+        value: false
+      },
+      /**
        * Reflects if the date shown is valid.
        * @private
        */
@@ -191,7 +197,7 @@ Custom property | Description
        * if showing only thetime whether the time is valid,
        * if showing both whether both are valids
        */
-      isValid: {
+      dateTimeIsValid: {
         type: Boolean,
         notify: true,
         computed: '_getIsValid(dateIsValid, timeIsValid)'
@@ -445,8 +451,8 @@ Custom property | Description
      * Range validation error has precedence over the field validation error
      * If the range is invalid then display nothing here
      */
-    _showValidation: function (isValid, showValidationMessage) {
-      return (showValidationMessage && !isValid);
+    _showValidation: function (dateTimeIsValid, showValidationMessage) {
+      return (showValidationMessage && !dateTimeIsValid);
     },
     /*
      * Focuses select to the next cell when an icon is clicked
@@ -465,7 +471,8 @@ Custom property | Description
      */
     _momentChanged: function (evt) {
       if (!this.showButtons && !this.preventValidation) {
-        this._applyChanges();
+        var origin = "_momentChanged"
+        this._applyChanges(origin);
       }
     },
     /**
@@ -498,6 +505,7 @@ Custom property | Description
      */
     _onEnter: function(evt) {
       if(!this.preventValidation) {
+        this.blur();
         this._applyChanges();
       }
     },
@@ -505,9 +513,14 @@ Custom property | Description
      * Validate field
      * If valid set the momentObj
      */
-    _applyChanges: function () {
-      var newMomentObj = this._validateField();
-      if(newMomentObj) {
+
+     _applyChanges: function (origin) {
+      var newMomentObj = this._validateField(origin);
+      if(newMomentObj === "FieldBlank"){
+        this.set('momentObj', undefined);
+        this.fire('px-moment-changed');
+      }
+      else if(newMomentObj) {
         this.set('momentObj', newMomentObj);
         this.fire('px-moment-changed');
       }
@@ -525,8 +538,8 @@ Custom property | Description
       else {
         this.$$('#date').reset();
         this.$$('#time').reset();
-        this._validateField();
       }
+      this._validateField();
       this.blur();
     }
   });
