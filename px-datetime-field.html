@@ -51,8 +51,8 @@ Custom property | Description
               show-time-zone="{{_showTimeZoneInDate(hideTime, showTimeZone)}}"
               block-future-dates="{{blockFutureDates}}"
               block-past-dates="{{blockPastDates}}"
-              min="{{min}}"
-              max="{{max}}"
+              min-date="{{minDate}}"
+              maxDate="{{maxDate}}"
               resources="[[resources]]"
               language="[[language]]"
               formats="[[formats]]">
@@ -71,8 +71,8 @@ Custom property | Description
               is-selected="{{isSelected}}"
               block-future-dates="{{blockFutureDates}}"
               block-past-dates="{{blockPastDates}}"
-              min="{{min}}"
-              max="{{max}}"
+              min-date="{{minDate}}"
+              maxDate="{{maxDate}}"
               resources="[[resources]]"
               language="[[language]]"
               formats="[[formats]]">
@@ -513,7 +513,6 @@ Custom property | Description
      * Validate field
      * If valid set the momentObj
      */
-
      _applyChanges: function (origin) {
       var newMomentObj = this._validateField(origin);
       if(newMomentObj === "FieldBlank"){
