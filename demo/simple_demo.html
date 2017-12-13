@@ -39,14 +39,16 @@
     </template>
   </dom-bind>
   <script>
-    var template = document.querySelector('template[is=dom-bind]');
-    template.momentObj = Px.moment().subtract(7, 'days');
-    template.maxDate = Px.moment().subtract(9, 'days');
+    document.addEventListener('WebComponentsReady', function() {
+      var template = document.querySelector('template[is=dom-bind]');
+      template.momentObj = Px.moment().subtract(7, 'days');
+      template.maxDate = Px.moment().subtract(9, 'days');
 
-    // Support hybrid mode
-    var templatev1 = document.querySelector('dom-bind');
-    templatev1.momentObj = template.momentObj;
-    templatev1.maxDate = template.maxDate;
+      // Support hybrid mode
+      var templatev1 = document.querySelector('dom-bind');
+      templatev1.momentObj = template.momentObj;
+      templatev1.maxDate = template.maxDate;
+    });
   </script>
 </body>
 
