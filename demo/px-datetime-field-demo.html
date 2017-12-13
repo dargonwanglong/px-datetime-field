@@ -64,8 +64,8 @@
             show-time-zone="{{props.showTimeZone.value}}"
             hide-icon="{{props.hideIcon.value}}"
             time-zone="{{props.timeZone.value}}"
-            min="{{props.min.value}}"
-            max="{{props.max.value}}">
+            min-date="{{props.minDate.value}}"
+            max-date="{{props.maxDate.value}}">
         </px-datetime-field>
       </px-demo-component>
       <!-- END Component ------------------------------------------------------>
@@ -261,13 +261,13 @@
         inputChoices: ['none', 'dropdown', 'extendedDropdown', 'text', 'abbreviatedText']
       },
 
-      min: {
+      minDate: {
         type: Object,
         defaultValue: Px.moment().subtract(1, 'year'),
         inputType: 'code:JSON'
       },
 
-      max: {
+      maxDate: {
         type: Object,
         defaultValue: Px.moment().add(1, 'year'),
         inputType: 'code:JSON'

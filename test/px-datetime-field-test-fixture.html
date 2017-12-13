@@ -6,6 +6,7 @@
     <title>Web Component Test : Fixture for px-datetime-input</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>
     <link rel="import" href="../px-datetime-field.html" />
     <link rel="import" href="../../px-theme/px-theme-styles.html">
     <script src="px-datetime-field-custom-tests.js"></script>
@@ -19,6 +20,31 @@
     <test-fixture id="px_datetime_field">
       <template>
         <px-datetime-field></px-datetime-field>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="px_datetime_field required">
+      <template>
+        <px-datetime-field
+          required>
+        </px-datetime-field>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="px_datetime_field required buttons">
+      <template>
+        <px-datetime-field
+          required
+          show-buttons>
+        </px-datetime-field>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="px_datetime_field buttons">
+      <template>
+        <px-datetime-field
+          show-buttons>
+        </px-datetime-field>
       </template>
     </test-fixture>
 

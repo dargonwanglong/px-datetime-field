@@ -22,15 +22,8 @@
         block-future-dates
         time-format="HH:mm:ss"
         date-format="MM/DD/YY"
-        show-time-zone="dropdown">
-      </px-datetime-field>
-      </br>
-      <!-- <px-datetime-field
-        block-future-dates
-        time-format="HH:mm:ss"
-        date-format="MM/DD/YY"
         show-time-zone="dropdown"
-        show-buttons>
+        required>
       </px-datetime-field>
       </br>
       <px-datetime-field
@@ -39,18 +32,21 @@
         date-format="MM/DD/YY"
         show-time-zone="dropdown"
         moment-obj="{{momentObj}}"
+        max-date="{{maxDate}}"
         show-buttons>
-      </px-datetime-field> -->
+      </px-datetime-field>
     </div>
     </template>
   </dom-bind>
   <script>
     var template = document.querySelector('template[is=dom-bind]');
     template.momentObj = Px.moment().subtract(7, 'days');
+    template.maxDate = Px.moment().subtract(9, 'days');
 
     // Support hybrid mode
     var templatev1 = document.querySelector('dom-bind');
     templatev1.momentObj = template.momentObj;
+    templatev1.maxDate = template.maxDate;
   </script>
 </body>
 

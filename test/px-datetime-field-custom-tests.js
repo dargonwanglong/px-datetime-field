@@ -1,5 +1,4 @@
 suite('Navigation', function() {
-
   let field, fireKeyboardEvent;
 
   setup(function(done) {
@@ -170,29 +169,31 @@ suite('Navigation', function() {
   });
 });
 
-suite('submit without buttons', function() {
 
-  let field;
+/**
+ * SUBMIT WITHOUT BUTTONS
+ */
+suite('submit without buttons', function() {
+  let field, entries, dateCells, dateInput, wrapper;
 
   setup(function(done) {
     field = fixture('px_datetime_field');
     field.momentObj = Px.moment();
+
     flush(()=>{
+      entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry');
+      dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
+      dateInput = Polymer.dom(dateCells[1].root).querySelector('input');
+      wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
       done();
     });
   });
 
-  test('event is not fired when changing invalid value', function(done) {
-    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
-        i = 0,
+  test('event is not fired when changing invalid value on blur', function(done) {
+    var i = 0,
         e = document.createEvent('Event');
 
-    var listener = function(evt) {
-      i++;
-    };
-
+    var listener = function(evt) { i++; };
     field.addEventListener('px-moment-changed', listener);
 
     //invalid month, should not trigger event
@@ -203,24 +204,17 @@ suite('submit without buttons', function() {
     flush(function() {
       assert.equal(i, 0);
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
-      assert.isTrue(wrapper.classList.contains('validation-failed'));
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       field.removeEventListener('px-moment-changed', listener);
       done();
     });
   });
 
-  test('event is fired when changing valid value', function(done) {
-    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper'),
-        dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
-        i = 0,
+  test('event is fired when changing valid value on blur', function(done) {
+    var i = 0,
         e = document.createEvent('Event');
 
-    var listener = function(evt) {
-      i++;
-    };
-
+    var listener = function(evt) { i++; };
     field.addEventListener('px-moment-changed', listener);
 
     //valid month, should trigger event
@@ -229,97 +223,341 @@ suite('submit without buttons', function() {
     dateInput.dispatchEvent(e);
 
     flush(function() {
-      //validation failed should not have been added
-      assert.isFalse(wrapper.classList.contains('validation-failed'));
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      field.removeEventListener('px-moment-changed', listener);
+      done();
+    });
+  });
+
+  test('event is not fired when changing invalid value on Enter', function(done) {
+    var i = 0,
+        e = document.createEvent('Event');
+
+    var listener = function(evt) { i++; };
+    field.addEventListener('px-moment-changed', listener);
+
+    //invalid month, should not trigger event
+    dateInput.value = '99';
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      assert.equal(i, 0);
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      field.removeEventListener('px-moment-changed', listener);
+      done();
+    });
+  });
+
+  test('event is fired when changing valid value on Enter', function(done) {
+    var i = 0,
+        e = document.createEvent('Event');
+
+    var listener = function(evt) { i++; };
+    field.addEventListener('px-moment-changed', listener);
+
+    //valid month, should trigger event
+    dateInput.value = '03';
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       field.removeEventListener('px-moment-changed', listener);
       done();
     });
   });
 });
 
+
+/**
+ * SUBMIT WITH BUTTONS
+ */
 suite('submit with buttons', function() {
 
-  let field, fireKeyboardEvent;
+  let fieldBtn, fieldBtnBlank, fieldBtnBlankRequired, entries, dateCells, dateInput, wrapper;
 
   setup(function(done) {
-    field = fixture('px_datetime_field');
-    field.showButtons = true;
-    field.momentObj = Px.moment();
-    fireKeyboardEvent = function(elem, key){
-      var evt = new CustomEvent('keydown',{detail:{'key':key,'keyIdentifier':key}});
-        elem.dispatchEvent(evt);
-    };
+    fieldBtn = fixture('px_datetime_field required buttons');
+    fieldBtn.momentObj = Px.moment("2017-12-01T00:00:00.000");
+
     flush(()=>{
+      entries = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-entry');
+      dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
+      dateInput = Polymer.dom(dateCells[1].root).querySelector('input');
+      wrapper = Polymer.dom(fieldBtn.root).querySelector('#fieldWrapper');
       done();
     });
   });
 
-  test('event is not fired when changing valid value + buttons', function(done) {
-    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        i = 0;
+  test('event is not fired when changing valid value on blur', function(done) {
+    var i = 0,
+        e = document.createEvent('Event');
 
-    var listener = function(evt) {
-      i++;
-    };
+    var listener = function(evt) { i++; };
+    fieldBtn.addEventListener('px-moment-changed', listener);
 
-    field.addEventListener('px-moment-changed', listener);
-
-    //do a change
-    field.momentObj = field.momentObj.clone().subtract(1, 'month');
+    dateInput.value = "11";
+    e.initEvent("blur", true, true);
+    dateInput.dispatchEvent(e);
 
     flush(function() {
       assert.equal(i, 0);
-      field.removeEventListener('px-moment-changed', listener);
+      fieldBtn.removeEventListener('px-moment-changed', listener);
       done();
     });
   });
 
   test('event is fired when pressing enter', function(done) {
-    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        i = 0;
+    var i = 0;
 
-    var listener = function(evt) {
-      i++;
-    };
-
-    field.addEventListener('px-moment-changed', listener);
+    var listener = function(evt) { i++; };
+    fieldBtn.addEventListener('px-moment-changed', listener);
 
     //do a change
-    field.momentObj = field.momentObj.clone().subtract(1, 'month');
-
-    fireKeyboardEvent(field, 'Enter');
+    dateInput.value = "09";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
 
     flush(function() {
       assert.equal(i, 1);
-      field.removeEventListener('px-moment-changed', listener);
+      fieldBtn.removeEventListener('px-moment-changed', listener);
       done();
     });
   });
 
-  test('event is fired when clicking apply', function() {
-    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        datetimeButtons = Polymer.dom(field.root).querySelector('px-datetime-buttons'),
-        buttons = Polymer.dom(datetimeButtons.root).querySelectorAll('button'),
+  test('event is fired when clicking apply', function(done) {
+    var buttons = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-buttons'),
+        applyBtn = Polymer.dom(buttons[0].root).querySelectorAll('#submitButton'),
         i = 0;
 
-    var listener = function(evt) {
-      i++;
-    };
+    var listener = function(evt) { i++; };
+    fieldBtn.addEventListener('px-moment-changed', listener);
 
-    field.addEventListener('px-moment-changed', listener);
+    dateInput.value = "11";
+    applyBtn[0].click();
 
-    //do a change
-    field.momentObj = field.momentObj.clone().subtract(1, 'month');
-    buttons[1].click();
-    assert.equal(i, 1);
-    field.removeEventListener('px-moment-changed', listener);
+    flush(()=>{
+      assert.equal(i, 1);
+      fieldBtn.removeEventListener('px-moment-changed', listener);
+      done();
+    });
+  });
+
+  test('Cancel reverts to last moment obj', function(done) {
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
+        buttonsElem = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0Input[0].value = "2011";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    buttons[0].click();
+
+    flush(function() {
+      assert.equal(cell0Input[0].value, "2017");
+      assert.equal(cell1Input[0].value, "12");
+      assert.equal(cell2Input[0].value, "01");
+      var wrapper = Polymer.dom(fieldBtn.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Esc reverts to last moment obj', function(done) {
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+
+    cell0Input[0].value = "2011";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 27, [], 'Escape');
+
+    flush(function() {
+      assert.equal(cell0Input[0].value, "2017");
+      assert.equal(cell1Input[0].value, "12");
+      assert.equal(cell2Input[0].value, "01");
+      var wrapper = Polymer.dom(fieldBtn.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Cancel clears validation', function(done) {
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
+        buttonsElem = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+        wrapper = Polymer.dom(fieldBtn.root).querySelector('#fieldWrapper');
+
+    cell0Input[0].value = "2011";
+    cell1Input[0].value = "99";
+    cell2Input[0].value = "99";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      buttons[0].click();
+
+      flush(function() {
+        assert.equal(cell0Input[0].value, "2017");
+        assert.equal(cell1Input[0].value, "12");
+        assert.equal(cell2Input[0].value, "01");
+        assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+        done();
+      });
+    });
+  });
+
+  test('Esc clears validation', function(done) {
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
+        buttonsElem = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-buttons');
+
+    cell0Input[0].value = "2011";
+    cell1Input[0].value = "99";
+    cell2Input[0].value = "99";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      MockInteractions.pressAndReleaseKeyOn(dateCells[1], 27, [], 'Escape');
+
+      flush(function() {
+        assert.equal(cell0Input[0].value, "2017");
+        assert.equal(cell1Input[0].value, "12");
+        assert.equal(cell2Input[0].value, "01");
+        assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+        done();
+      });
+    });
   });
 });
 
-suite('Blocking of dates/times', function() {
+/**
+ * SUBMIT WITH BUTTONS
+ */
+suite('submit with buttons Blank', function() {
+
+  let fieldBtnBlank, entries, dateCells, cell0Input, cell1Input, cell2Input;
+  let fieldBtnBlankRqd, entriesRqd, dateCellsRqd, cell0InputRqd, cell1InputRqd, cell2InputRqd;
+
+  setup(function(done) {
+    fieldBtnBlank = fixture('px_datetime_field buttons');
+    fieldBtnBlankRqd = fixture('px_datetime_field required buttons');
+
+    flush(()=>{
+      entries = Polymer.dom(fieldBtnBlank.root).querySelectorAll('px-datetime-entry'),
+      dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
+      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+
+      entriesRqd = Polymer.dom(fieldBtnBlankRqd.root).querySelectorAll('px-datetime-entry'),
+      dateCellsRqd = Polymer.dom(entriesRqd[0].root).querySelectorAll('px-datetime-entry-cell'),
+      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('#dtEntry'),
+      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('#dtEntry'),
+      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('#dtEntry');
+
+      done();
+    });
+  });
+
+  test('Field is blank if no moment is set', function(done) {
+    assert.equal(cell0Input[0].value, "");
+    assert.equal(cell1Input[0].value, "");
+    assert.equal(cell2Input[0].value, "");
+    done();
+  });
+
+  test('Cancel reverts to empty clear, valid if not required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlank.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0Input[0].value = "2011";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    buttons[0].click();
+
+    flush(function() {
+      assert.equal(cell0Input[0].value, "");
+      assert.equal(cell1Input[0].value, "");
+      assert.equal(cell2Input[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlank.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Cancel reverts to empty clear, invalid if required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankRqd.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0InputRqd[0].value = "2011";
+    cell1InputRqd[0].value = "11";
+    cell2InputRqd[0].value = "11";
+    buttons[0].click();
+
+    flush(function() {
+      assert.equal(cell0InputRqd[0].value, "");
+      assert.equal(cell1InputRqd[0].value, "");
+      assert.equal(cell2InputRqd[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankRqd.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Esc reverts to empty clear, valid if not required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlank.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0Input[0].value = "2011";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 27, [], 'Escape');
+
+    flush(function() {
+      assert.equal(cell0Input[0].value, "");
+      assert.equal(cell1Input[0].value, "");
+      assert.equal(cell2Input[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlank.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Esc reverts to empty clear, invalid if required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankRqd.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0InputRqd[0].value = "2011";
+    cell1InputRqd[0].value = "11";
+    cell2InputRqd[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCellsRqd[1], 27, [], 'Escape');
+
+    flush(function() {
+      assert.equal(cell0InputRqd[0].value, "");
+      assert.equal(cell1InputRqd[0].value, "");
+      assert.equal(cell2InputRqd[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankRqd.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+});
+
+
+
+
+/**
+ * BLOCKING OF DATES/TIMES
+ */
+suite('Blocking of dates/times & minDate/maxDate', function() {
   let field;
 
   setup(function(done) {
@@ -330,114 +568,258 @@ suite('Blocking of dates/times', function() {
     });
   });
 
-  test('blocking of future dates', function() {
+  test('blocking of future dates', function(done) {
     var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
         dateCells = Polymer.dom(entries[1].root).querySelectorAll('px-datetime-entry-cell'),
         hourInput = Polymer.dom(dateCells[0].root).querySelector('input'),
         i = 0,
         e = document.createEvent('Event');
 
-    var listener = function(evt) {
-      i++;
-    };
-
+    var listener = function(evt) { i++; };
     field.addEventListener('px-moment-changed', listener);
 
     field.blockFutureDates = true;
-    //invalid datetime, should not trigger event
     hourInput.value = Px.moment.tz(hourInput.value, 'h', field.timeZone).add(1, 'hour').hour();
-    e.initEvent("blur", true, true);
-    hourInput.dispatchEvent(e);
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
 
     flush(function() {
-      assert.equal(i, 0);
+      assert.equal(i, 0); //invalid datetime, should not trigger event
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
-      assert.isTrue(wrapper.classList.contains('validation-failed'));
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       field.removeEventListener('px-moment-changed', listener);
       done();
     });
   });
 
-  test('blocking of past dates', function() {
+  test('blocking of past dates', function(done) {
     var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
         dateCells = Polymer.dom(entries[1].root).querySelectorAll('px-datetime-entry-cell'),
         hourInput = Polymer.dom(dateCells[0].root).querySelector('input'),
         i = 0,
         e = document.createEvent('Event');
 
-    var listener = function(evt) {
-      i++;
-    };
-
+    var listener = function(evt) { i++; };
     field.addEventListener('px-moment-changed', listener);
 
     field.blockPastDates = true;
-    //invalid datetime, should not trigger event
     hourInput.value = Px.moment.tz(hourInput.value, 'h', field.timeZone).subtract(1, 'hour').hour();
-    e.initEvent("blur", true, true);
-    hourInput.dispatchEvent(e);
+
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
 
     flush(function() {
-      assert.equal(i, 0);
+      assert.equal(i, 0); //invalid datetime, should not trigger event
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
-      assert.isTrue(wrapper.classList.contains('validation-failed'));
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       field.removeEventListener('px-moment-changed', listener);
       done();
     });
   });
 
-  test('blocking of dates after max', function() {
+  test('blocking of dates after maxDate', function(done) {
+    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
+    dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
+    dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
+    i = 0,
+    e = document.createEvent('Event');
+
+    var listener = function(evt) { i++; };
+    field.addEventListener('px-moment-changed', listener);
+
+    field.maxDate = field.momentObj.clone().subtract(1, 'hour');
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      assert.equal(i, 0); //invalid datetime, should not trigger event
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      field.removeEventListener('px-moment-changed', listener);
+      done();
+    });
+  });
+
+  test('blocking of dates before minDate', function(done) {
     var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
         dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
         dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
         i = 0,
         e = document.createEvent('Event');
 
-    var listener = function(evt) {
-      i++;
-    };
-
+    var listener = function(evt) { i++; };
     field.addEventListener('px-moment-changed', listener);
 
-    field.max = field.momentObj.clone().subtract(1, 'hour');
-    //invalid datetime, should not trigger event
-    e.initEvent("blur", true, true);
-    dateInput.dispatchEvent(e);
+    field.minDate = field.momentObj.clone().add(1, 'hour');
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
 
     flush(function() {
-      assert.equal(i, 0);
+      assert.equal(i, 0); //invalid datetime, should not trigger event
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
-      assert.isTrue(wrapper.classList.contains('validation-failed'));
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       field.removeEventListener('px-moment-changed', listener);
       done();
     });
   });
+});
 
-  test('blocking of dates before min', function() {
+
+/**
+ * REQUIRED
+ */
+suite('submit when required', function() {
+  let field;
+
+  setup(function(done) {
+    field = fixture('px_datetime_field required');
+    fieldBtn = fixture('px_datetime_field required buttons');
+    flush(()=>{
+      done();
+    });
+  });
+
+  test('validation incomplete with empty field on enter', function(done) {
     var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry'),
-        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-        dateInput = Polymer.dom(dateCells[1].root).querySelector('input'),
-        i = 0,
-        e = document.createEvent('Event');
+        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
 
-    var listener = function(evt) {
-      i++;
-    };
-
-    field.addEventListener('px-moment-changed', listener);
-
-    field.min = field.momentObj.clone().add(1, 'hour');
-    //invalid datetime, should not trigger event
-    e.initEvent("blur", true, true);
-    dateInput.dispatchEvent(e);
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
 
     flush(function() {
-      assert.equal(i, 0);
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
-      assert.isTrue(wrapper.classList.contains('validation-failed'));
-      field.removeEventListener('px-moment-changed', listener);
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       done();
     });
   });
 
+  test('validation incomplete with empty field on enter with buttons', function(done) {
+    var entries = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
+
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldBtn.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('validation incomplete with empty field on apply with buttons', function(done) {
+    var buttons = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-buttons'),
+        applyBtn = Polymer.dom(buttons[0].root).querySelectorAll('#submitButton');
+
+    applyBtn[0].click();
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldBtn.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+});
+
+
+/**
+ * INVAILD
+ */
+suite('Invalid', function() {
+  let field, entries, dateCells;
+
+  setup(function(done) {
+    field = fixture('px_datetime_field');
+    flush(()=>{
+      entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry');
+      dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
+      timeCells = Polymer.dom(entries[1].root).querySelectorAll('px-datetime-entry-cell');
+      done();
+    });
+  });
+
+  test('Invalid if dateEntry is filled out but timeEntry is blank', function(done) {
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry');
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+
+    cell0Input[0].value = "2000";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Invalid if timeEntry is filled out but dateEntry is blank', function(done) {
+    var cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('#dtEntry'),
+        cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('#dtEntry');
+        cell5Input = Polymer.dom(timeCells[2].root).querySelectorAll('#dtEntry');
+
+    cell3Input[0].value = "11";
+    cell4Input[0].value = "11";
+    cell5Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(timeCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Invalid if one cell has a value and the rest are blank', function(done) {
+    var cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry');
+
+    cell1Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Invalid if one cell is blank and the rest are filled out', function(done) {
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
+        cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('#dtEntry'),
+        cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('#dtEntry');
+
+    cell0Input[0].value = "11";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    cell3Input[0].value = "11";
+    cell4Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(timeCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Valid if all cells have a value', function(done) {
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
+        cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('#dtEntry'),
+        cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('#dtEntry');
+        cell5Input = Polymer.dom(timeCells[2].root).querySelectorAll('#dtEntry');
+
+    cell0Input[0].value = "11";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    cell3Input[0].value = "11";
+    cell4Input[0].value = "11";
+    cell5Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(timeCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
 });
