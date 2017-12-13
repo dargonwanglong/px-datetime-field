@@ -44,7 +44,6 @@ Custom property | Description
               date-or-time="Date"
               moment-format="{{dateFormat}}"
               moment-obj="{{momentObj}}"
-              is-valid="{{dateIsValid}}"
               is-selected="{{isSelected}}"
               hide-icon="{{hideIcon}}"
               time-zone="{{timeZone}}"
@@ -65,7 +64,6 @@ Custom property | Description
               moment-format="{{timeFormat}}"
               show-time-zone="{{showTimeZone}}"
               moment-obj="{{momentObj}}"
-              is-valid="{{timeIsValid}}"
               hide-icon="{{hideIcon}}"
               time-zone="{{timeZone}}"
               is-selected="{{isSelected}}"
@@ -236,10 +234,10 @@ Custom property | Description
         notify: true
       },
       /**
-       * Used to prevent this elements apply, cancel, enter, and esc from running
+       * Used to prevent this element's apply from changing the moment objects
        * Used by `px-datetime-range-field`
        */
-      preventValidation: {
+      preventApply: {
         type: Boolean,
         value: false
       },
@@ -267,7 +265,8 @@ Custom property | Description
       'px-validation-message' : '_handleValidationMessage',
       'px-dropdown-focused': '_handleDropdownFocus',
       'px-dropdown-blurred': '_handleDropdownBlur',
-      'px-moment-valid': '_momentChanged'
+      'px-moment-valid': '_handleValidMoment',
+      'px-moment-invalid': '_handleInvalidMoment'
     },
 
     /*
@@ -469,10 +468,29 @@ Custom property | Description
      * Observer on the momentObj. If valid and buttons are hidden apply changes
      * will not run from `px-datetime-range-submitted`
      */
-    _momentChanged: function (evt) {
-      if (!this.showButtons && !this.preventValidation) {
+    _handleValidMoment: function (evt) {
+      if(evt.detail && evt.detail.element && evt.detail.element.id === 'date') {
+        this.dateIsValid = true;
+        // this.toggleClass('validation-error', false, this.$.wrapper);
+      }
+      if(evt.detail && evt.detail.element && evt.detail.element.id === 'time') {
+        this.timeIsValid = true;
+      }
+      if (!this.showButtons) {
         var origin = "_momentChanged"
         this._applyChanges(origin);
+      }
+    },
+    /**
+     * Listener for the cell validation failure event.
+     */
+     _handleInvalidMoment: function(evt) {
+      this.isValid = false;
+      if(evt.detail && evt.detail.element && evt.detail.element.id === 'date') {
+        this.dateIsValid = false;
+      }
+      if(evt.detail && evt.detail.element && evt.detail.element.id === 'time') {
+        this.timeIsValid = false;
       }
     },
     /**
@@ -481,13 +499,11 @@ Custom property | Description
      * will not run from `px-datetime-range-submitted`
      */
     _dateTimeButtons: function (evt) {
-      if (!this.preventValidation) {
-        if (evt.detail.action) {
-          this._applyChanges();
-        }
-        else {
-          this._cancelChanges();
-        }
+      if (evt.detail.action) {
+        this._applyChanges();
+      }
+      else {
+        this._cancelChanges();
       }
     },
     /**
@@ -495,19 +511,15 @@ Custom property | Description
      * will not run from `px-datetime-range-submitted`
      */
     _onEsc: function () {
-      if (!this.preventValidation) {
-        this._cancelChanges();
-      }
+      this._cancelChanges();
     },
     /**
      * When buttons are showing, it will apply changes
      * will not run from `px-datetime-range-submitted`
      */
     _onEnter: function(evt) {
-      if(!this.preventValidation) {
-        this.blur();
-        this._applyChanges();
-      }
+      this.blur();
+      this._applyChanges();
     },
     /**
      * Validate field
@@ -515,13 +527,18 @@ Custom property | Description
      */
      _applyChanges: function (origin) {
       var newMomentObj = this._validateField(origin);
-      if(newMomentObj === "FieldBlank"){
-        this.set('momentObj', undefined);
-        this.fire('px-moment-changed');
+      if(this.preventApply && newMomentObj) {
+        this.fire('px-field-valid', {"momentObj": newMomentObj});
       }
-      else if(newMomentObj) {
-        this.set('momentObj', newMomentObj);
-        this.fire('px-moment-changed');
+      else {
+        if(newMomentObj === "FieldBlank"){
+          this.set('momentObj', undefined);
+          this.fire('px-moment-changed');
+        }
+        else if(newMomentObj) {
+          this.set('momentObj', newMomentObj);
+          this.fire('px-moment-changed');
+        }
       }
     },
     /**
