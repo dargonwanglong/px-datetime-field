@@ -189,9 +189,9 @@ Custom property | Description
         value: true
       },
       /**
-       * If showing only the date whether the date is valid,
-       * if showing only thetime whether the time is valid,
-       * if showing both whether both are valids
+       * If showing only the date, whether the date is valid,
+       * if showing only the time, whether the time is valid,
+       * if showing both, whether both are valid.
        */
       fieldIsValid: {
         type: Boolean,
@@ -371,17 +371,17 @@ Custom property | Description
     },
     /**
      * This is a quick fix.
-     * Inorder to make dt-field look like an input field we have to overwrite some css on #fieldWrapper.
+     * In order to make dt-field look like an input field we have to overwrite some css on #fieldWrapper.
      *
      * There is a hover state on #fieldWrapper and px-dropdown is a child of #fieldWrapper;
      * therefore, when dropdown is opened the hover to #fieldWrapper is extended.
      * This causes a flash of gray when the user selects a timezone with the mouse.
-     * Inorder to prevent this flash we need to overwrite the hover state by added
+     * In order to prevent this flash we need to overwrite the hover state by added
      * `.dt-text-field--hover-fix` to #fieldWrapper.
      *
      * The true issue is that we can't listen to px-dropdown.opened because there is a timing issue
-     * when px-dropdown.opened is set to false vs when the dropdown is not longer visable. This causes the flash.
-     * We couldn't find anyother events that don't have a timing issue.
+     * when px-dropdown.opened is set to false vs when the dropdown is not longer visible. This causes the flash.
+     * We couldn't find any other events that don't have a timing issue.
      */
     _handleHoverFix: function () {
       this.set('_dropdownHoverFix', true);
@@ -390,7 +390,7 @@ Custom property | Description
       }, 1000);
     },
     /**
-     * dateIsValid, timeIsValid, & _forcedFailedClass - determine weither to show the validation error classes
+     * dateIsValid, timeIsValid, & _forcedFailedClass - determine whether to show the validation error classes
      * isSelected - sets the styles when an entryCell is selected
      * _dropdownActive - overwrites the styles when the dropdown is focused
      * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
@@ -410,7 +410,7 @@ Custom property | Description
       return classList;
     },
     /**
-     * Addes a margin right if both entries are showing
+     * Adds a right margin if both entries are showing
      */
     _getEntryDateClass: function (hideDate, hideTime, hideIcon) {
       var classList = "";
