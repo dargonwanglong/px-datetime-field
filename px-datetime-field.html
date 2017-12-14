@@ -36,7 +36,7 @@ Custom property | Description
 
     <div class$="{{_getWrapClass(allowWrap)}} flex">
       <div class$="{{_getButtonMarginClass(showButtons, allowWrap)}}">
-        <div id="fieldWrapper" class$="{{_getWrapperClass(fieldIsInvalid, dateIsInvalid, timeIsInvalid, isSelected, _dropdownActive, _dropdownHoverFix)}}">
+        <div id="fieldWrapper" class$="{{_getWrapperClass(fieldIsValid, dateIsValid, timeIsValid, isSelected, _dropdownActive, _dropdownHoverFix)}}">
           <template is="dom-if" if="[[!hideDate]]">
             <px-datetime-entry
               id="date"
@@ -77,7 +77,7 @@ Custom property | Description
             </px-datetime-entry>
           </template>
         </div>
-        <template is="dom-if" if="[[_showValidation(fieldIsInvalid, dateIsInvalid, timeIsInvalid, hideValidationMessage)]]">
+        <template is="dom-if" if="[[_showValidation(fieldIsValid, dateIsValid, timeIsValid, hideValidationMessage)]]">
           <div class="form-field__help validation-error dt-validation-text">{{_validationErrorMessage}}</div>
         </template>
       </div>
@@ -176,26 +176,26 @@ Custom property | Description
        * Reflects if the date shown is valid.
        * @private
        */
-      dateIsInvalid: {
+      dateIsValid: {
         type: Boolean,
-        value: false
+        value: true
       },
       /**
        * Reflects if the time shown is valid.
        * @private
        */
-      timeIsInvalid: {
+      timeIsValid: {
         type: Boolean,
-        value: false
+        value: true
       },
       /**
        * If showing only the date whether the date is valid,
        * if showing only thetime whether the time is valid,
        * if showing both whether both are valids
        */
-      fieldIsInvalid: {
+      fieldIsValid: {
         type: Boolean,
-        value: false
+        value: true
       },
       /**
        * Determines whether to display the validation message or not.
@@ -390,15 +390,15 @@ Custom property | Description
       }, 1000);
     },
     /**
-     * dateIsInvalid, timeIsInvalid, & _forcedFailedClass - determine weither to show the validation error classes
+     * dateIsValid, timeIsValid, & _forcedFailedClass - determine weither to show the validation error classes
      * isSelected - sets the styles when an entryCell is selected
      * _dropdownActive - overwrites the styles when the dropdown is focused
      * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
      */
-    _getWrapperClass: function (fieldIsInvalid, dateIsInvalid, timeIsInvalid, isSelected, _dropdownActive, _dropdownHoverFix) {
+    _getWrapperClass: function (fieldIsValid, dateIsValid, timeIsValid, isSelected, _dropdownActive, _dropdownHoverFix) {
       var classList = "flex flex--middle dt-text-field ";
 
-      if (dateIsInvalid === true || timeIsInvalid === true || fieldIsInvalid === true) {
+      if (dateIsValid === false || timeIsValid === false || fieldIsValid === false) {
         classList += "validation-error validation-failed ";
       } else if (isSelected) {
         classList += "dt-is-selected ";
@@ -432,11 +432,11 @@ Custom property | Description
      * Range validation error has precedence over the field validation error
      * If the range is invalid then display nothing here
      */
-    _showValidation: function (fieldIsInvalid, dateIsInvalid, timeIsInvalid, hideValidationMessage) {
+    _showValidation: function (fieldIsValid, dateIsValid, timeIsValid, hideValidationMessage) {
       var returnThis;
-      if (fieldIsInvalid || dateIsInvalid || timeIsInvalid) { returnThis = true }
-      else { returnThis = false};
-      if (hideValidationMessage) { returnThis = false};
+      if (fieldIsValid && dateIsValid && timeIsValid) { returnThis = false }
+      else { returnThis = true};
+      if (hideValidationMessage) { returnThis = true};
       return returnThis;
     },
     /*
@@ -456,10 +456,10 @@ Custom property | Description
      */
     _handleValidMoment: function (evt) {
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'date') {
-        this.dateIsInvalid = false;
+        this.dateIsValid = true;
       }
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'time') {
-        this.timeIsInvalid = false;
+        this.timeIsValid = true;
       }
       if (!this.showButtons) {
         var origin = "_momentChanged"
@@ -470,12 +470,12 @@ Custom property | Description
      * Listener for the cell validation failure event.
      */
     _handleInvalidMoment: function(evt) {
-      this.IsInvalid = true;
+      this.IsValid = false;
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'date') {
-        this.dateIsInvalid = true;
+        this.dateIsValid = false;
       }
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'time') {
-        this.timeIsInvalid = true;
+        this.timeIsValid = false;
       }
     },
     /**
