@@ -36,7 +36,7 @@ Custom property | Description
 
     <div class$="{{_getWrapClass(allowWrap)}} flex">
       <div class$="{{_getButtonMarginClass(showButtons, allowWrap)}}">
-        <div id="fieldWrapper" class$="{{_getWrapperClass(dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix)}}">
+        <div id="fieldWrapper" class$="{{_getWrapperClass(fieldIsInvalid, dateIsInvalid, timeIsInvalid, isSelected, _dropdownActive, _dropdownHoverFix)}}">
           <template is="dom-if" if="[[!hideDate]]">
             <px-datetime-entry
               id="date"
@@ -77,7 +77,7 @@ Custom property | Description
             </px-datetime-entry>
           </template>
         </div>
-        <template is="dom-if" if="[[_showValidation(dateTimeIsValid, showValidationMessage)]]">
+        <template is="dom-if" if="[[_showValidation(fieldIsInvalid, dateIsInvalid, timeIsInvalid, hideValidationMessage)]]">
           <div class="form-field__help validation-error dt-validation-text">{{_validationErrorMessage}}</div>
         </template>
       </div>
@@ -176,37 +176,34 @@ Custom property | Description
        * Reflects if the date shown is valid.
        * @private
        */
-      dateIsValid: {
+      dateIsInvalid: {
         type: Boolean,
-        value: true,
-        notify: true
+        value: false
       },
       /**
        * Reflects if the time shown is valid.
        * @private
        */
-      timeIsValid: {
+      timeIsInvalid: {
         type: Boolean,
-        value: true,
-        notify: true
+        value: false
       },
       /**
        * If showing only the date whether the date is valid,
        * if showing only thetime whether the time is valid,
        * if showing both whether both are valids
        */
-      dateTimeIsValid: {
+      fieldIsInvalid: {
         type: Boolean,
-        notify: true,
-        computed: '_getIsValid(dateIsValid, timeIsValid)'
+        value: false
       },
       /**
        * Determines whether to display the validation message or not.
        * Use mostly by datetime-range-field.
        */
-      showValidationMessage:{
+      hideValidationMessage:{
         type: Boolean,
-        value: true
+        value: false
       },
       /**
        * Used to display the error message when an entry in not valid
@@ -214,15 +211,6 @@ Custom property | Description
       _validationErrorMessage: {
         type: String,
         value: ''
-      },
-      /**
-       * Used to determine if the 'validation-failed' class need to be applied to '_getWrapperClass'
-       * this attribute is set by px-datetime-rage-field
-       * @private
-       */
-      _forcedFailedClass: {
-        type: Boolean,
-        value: false
       },
       /**
        * True if any cell is currently selected.
@@ -402,15 +390,15 @@ Custom property | Description
       }, 1000);
     },
     /**
-     * dateIsValid, timeIsValid, & _forcedFailedClass - determine weither to show the validation error classes
+     * dateIsInvalid, timeIsInvalid, & _forcedFailedClass - determine weither to show the validation error classes
      * isSelected - sets the styles when an entryCell is selected
      * _dropdownActive - overwrites the styles when the dropdown is focused
      * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
      */
-    _getWrapperClass: function (dateIsValid, timeIsValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix) {
+    _getWrapperClass: function (fieldIsInvalid, dateIsInvalid, timeIsInvalid, isSelected, _dropdownActive, _dropdownHoverFix) {
       var classList = "flex flex--middle dt-text-field ";
 
-      if (dateIsValid !== true || timeIsValid !== true || _forcedFailedClass === true) {
+      if (dateIsInvalid === true || timeIsInvalid === true || fieldIsInvalid === true) {
         classList += "validation-error validation-failed ";
       } else if (isSelected) {
         classList += "dt-is-selected ";
@@ -435,12 +423,6 @@ Custom property | Description
       return classList;
     },
     /**
-     * Computes the `isValid` prop
-     */
-    _getIsValid: function (dateIsValid, timeIsValid) {
-      return dateIsValid && timeIsValid;
-    },
-    /**
      * Listener for the validation message to change and reflect the changes to _validationErrorMessage
      */
     _handleValidationMessage: function (e) {
@@ -450,8 +432,12 @@ Custom property | Description
      * Range validation error has precedence over the field validation error
      * If the range is invalid then display nothing here
      */
-    _showValidation: function (dateTimeIsValid, showValidationMessage) {
-      return (showValidationMessage && !dateTimeIsValid);
+    _showValidation: function (fieldIsInvalid, dateIsInvalid, timeIsInvalid, hideValidationMessage) {
+      var returnThis;
+      if (fieldIsInvalid || dateIsInvalid || timeIsInvalid) { returnThis = true }
+      else { returnThis = false};
+      if (hideValidationMessage) { returnThis = false};
+      return returnThis;
     },
     /*
      * Focuses select to the next cell when an icon is clicked
@@ -470,11 +456,10 @@ Custom property | Description
      */
     _handleValidMoment: function (evt) {
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'date') {
-        this.dateIsValid = true;
-        // this.toggleClass('validation-error', false, this.$.wrapper);
+        this.dateIsInvalid = false;
       }
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'time') {
-        this.timeIsValid = true;
+        this.timeIsInvalid = false;
       }
       if (!this.showButtons) {
         var origin = "_momentChanged"
@@ -484,13 +469,13 @@ Custom property | Description
     /**
      * Listener for the cell validation failure event.
      */
-     _handleInvalidMoment: function(evt) {
-      this.isValid = false;
+    _handleInvalidMoment: function(evt) {
+      this.IsInvalid = true;
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'date') {
-        this.dateIsValid = false;
+        this.dateIsInvalid = true;
       }
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'time') {
-        this.timeIsValid = false;
+        this.timeIsInvalid = true;
       }
     },
     /**
@@ -518,8 +503,8 @@ Custom property | Description
      * will not run from `px-datetime-range-submitted`
      */
     _onEnter: function(evt) {
-      this.blur();
       this._applyChanges();
+      this.blur();
     },
     /**
      * Validate field
@@ -535,7 +520,7 @@ Custom property | Description
           this.set('momentObj', undefined);
           this.fire('px-moment-changed');
         }
-        else if(newMomentObj) {
+        else if(newMomentObj && newMomentObj !== "FieldSame") {
           this.set('momentObj', newMomentObj);
           this.fire('px-moment-changed');
         }
