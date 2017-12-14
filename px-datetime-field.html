@@ -36,7 +36,7 @@ Custom property | Description
 
     <div class$="{{_getWrapClass(allowWrap)}} flex">
       <div class$="{{_getButtonMarginClass(showButtons, allowWrap)}}">
-        <div id="fieldWrapper" class$="{{_getWrapperClass(isValid, isSelected, _dropdownActive, _dropdownHoverFix)}}">
+        <div id="fieldWrapper" class$="{{_getWrapperClass(isValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix)}}">
           <template is="dom-if" if="[[!hideDate]]">
             <px-datetime-entry
               id="date"
@@ -222,6 +222,15 @@ Custom property | Description
         value: ''
       },
       /**
+       * Used to determine if the 'validation-failed' class needs to be applied to '_getWrapperClass'
+       * This attribute is set by px-datetime-range-field
+       * @private
+       */
+       _forcedFailedClass: {
+        type: Boolean,
+        value: false
+      },
+      /**
        * True if any cell is currently selected.
        * @private
        */
@@ -399,15 +408,15 @@ Custom property | Description
       }, 1000);
     },
     /**
-     * isValid - determines whether to show the validation error classes
+     * isValid & _forcedFailedClass - determines whether to show the validation error classes
      * isSelected - sets the styles when an entryCell is selected
      * _dropdownActive - overwrites the styles when the dropdown is focused
      * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
      */
-    _getWrapperClass: function (isValid, isSelected, _dropdownActive, _dropdownHoverFix) {
+    _getWrapperClass: function (isValid, _forcedFailedClass, isSelected, _dropdownActive, _dropdownHoverFix) {
       var classList = "flex flex--middle dt-text-field ";
 
-      if (isValid === false) {
+      if (isValid === false || _forcedFailedClass === true) {
         classList += "validation-error validation-failed ";
       } else if (isSelected) {
         classList += "dt-is-selected ";
