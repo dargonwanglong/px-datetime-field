@@ -433,11 +433,9 @@ Custom property | Description
      * If the range is invalid then display nothing here
      */
     _showValidation: function (fieldIsValid, dateIsValid, timeIsValid, hideValidationMessage) {
-      var returnThis;
-      if (fieldIsValid && dateIsValid && timeIsValid) { returnThis = false }
-      else { returnThis = true};
-      if (hideValidationMessage) { returnThis = true};
-      return returnThis;
+      var showValidation = (fieldIsValid && dateIsValid && timeIsValid) ? false : true;
+      if (hideValidationMessage) { showValidation = true};
+      return showValidation;
     },
     /*
      * Focuses select to the next cell when an icon is clicked
