@@ -448,8 +448,8 @@ Custom property | Description
      * If the range is invalid then display nothing here
      */
     _showValidation: function (isValid, hideValidationMessage) {
-      var showValidation = isValid ? false : true;
-      if (hideValidationMessage) { showValidation = true};
+      var showValidation = !isValid;
+      if (hideValidationMessage) { showValidation = false};
       return showValidation;
     },
     /**
