@@ -36,7 +36,7 @@ Custom property | Description
 
     <div class$="{{_getWrapClass(allowWrap)}} flex">
       <div class$="{{_getButtonMarginClass(showButtons, allowWrap)}}">
-        <div id="fieldWrapper" class$="{{_getWrapperClass(fieldIsValid, dateIsValid, timeIsValid, isSelected, _dropdownActive, _dropdownHoverFix)}}">
+        <div id="fieldWrapper" class$="{{_getWrapperClass(isValid, isSelected, _dropdownActive, _dropdownHoverFix)}}">
           <template is="dom-if" if="[[!hideDate]]">
             <px-datetime-entry
               id="date"
@@ -77,7 +77,7 @@ Custom property | Description
             </px-datetime-entry>
           </template>
         </div>
-        <template is="dom-if" if="[[_showValidation(fieldIsValid, dateIsValid, timeIsValid, hideValidationMessage)]]">
+        <template is="dom-if" if="[[_showValidation(isValid, hideValidationMessage)]]">
           <div class="form-field__help validation-error dt-validation-text">{{_validationErrorMessage}}</div>
         </template>
       </div>
@@ -189,13 +189,22 @@ Custom property | Description
         value: true
       },
       /**
-       * If showing only the date, whether the date is valid,
-       * if showing only the time, whether the time is valid,
-       * if showing both, whether both are valid.
+       * Relects if the full input valid is valid.
+       * Set in _validationField()
+       * @private
        */
       fieldIsValid: {
         type: Boolean,
         value: true
+      },
+      /**
+       * If showing only the date, whether the date is valid,
+       * if showing only the time, whether the time is valid,
+       * if showing both, whether both are valid.
+       */
+      isValid: {
+        type: Boolean,
+        computed: `_getIsValid(fieldIsValid, dateIsValid, timeIsValid)`
       },
       /**
        * Determines whether to display the validation message or not.
@@ -390,15 +399,15 @@ Custom property | Description
       }, 1000);
     },
     /**
-     * dateIsValid, timeIsValid, & _forcedFailedClass - determine whether to show the validation error classes
+     * isValid - determines whether to show the validation error classes
      * isSelected - sets the styles when an entryCell is selected
      * _dropdownActive - overwrites the styles when the dropdown is focused
      * _dropdownHoverFix - overwrites the styles when the user selects an item in the dropdown
      */
-    _getWrapperClass: function (fieldIsValid, dateIsValid, timeIsValid, isSelected, _dropdownActive, _dropdownHoverFix) {
+    _getWrapperClass: function (isValid, isSelected, _dropdownActive, _dropdownHoverFix) {
       var classList = "flex flex--middle dt-text-field ";
 
-      if (dateIsValid === false || timeIsValid === false || fieldIsValid === false) {
+      if (isValid === false) {
         classList += "validation-error validation-failed ";
       } else if (isSelected) {
         classList += "dt-is-selected ";
@@ -423,6 +432,12 @@ Custom property | Description
       return classList;
     },
     /**
+     * computes `isValid`
+     */
+    _getIsValid: function (fieldIsValid, dateIsValid, timeIsValid) {
+      return fieldIsValid && dateIsValid && timeIsValid;
+    },
+    /**
      * Listener for the validation message to change and reflect the changes to _validationErrorMessage
      */
     _handleValidationMessage: function (e) {
@@ -432,21 +447,10 @@ Custom property | Description
      * Range validation error has precedence over the field validation error
      * If the range is invalid then display nothing here
      */
-    _showValidation: function (fieldIsValid, dateIsValid, timeIsValid, hideValidationMessage) {
-      var showValidation = (fieldIsValid && dateIsValid && timeIsValid) ? false : true;
+    _showValidation: function (isValid, hideValidationMessage) {
+      var showValidation = isValid ? false : true;
       if (hideValidationMessage) { showValidation = true};
       return showValidation;
-    },
-    /*
-     * Focuses select to the next cell when an icon is clicked
-     */
-    _iconClicked: function (evt) {
-      if (evt.detail.dateOrTime === "Date") {
-        this.$$('#date')._focusCell(0);
-      }
-      else {
-        this.$$('#time')._focusCell(0);
-      }
     },
     /**
      * Observer on the momentObj. If valid and buttons are hidden apply changes
@@ -474,6 +478,17 @@ Custom property | Description
       }
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'time') {
         this.timeIsValid = false;
+      }
+    },
+    /*
+     * Focuses select to the next cell when an icon is clicked
+     */
+    _iconClicked: function (evt) {
+      if (evt.detail.dateOrTime === "Date") {
+        this.$$('#date')._focusCell(0);
+      }
+      else {
+        this.$$('#time')._focusCell(0);
       }
     },
     /**
