@@ -559,8 +559,8 @@ Custom property | Description
         });
       }
       else {
-        this.$$('#date').reset();
-        this.$$('#time').reset();
+        this.$$('#date').setValueFromMoment();
+        this.$$('#time').setValueFromMoment();
       }
       this._validateField();
       this.blur();

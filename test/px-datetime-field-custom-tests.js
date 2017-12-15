@@ -728,7 +728,9 @@ suite('Invalid', function() {
       entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry');
       dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
       timeCells = Polymer.dom(entries[1].root).querySelectorAll('px-datetime-entry-cell');
-      done();
+      setTimeout(function() {
+        done();
+      },50);
     });
   });
 
@@ -741,6 +743,7 @@ suite('Invalid', function() {
     cell1Input[0].value = "11";
     cell2Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+    debugger
 
     flush(function() {
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
@@ -751,13 +754,14 @@ suite('Invalid', function() {
 
   test('Invalid if timeEntry is filled out but dateEntry is blank', function(done) {
     var cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('#dtEntry'),
-        cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('#dtEntry');
-        cell5Input = Polymer.dom(timeCells[2].root).querySelectorAll('#dtEntry');
+    cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('#dtEntry');
+    cell5Input = Polymer.dom(timeCells[2].root).querySelectorAll('#dtEntry');
 
     cell3Input[0].value = "11";
     cell4Input[0].value = "11";
     cell5Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(timeCells[1], 13, [], 'Enter');
+    debugger
 
     flush(function() {
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
