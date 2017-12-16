@@ -438,9 +438,9 @@ suite('submit with buttons', function() {
 });
 
 /**
- * SUBMIT WITH BUTTONS
+ * CANCEL & ESCAPE WITH BUTTONS SHOW DATE & TIME
  */
-suite('submit with buttons Blank', function() {
+suite('Cancel & Escape with buttons blank show date & time', function() {
 
   let fieldBtnBlank, entries, dateCells, cell0Input, cell1Input, cell2Input;
   let fieldBtnBlankRqd, entriesRqd, dateCellsRqd, cell0InputRqd, cell1InputRqd, cell2InputRqd;
@@ -551,6 +551,233 @@ suite('submit with buttons Blank', function() {
 
 });
 
+/**
+ * CANCEL & ESCAPE WITH BUTTONS hide Date
+ */
+suite('Cancel & Escape with buttons blank hide date', function() {
+
+  let fieldBtnBlankHDate, entries, dateCells, cell0Input, cell1Input, cell2Input;
+  let fieldBtnBlankHDateRqd, entriesRqd, dateCellsRqd, cell0InputRqd, cell1InputRqd, cell2InputRqd;
+
+  setup(function(done) {
+    fieldBtnBlankHDate = fixture('px_datetime_field hideDate buttons');
+    fieldBtnBlankHDateRqd = fixture('px_datetime_field hideDate required buttons');
+
+    flush(()=>{
+      entries = Polymer.dom(fieldBtnBlankHDate.root).querySelectorAll('px-datetime-entry'),
+      dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
+      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+
+      entriesRqd = Polymer.dom(fieldBtnBlankHDateRqd.root).querySelectorAll('px-datetime-entry'),
+      dateCellsRqd = Polymer.dom(entriesRqd[0].root).querySelectorAll('px-datetime-entry-cell'),
+      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('#dtEntry'),
+      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('#dtEntry'),
+      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('#dtEntry');
+
+      done();
+    });
+  });
+
+  test('Field is blank if no moment is set', function(done) {
+    assert.equal(cell0Input[0].value, "");
+    assert.equal(cell1Input[0].value, "");
+    assert.equal(cell2Input[0].value, "");
+    done();
+  });
+
+  test('Cancel reverts to empty clear, valid if not required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankHDate.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0Input[0].value = "11";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    buttons[0].click();
+
+    flush(function() {
+      assert.equal(cell0Input[0].value, "");
+      assert.equal(cell1Input[0].value, "");
+      assert.equal(cell2Input[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankHDate.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Cancel reverts to empty clear, invalid if required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankHDateRqd.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0InputRqd[0].value = "11";
+    cell1InputRqd[0].value = "11";
+    cell2InputRqd[0].value = "11";
+    buttons[0].click();
+
+    flush(function() {
+      assert.equal(cell0InputRqd[0].value, "");
+      assert.equal(cell1InputRqd[0].value, "");
+      assert.equal(cell2InputRqd[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankHDateRqd.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Esc reverts to empty clear, valid if not required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankHDate.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0Input[0].value = "11";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 27, [], 'Escape');
+
+    flush(function() {
+      assert.equal(cell0Input[0].value, "");
+      assert.equal(cell1Input[0].value, "");
+      assert.equal(cell2Input[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankHDate.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Esc reverts to empty clear, invalid if required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankHDateRqd.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0InputRqd[0].value = "11";
+    cell1InputRqd[0].value = "11";
+    cell2InputRqd[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCellsRqd[1], 27, [], 'Escape');
+
+    flush(function() {
+      assert.equal(cell0InputRqd[0].value, "");
+      assert.equal(cell1InputRqd[0].value, "");
+      assert.equal(cell2InputRqd[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankHDateRqd.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+});
+
+/**
+ * CANCEL & ESCAPE WITH BUTTONS hide Time
+ */
+suite('Cancel & Escape with buttons blank hide time', function() {
+
+  let fieldBtnBlankHTime, entries, dateCells, cell0Input, cell1Input, cell2Input;
+  let fieldBtnBlankHTimeRqd, entriesRqd, dateCellsRqd, cell0InputRqd, cell1InputRqd, cell2InputRqd;
+
+  setup(function(done) {
+    fieldBtnBlankHTime = fixture('px_datetime_field hideTime buttons');
+    fieldBtnBlankHTimeRqd = fixture('px_datetime_field hideTime required buttons');
+
+    flush(()=>{
+      entries = Polymer.dom(fieldBtnBlankHTime.root).querySelectorAll('px-datetime-entry'),
+      dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
+      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
+      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
+      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+
+      entriesRqd = Polymer.dom(fieldBtnBlankHTimeRqd.root).querySelectorAll('px-datetime-entry'),
+      dateCellsRqd = Polymer.dom(entriesRqd[0].root).querySelectorAll('px-datetime-entry-cell'),
+      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('#dtEntry'),
+      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('#dtEntry'),
+      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('#dtEntry');
+
+      done();
+    });
+  });
+
+  test('Field is blank if no moment is set', function(done) {
+    assert.equal(cell0Input[0].value, "");
+    assert.equal(cell1Input[0].value, "");
+    assert.equal(cell2Input[0].value, "");
+    done();
+  });
+
+  test('Cancel reverts to empty clear, valid if not required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankHTime.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0Input[0].value = "2011";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    buttons[0].click();
+
+    flush(function() {
+      assert.equal(cell0Input[0].value, "");
+      assert.equal(cell1Input[0].value, "");
+      assert.equal(cell2Input[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankHTime.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Cancel reverts to empty clear, invalid if required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankHTimeRqd.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0InputRqd[0].value = "2011";
+    cell1InputRqd[0].value = "11";
+    cell2InputRqd[0].value = "11";
+    buttons[0].click();
+
+    flush(function() {
+      assert.equal(cell0InputRqd[0].value, "");
+      assert.equal(cell1InputRqd[0].value, "");
+      assert.equal(cell2InputRqd[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankHTimeRqd.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Esc reverts to empty clear, valid if not required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankHTime.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0Input[0].value = "2011";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 27, [], 'Escape');
+
+    flush(function() {
+      assert.equal(cell0Input[0].value, "");
+      assert.equal(cell1Input[0].value, "");
+      assert.equal(cell2Input[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankHTime.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Esc reverts to empty clear, invalid if required', function(done) {
+    var buttonsElem = Polymer.dom(fieldBtnBlankHTimeRqd.root).querySelectorAll('px-datetime-buttons'),
+        buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
+
+    cell0InputRqd[0].value = "2011";
+    cell1InputRqd[0].value = "11";
+    cell2InputRqd[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCellsRqd[1], 27, [], 'Escape');
+
+    flush(function() {
+      assert.equal(cell0InputRqd[0].value, "");
+      assert.equal(cell1InputRqd[0].value, "");
+      assert.equal(cell2InputRqd[0].value, "");
+      var wrapper = Polymer.dom(fieldBtnBlankHTimeRqd.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+});
 
 
 
@@ -665,11 +892,15 @@ suite('Blocking of dates/times & minDate/maxDate', function() {
  * REQUIRED
  */
 suite('submit when required', function() {
-  let field;
+  let field, fieldBtn, fieldHDate, fieldBtnHDate, fieldHTime, fieldBtnHTime;
 
   setup(function(done) {
     field = fixture('px_datetime_field required');
     fieldBtn = fixture('px_datetime_field required buttons');
+    fieldHDate = fixture('px_datetime_field hideDate required');
+    fieldBtnHDate = fixture('px_datetime_field hideDate required buttons');
+    fieldHTime = fixture('px_datetime_field hideTime required');
+    fieldBtnHTime = fixture('px_datetime_field hideTime required buttons');
     flush(()=>{
       done();
     });
@@ -713,6 +944,84 @@ suite('submit when required', function() {
       done();
     });
   });
+
+  test('Hide date: validation incomplete with empty field on enter', function(done) {
+    var entries = Polymer.dom(fieldHDate.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
+
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldHDate.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide date: validation incomplete with empty field on enter with buttons', function(done) {
+    var entries = Polymer.dom(fieldBtnHDate.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
+
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldBtnHDate.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide date: validation incomplete with empty field on apply with buttons', function(done) {
+    var buttons = Polymer.dom(fieldBtnHDate.root).querySelectorAll('px-datetime-buttons'),
+        applyBtn = Polymer.dom(buttons[0].root).querySelectorAll('#submitButton');
+
+    applyBtn[0].click();
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldBtnHDate.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide time: validation incomplete with empty field on enter', function(done) {
+    var entries = Polymer.dom(fieldHTime.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
+
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldHTime.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide time: validation incomplete with empty field on enter with buttons', function(done) {
+    var entries = Polymer.dom(fieldBtnHTime.root).querySelectorAll('px-datetime-entry'),
+        dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
+
+    MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldBtnHTime.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide time: validation incomplete with empty field on apply with buttons', function(done) {
+    var buttons = Polymer.dom(fieldBtnHTime.root).querySelectorAll('px-datetime-buttons'),
+        applyBtn = Polymer.dom(buttons[0].root).querySelectorAll('#submitButton');
+
+    applyBtn[0].click();
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldBtnHTime.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
 });
 
 
@@ -720,14 +1029,25 @@ suite('submit when required', function() {
  * INVAILD
  */
 suite('Invalid', function() {
-  let field, entries, dateCells;
+  let field, entries, dateCells, timeCells,
+      fieldHDate, entriesHDate, timeCellsHDate,
+      fieldHTime, entriesHTime, dateCellsHTime;
 
   setup(function(done) {
     field = fixture('px_datetime_field');
+    fieldHDate = fixture('px_datetime_field hideDate');
+    fieldHTime = fixture('px_datetime_field hideTime');
+
     flush(()=>{
       entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry');
       dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell');
       timeCells = Polymer.dom(entries[1].root).querySelectorAll('px-datetime-entry-cell');
+
+      entriesHDate = Polymer.dom(fieldHDate.root).querySelectorAll('px-datetime-entry');
+      timeCellsHDate = Polymer.dom(entriesHDate[0].root).querySelectorAll('px-datetime-entry-cell');
+
+      entriesHTime = Polymer.dom(fieldHTime.root).querySelectorAll('px-datetime-entry');
+      dateCellsHTime = Polymer.dom(entriesHTime[0].root).querySelectorAll('px-datetime-entry-cell');
       setTimeout(function() {
         done();
       },50);
@@ -743,7 +1063,6 @@ suite('Invalid', function() {
     cell1Input[0].value = "11";
     cell2Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
-    debugger
 
     flush(function() {
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
@@ -761,7 +1080,6 @@ suite('Invalid', function() {
     cell4Input[0].value = "11";
     cell5Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(timeCells[1], 13, [], 'Enter');
-    debugger
 
     flush(function() {
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
@@ -778,6 +1096,32 @@ suite('Invalid', function() {
 
     flush(function() {
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide date: Invalid if one cell has a value and the rest are blank', function(done) {
+    var cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('#dtEntry');
+
+    cell1Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(timeCellsHDate[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldHDate.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide time: Invalid if one cell has a value and the rest are blank', function(done) {
+    var cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('#dtEntry');
+
+    cell1Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCellsHTime[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldHTime.root).querySelector('#fieldWrapper');
       assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       done();
     });
@@ -804,6 +1148,36 @@ suite('Invalid', function() {
     });
   });
 
+  test('Hide date: Invalid if one cell is blank and the rest are filled out', function(done) {
+    var cell0Input = Polymer.dom(timeCellsHDate[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('#dtEntry');
+
+    cell0Input[0].value = "11";
+    cell1Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(timeCellsHDate[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldHDate.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide time: Invalid if one cell is blank and the rest are filled out', function(done) {
+    var cell0Input = Polymer.dom(dateCellsHTime[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('#dtEntry');
+
+    cell0Input[0].value = "11";
+    cell1Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCellsHTime[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(fieldHTime.root).querySelector('#fieldWrapper');
+      assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
   test('Valid if all cells have a value', function(done) {
     var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
         cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
@@ -819,6 +1193,40 @@ suite('Invalid', function() {
     cell4Input[0].value = "11";
     cell5Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(timeCells[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide date: Valid if all cells have a value', function(done) {
+    var cell0Input = Polymer.dom(timeCellsHDate[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('#dtEntry'),
+        cell2Input = Polymer.dom(timeCellsHDate[2].root).querySelectorAll('#dtEntry');
+
+    cell0Input[0].value = "11";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(timeCellsHDate[1], 13, [], 'Enter');
+
+    flush(function() {
+      var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
+      assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
+      done();
+    });
+  });
+
+  test('Hide time: Valid if all cells have a value', function(done) {
+    var cell0Input = Polymer.dom(dateCellsHTime[0].root).querySelectorAll('#dtEntry'),
+        cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('#dtEntry'),
+        cell2Input = Polymer.dom(dateCellsHTime[2].root).querySelectorAll('#dtEntry');
+
+    cell0Input[0].value = "11";
+    cell1Input[0].value = "11";
+    cell2Input[0].value = "11";
+    MockInteractions.pressAndReleaseKeyOn(dateCellsHTime[1], 13, [], 'Enter');
 
     flush(function() {
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');

@@ -539,7 +539,7 @@ Custom property | Description
       }
       else {
         if(newMomentObj === "FieldBlank"){
-          this.set('momentObj', undefined);
+          this.set('momentObj', null);
           this.fire('px-moment-changed');
         }
         else if(newMomentObj && newMomentObj !== "FieldSame") {
@@ -552,15 +552,12 @@ Custom property | Description
      * Clear field or reset to previous moment objs
      */
     _cancelChanges: function () {
-      if (this.momentObj === undefined) {
-        var entries = Polymer.dom(this.root).querySelectorAll('px-datetime-entry');
-        entries.forEach(function (entry) {
-          entry.clear();
-        });
+      var entries = Polymer.dom(this.root).querySelectorAll('px-datetime-entry');
+      if (this.momentObj === null) {
+        entries.forEach(function (entry) { entry.clear(); });
       }
       else {
-        this.$$('#date').setValueFromMoment();
-        this.$$('#time').setValueFromMoment();
+        entries.forEach(function (entry) { entry.setValueFromMoment(); });
       }
       this._validateField();
       this.blur();
