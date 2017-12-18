@@ -534,7 +534,7 @@ Custom property | Description
      */
      _applyChanges: function (origin) {
       var newMomentObj = this._validateField(origin);
-      if(this.preventApply && newMomentObj) {
+      if(this.preventApply && newMomentObj && newMomentObj !== "FieldSame") {
         this.fire('px-field-valid', {"momentObj": newMomentObj});
       }
       else {
