@@ -43,7 +43,7 @@
     document.addEventListener('WebComponentsReady', function() {
       var template = document.querySelector('template[is=dom-bind]');
       template.momentObj = Px.moment().subtract(7, 'days');
-      template.maxDate = Px.moment().subtract(9, 'days');
+      template.maxDate = Px.moment().subtract(1, 'days');
 
       // Support hybrid mode
       var templatev1 = document.querySelector('dom-bind');
