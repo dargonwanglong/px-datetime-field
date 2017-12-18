@@ -476,7 +476,8 @@ Custom property | Description
         this.dateIsValid = true;
         this.timeIsValid = true;
       }
-      if (!this.showButtons) {
+      //block evt from _validationField to avoid infite loop
+      if (!this.showButtons && evt.detail.element.nodeName !== 'PX-DATETIME-FIELD') {
         var origin = "_momentChanged"
         this._applyChanges(origin);
       }
