@@ -472,6 +472,10 @@ Custom property | Description
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'time') {
         this.timeIsValid = true;
       }
+      if(evt.detail && evt.detail.element && evt.detail.element.nodeName === 'PX-DATETIME-FIELD') {
+        this.dateIsValid = true;
+        this.timeIsValid = true;
+      }
       if (!this.showButtons) {
         var origin = "_momentChanged"
         this._applyChanges(origin);
