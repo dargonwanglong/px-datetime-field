@@ -52,7 +52,7 @@
         <p class="zeta u-mt0">See API Reference below for more details</p>
 
         <px-datetime-field
-            date-time="{{props.dateTime.value}}"
+            moment-obj="{{props.momentObj.value}}"
             date-format="{{props.dateFormat.value}}"
             time-format="{{props.timeFormat.value}}"
             show-buttons="{{props.showButtons.value}}"
@@ -63,9 +63,9 @@
             hide-date="{{props.hideDate.value}}"
             show-time-zone="{{props.showTimeZone.value}}"
             hide-icon="{{props.hideIcon.value}}"
-            time-zone="{{props.timeZone.value}}"
-            min-date="{{props.minDate.value}}"
-            max-date="{{props.maxDate.value}}">
+            time-zone="{{props.timeZone.value}}">
+            <!-- min-date="{{props.minDate.value}}"
+            max-date="{{props.maxDate.value}}"> -->
         </px-datetime-field>
       </px-demo-component>
       <!-- END Component ------------------------------------------------------>
@@ -132,7 +132,8 @@
         value: function(){
           return [
 
-            { dateFormat: "YYYY/MM/DD",
+            { configName: "Blank state",
+              dateFormat: "YYYY/MM/DD",
               timeFormat: "hh:mm:ss A",
               showButtons: false,
               allowWrap: false,
@@ -142,9 +143,13 @@
               hideDate: false,
               hideIcon: false,
               showTimeZone: "dropdown",
-              timeZone: "UTC" },
+              timeZone: "UTC",
+              // minDate: {},
+              // maxDate: {},
+              momentObj: null},
 
-            { dateFormat: "MM/DD/YY",
+            { configName: "Predefined date",
+              dateFormat: "MM/DD/YY",
               timeFormat: "hh:mm:ss A",
               showButtons: true,
               allowWrap: true,
@@ -154,9 +159,13 @@
               hideDate: true,
               hideIcon: false,
               showTimeZone: "abbreviatedText",
-              timeZone: "America/Los_Angeles" },
+              timeZone: "America/Los_Angeles",
+              // minDate: {},
+              // maxDate: {},
+              momentObj: Px.moment() },
 
-            { dateFormat: "DD/MM/YY",
+            { configName: "Min/Max date",
+              dateFormat: "DD/MM/YY",
               timeFormat: "HH:mm:ss.SSS",
               showButtons: false,
               allowWrap: false,
@@ -166,7 +175,10 @@
               hideDate: false,
               hideIcon: false,
               showTimeZone: "dropdown",
-              timeZone: "America/New_York" },
+              timeZone: "America/New_York",
+              // minDate: {},
+              // maxDate: {},
+              momentObj: Px.moment() },
 
           ]
         }
@@ -263,15 +275,21 @@
 
       minDate: {
         type: Object,
-        defaultValue: Px.moment().subtract(1, 'year'),
+        defaultValue: null,
         inputType: 'code:JSON'
       },
 
       maxDate: {
         type: Object,
-        defaultValue: Px.moment().add(1, 'year'),
+        defaultValue: null,
         inputType: 'code:JSON'
-      }
+      },
+
+      momentObj: {
+        type: Object,
+        defaultValue: null,
+        inputType: 'code:JSON'
+      },
     },
 
     ready: function () {
