@@ -74,7 +74,8 @@
           slot="px-demo-component-snippet"
           element-properties="{{props}}"
           element-name="px-datetime-field"
-          links-includes="[[linksIncludes]]">
+          links-includes="[[linksIncludes]]"
+          suppress-property-values="[[suppressPropertyValues]]">
       </px-demo-component-snippet>
     </px-demo-interactive>
 
@@ -117,7 +118,10 @@
             return props;
           }
       },
-
+      suppressPropertyValues: {
+        type: Array,
+        value: function() { return ['momentObj']; }
+      },
       /**
        * An array of pre-configured `props` that can be used to provide the user
        * with a set of common examples. These configs will be made available
@@ -144,8 +148,6 @@
               hideIcon: false,
               showTimeZone: "dropdown",
               timeZone: "UTC",
-              minDate: {},
-              maxDate: {},
               momentObj: null},
 
             { configName: "Predefined date",
@@ -160,8 +162,6 @@
               hideIcon: false,
               showTimeZone: "abbreviatedText",
               timeZone: "America/Los_Angeles",
-              minDate: {},
-              maxDate: {},
               momentObj: Px.moment() },
 
             { configName: "Min/Max date",
@@ -176,10 +176,7 @@
               hideIcon: false,
               showTimeZone: "dropdown",
               timeZone: "America/New_York",
-              minDate: Px.moment().subtract(3, 'month'),
-              maxDate: Px.moment().add(3, 'month'),
               momentObj: Px.moment().startOf('day') },
-
           ]
         }
       },
@@ -274,21 +271,21 @@
       },
 
       minDate: {
-        type: Object,
-        defaultValue: null,
-        inputType: 'code:JSON'
+        type: String,
+        defaultValue: Px.moment().subtract(3, 'month').toISOString(),
+        inputType: 'text',
+        inputPlaceholder: 'ISOString'
       },
 
       maxDate: {
-        type: Object,
-        defaultValue: null,
-        inputType: 'code:JSON'
+        type: String,
+        defaultValue: Px.moment().add(3, 'month').toISOString(),
+        inputType: 'text'
       },
 
       momentObj: {
         type: Object,
-        defaultValue: null,
-        inputType: 'code:JSON'
+        defaultValue: null
       },
     },
 
