@@ -63,9 +63,9 @@
             hide-date="{{props.hideDate.value}}"
             show-time-zone="{{props.showTimeZone.value}}"
             hide-icon="{{props.hideIcon.value}}"
-            time-zone="{{props.timeZone.value}}">
-            <!-- min-date="{{props.minDate.value}}"
-            max-date="{{props.maxDate.value}}"> -->
+            time-zone="{{props.timeZone.value}}"
+            min-date="{{props.minDate.value}}"
+            max-date="{{props.maxDate.value}}">
         </px-datetime-field>
       </px-demo-component>
       <!-- END Component ------------------------------------------------------>
@@ -144,8 +144,8 @@
               hideIcon: false,
               showTimeZone: "dropdown",
               timeZone: "UTC",
-              // minDate: {},
-              // maxDate: {},
+              minDate: {},
+              maxDate: {},
               momentObj: null},
 
             { configName: "Predefined date",
@@ -160,8 +160,8 @@
               hideIcon: false,
               showTimeZone: "abbreviatedText",
               timeZone: "America/Los_Angeles",
-              // minDate: {},
-              // maxDate: {},
+              minDate: {},
+              maxDate: {},
               momentObj: Px.moment() },
 
             { configName: "Min/Max date",
@@ -176,8 +176,8 @@
               hideIcon: false,
               showTimeZone: "dropdown",
               timeZone: "America/New_York",
-              // minDate: {},
-              // maxDate: {},
+              minDate: Px.moment().subtract(1, 'month'),
+              maxDate: Px.moment().add(1, 'month'),
               momentObj: Px.moment() },
 
           ]
