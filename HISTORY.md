@@ -1,3 +1,13 @@
+v2.0.0
+==================
+* Removed `dateTime` property should use `momentObj`
+* updated `min` and `max` to `minDate` and `maxDate`
+* updated `showValidationMessage` to `hideValidationMessage`
+* updated `preventNotificationOnChange` to `preventApply`
+* updated validation
+* added `required`
+* added `fieldIsValid`
+
 v1.1.1
 ==================
 * fix wct.conf.json
