@@ -114,7 +114,7 @@ Custom property | Description
           value: 'YYYY-MM-DD'
       },
       /**
-       * Moment format string for the TIME format to display/validate this field against
+       * Moment format string for the TIME format to display/validate this field against.
        * Hour, minute, second, millisecond, and offset tokens
        * (see http://momentjs.com/docs/#/parsing/string-format/)
        *
@@ -125,11 +125,11 @@ Custom property | Description
       },
       /**
        *
-       * Can be set to show the timezone. Can have 2 values:
-       *  - 'dropdown': shows the time zone as a dropdown which the user can use to select a different time zone. Only contains a subset of all timezones
-       *  - 'extendedDropdown': shows the time zone as a dropdown which the user can use to select a different time zone. Contains all existing timezones (588)
-       *  - 'text': shows the time zone as text, non editable
-       *  - 'abbreviatedText': shows the time zone as an abbreviated text, non editable (such as PST, EST...)
+       * The format of displaying the time zone:
+       *  - `dropdown`: shows the time zone as a dropdown which the user can use to select a different time zone. Only contains a subset of all time zones
+       *  - `extendedDropdown`: shows the time zone as a dropdown which the user can use to select a different time zone. Contains all existing time zones (588)
+       *  - `text`: shows the time zone as text, non editable
+       *  - `abbreviatedText`: shows the time zone as an abbreviated text, non editable (such as PST, EST...)
        */
       showTimeZone: {
         type: String,
@@ -166,7 +166,7 @@ Custom property | Description
         value: false
       },
       /**
-       * If true validation is error if field is empty
+       * If true, validation will error if the field is empty.
        */
       required: {
         type: Boolean,
@@ -240,8 +240,8 @@ Custom property | Description
         notify: true
       },
       /**
-       * Used to prevent this element's apply from changing the moment objects
-       * Used by `px-datetime-range-field`
+       * Used to prevent this element's apply from changing the moment objects.
+       * Used by `px-datetime-range-field`.
        */
       preventApply: {
         type: Boolean,
@@ -324,8 +324,7 @@ Custom property | Description
       }
     },
     /*
-     * Not sure if this is used
-     */
+    */
     _focusFirstEntry: function (forceTimeFocus) {
       if (!this.hideDate && !forceTimeFocus) {
         this.$$('#date')._focusCell(0);
@@ -334,8 +333,7 @@ Custom property | Description
       }
     },
     /*
-     * Not sure if this is used
-     */
+    */
     _focusLastEntry: function () {
       if (!this.hideTime) {
         this.$$('#time')._focusLastCell();
@@ -393,7 +391,7 @@ Custom property | Description
      *
      * There is a hover state on #fieldWrapper and px-dropdown is a child of #fieldWrapper;
      * therefore, when dropdown is opened the hover to #fieldWrapper is extended.
-     * This causes a flash of gray when the user selects a timezone with the mouse.
+     * This causes a flash of gray when the user selects a time zone with the mouse.
      * In order to prevent this flash we need to overwrite the hover state by added
      * `.dt-text-field--hover-fix` to #fieldWrapper.
      *

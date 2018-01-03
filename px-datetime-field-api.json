@@ -76,7 +76,7 @@
         {
           "name": "timeFormat",
           "type": "string",
-          "description": "Moment format string for the TIME format to display/validate this field against\nHour, minute, second, millisecond, and offset tokens\n(see http://momentjs.com/docs/#/parsing/string-format/)",
+          "description": "Moment format string for the TIME format to display/validate this field against.\nHour, minute, second, millisecond, and offset tokens\n(see http://momentjs.com/docs/#/parsing/string-format/)",
           "privacy": "public",
           "sourceRange": {
             "start": {
@@ -96,7 +96,7 @@
         {
           "name": "showTimeZone",
           "type": "string",
-          "description": "Can be set to show the timezone. Can have 2 values:\n - 'dropdown': shows the time zone as a dropdown which the user can use to select a different time zone. Only contains a subset of all timezones\n - 'extendedDropdown': shows the time zone as a dropdown which the user can use to select a different time zone. Contains all existing timezones (588)\n - 'text': shows the time zone as text, non editable\n - 'abbreviatedText': shows the time zone as an abbreviated text, non editable (such as PST, EST...)",
+          "description": "The format of displaying the time zone:\n - `dropdown`: shows the time zone as a dropdown which the user can use to select a different time zone. Only contains a subset of all time zones\n - `extendedDropdown`: shows the time zone as a dropdown which the user can use to select a different time zone. Contains all existing time zones (588)\n - `text`: shows the time zone as text, non editable\n - `abbreviatedText`: shows the time zone as an abbreviated text, non editable (such as PST, EST...)",
           "privacy": "public",
           "sourceRange": {
             "start": {
@@ -196,7 +196,7 @@
         {
           "name": "required",
           "type": "boolean",
-          "description": "If true validation is error if field is empty",
+          "description": "If true, validation will error if the field is empty.",
           "privacy": "public",
           "sourceRange": {
             "start": {
@@ -379,7 +379,7 @@
         {
           "name": "preventApply",
           "type": "boolean",
-          "description": "Used to prevent this element's apply from changing the moment objects\nUsed by `px-datetime-range-field`",
+          "description": "Used to prevent this element's apply from changing the moment objects.\nUsed by `px-datetime-range-field`.",
           "privacy": "public",
           "sourceRange": {
             "start": {
@@ -639,15 +639,15 @@
         },
         {
           "name": "_focusFirstEntry",
-          "description": "Not sure if this is used",
+          "description": "",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 328,
+              "line": 327,
               "column": 4
             },
             "end": {
-              "line": 334,
+              "line": 333,
               "column": 5
             }
           },
@@ -660,15 +660,15 @@
         },
         {
           "name": "_focusLastEntry",
-          "description": "Not sure if this is used",
+          "description": "",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 338,
+              "line": 336,
               "column": 4
             },
             "end": {
-              "line": 344,
+              "line": 342,
               "column": 5
             }
           },
@@ -681,11 +681,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 348,
+              "line": 346,
               "column": 4
             },
             "end": {
-              "line": 352,
+              "line": 350,
               "column": 5
             }
           },
@@ -702,11 +702,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 356,
+              "line": 354,
               "column": 4
             },
             "end": {
-              "line": 366,
+              "line": 364,
               "column": 5
             }
           },
@@ -726,11 +726,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 370,
+              "line": 368,
               "column": 4
             },
             "end": {
-              "line": 373,
+              "line": 371,
               "column": 5
             }
           },
@@ -747,11 +747,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 377,
+              "line": 375,
               "column": 4
             },
             "end": {
-              "line": 381,
+              "line": 379,
               "column": 5
             }
           },
@@ -768,11 +768,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 386,
+              "line": 384,
               "column": 4
             },
             "end": {
-              "line": 388,
+              "line": 386,
               "column": 5
             }
           },
@@ -781,15 +781,15 @@
         },
         {
           "name": "_handleHoverFix",
-          "description": "This is a quick fix.\nIn order to make dt-field look like an input field we have to overwrite some css on #fieldWrapper.\n\nThere is a hover state on #fieldWrapper and px-dropdown is a child of #fieldWrapper;\ntherefore, when dropdown is opened the hover to #fieldWrapper is extended.\nThis causes a flash of gray when the user selects a timezone with the mouse.\nIn order to prevent this flash we need to overwrite the hover state by added\n`.dt-text-field--hover-fix` to #fieldWrapper.\n\nThe true issue is that we can't listen to px-dropdown.opened because there is a timing issue\nwhen px-dropdown.opened is set to false vs when the dropdown is not longer visible. This causes the flash.\nWe couldn't find any other events that don't have a timing issue.",
+          "description": "This is a quick fix.\nIn order to make dt-field look like an input field we have to overwrite some css on #fieldWrapper.\n\nThere is a hover state on #fieldWrapper and px-dropdown is a child of #fieldWrapper;\ntherefore, when dropdown is opened the hover to #fieldWrapper is extended.\nThis causes a flash of gray when the user selects a time zone with the mouse.\nIn order to prevent this flash we need to overwrite the hover state by added\n`.dt-text-field--hover-fix` to #fieldWrapper.\n\nThe true issue is that we can't listen to px-dropdown.opened because there is a timing issue\nwhen px-dropdown.opened is set to false vs when the dropdown is not longer visible. This causes the flash.\nWe couldn't find any other events that don't have a timing issue.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 403,
+              "line": 401,
               "column": 4
             },
             "end": {
-              "line": 408,
+              "line": 406,
               "column": 5
             }
           },
@@ -802,11 +802,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 415,
+              "line": 413,
               "column": 4
             },
             "end": {
-              "line": 428,
+              "line": 426,
               "column": 5
             }
           },
@@ -835,11 +835,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 432,
+              "line": 430,
               "column": 4
             },
             "end": {
-              "line": 441,
+              "line": 439,
               "column": 5
             }
           },
@@ -862,11 +862,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 445,
+              "line": 443,
               "column": 4
             },
             "end": {
-              "line": 447,
+              "line": 445,
               "column": 5
             }
           },
@@ -889,11 +889,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 451,
+              "line": 449,
               "column": 4
             },
             "end": {
-              "line": 453,
+              "line": 451,
               "column": 5
             }
           },
@@ -910,11 +910,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 458,
+              "line": 456,
               "column": 4
             },
             "end": {
-              "line": 462,
+              "line": 460,
               "column": 5
             }
           },
@@ -934,11 +934,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 467,
+              "line": 465,
               "column": 4
             },
             "end": {
-              "line": 483,
+              "line": 481,
               "column": 5
             }
           },
@@ -955,11 +955,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 487,
+              "line": 485,
               "column": 4
             },
             "end": {
-              "line": 495,
+              "line": 493,
               "column": 5
             }
           },
@@ -976,11 +976,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 499,
+              "line": 497,
               "column": 4
             },
             "end": {
-              "line": 506,
+              "line": 504,
               "column": 5
             }
           },
@@ -997,11 +997,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 512,
+              "line": 510,
               "column": 4
             },
             "end": {
-              "line": 519,
+              "line": 517,
               "column": 5
             }
           },
@@ -1018,11 +1018,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 524,
+              "line": 522,
               "column": 4
             },
             "end": {
-              "line": 526,
+              "line": 524,
               "column": 5
             }
           },
@@ -1035,11 +1035,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 531,
+              "line": 529,
               "column": 4
             },
             "end": {
-              "line": 534,
+              "line": 532,
               "column": 5
             }
           },
@@ -1056,11 +1056,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 539,
+              "line": 537,
               "column": 5
             },
             "end": {
-              "line": 554,
+              "line": 552,
               "column": 5
             }
           },
@@ -1077,11 +1077,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 558,
+              "line": 556,
               "column": 4
             },
             "end": {
-              "line": 568,
+              "line": 566,
               "column": 5
             }
           },
@@ -1103,7 +1103,7 @@
           "column": 10
         },
         "end": {
-          "line": 569,
+          "line": 567,
           "column": 3
         }
       },
@@ -1146,7 +1146,7 @@
         },
         {
           "name": "time-format",
-          "description": "Moment format string for the TIME format to display/validate this field against\nHour, minute, second, millisecond, and offset tokens\n(see http://momentjs.com/docs/#/parsing/string-format/)",
+          "description": "Moment format string for the TIME format to display/validate this field against.\nHour, minute, second, millisecond, and offset tokens\n(see http://momentjs.com/docs/#/parsing/string-format/)",
           "sourceRange": {
             "start": {
               "line": 121,
@@ -1162,7 +1162,7 @@
         },
         {
           "name": "show-time-zone",
-          "description": "Can be set to show the timezone. Can have 2 values:\n - 'dropdown': shows the time zone as a dropdown which the user can use to select a different time zone. Only contains a subset of all timezones\n - 'extendedDropdown': shows the time zone as a dropdown which the user can use to select a different time zone. Contains all existing timezones (588)\n - 'text': shows the time zone as text, non editable\n - 'abbreviatedText': shows the time zone as an abbreviated text, non editable (such as PST, EST...)",
+          "description": "The format of displaying the time zone:\n - `dropdown`: shows the time zone as a dropdown which the user can use to select a different time zone. Only contains a subset of all time zones\n - `extendedDropdown`: shows the time zone as a dropdown which the user can use to select a different time zone. Contains all existing time zones (588)\n - `text`: shows the time zone as text, non editable\n - `abbreviatedText`: shows the time zone as an abbreviated text, non editable (such as PST, EST...)",
           "sourceRange": {
             "start": {
               "line": 133,
@@ -1242,7 +1242,7 @@
         },
         {
           "name": "required",
-          "description": "If true validation is error if field is empty",
+          "description": "If true, validation will error if the field is empty.",
           "sourceRange": {
             "start": {
               "line": 170,
@@ -1290,7 +1290,7 @@
         },
         {
           "name": "prevent-apply",
-          "description": "Used to prevent this element's apply from changing the moment objects\nUsed by `px-datetime-range-field`",
+          "description": "Used to prevent this element's apply from changing the moment objects.\nUsed by `px-datetime-range-field`.",
           "sourceRange": {
             "start": {
               "line": 245,

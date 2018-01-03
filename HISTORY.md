@@ -1,3 +1,7 @@
+v2.0.2
+==================
+* updated api docs
+
 v2.0.1
 ==================
 * fix link in docs
