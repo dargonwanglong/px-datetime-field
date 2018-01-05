@@ -1,3 +1,7 @@
+v2.0.3
+==================
+* added observe on `momentObj` and updated api docs
+
 v2.0.2
 ==================
 * updated api docs

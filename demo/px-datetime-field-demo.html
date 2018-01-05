@@ -56,6 +56,7 @@
             moment-obj="{{props.momentObj.value}}"
             date-format="{{props.dateFormat.value}}"
             time-format="{{props.timeFormat.value}}"
+            required="{{props.required.value}}"
             show-buttons="{{props.showButtons.value}}"
             allow-wrap="{{props.allowWrap.value}}"
             block-future-dates="{{props.blockFutureDates.value}}"
@@ -81,7 +82,10 @@
     </px-demo-interactive>
 
     <!-- API Viewer -->
-    <px-demo-api-viewer source="px-datetime-field"></px-demo-api-viewer>
+    <px-demo-api-viewer
+      source="px-datetime-field"
+      hide="[[apiHide]]">
+    </px-demo-api-viewer>
 
     <!-- Footer -->
     <px-demo-footer></px-demo-footer>
@@ -181,6 +185,14 @@
           ]
         }
       },
+      apiHide: {
+        type: Array,
+        value: function() {
+          return [
+            "keyBindings",
+          ]
+        }
+      },
       timeZoneList: {
         type: Array,
         value: function(){
@@ -213,6 +225,12 @@
       },
 
       hideIcon: {
+        type: Boolean,
+        defaultValue: false,
+        inputType: 'toggle'
+      },
+
+      required: {
         type: Boolean,
         defaultValue: false,
         inputType: 'toggle'

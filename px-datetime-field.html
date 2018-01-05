@@ -105,9 +105,8 @@ Custom property | Description
     properties: {
       /**
        * Moment format string for the DATE format to display/validate this field against
-       * Year, month, day and offset tokens (Do not support Y, Q, MMM, MMMM, or Do)
-       * (see http://momentjs.com/docs/#/parsing/string-format/)
-       *
+       * Year, month, and day (support YYYY, YY, M, MM, D, DD)
+       * (see http://momentjs.com/docs/#/parsing/string/)
        */
       dateFormat: {
           type: String,
@@ -115,9 +114,8 @@ Custom property | Description
       },
       /**
        * Moment format string for the TIME format to display/validate this field against.
-       * Hour, minute, second, millisecond, and offset tokens
-       * (see http://momentjs.com/docs/#/parsing/string-format/)
-       *
+       * Hour, minute, second, millisecond, am/pm, and offset tokens
+       * (see http://momentjs.com/docs/#/parsing/string/)
        */
       timeFormat: {
           type: String,
@@ -136,37 +134,36 @@ Custom property | Description
         value: ''
       },
       /**
-       * Controls whether time is displayed in this field
+       * Controls whether time is displayed in the field.
        */
       hideTime: {
         type: Boolean,
         value: false
       },
       /**
-       * Controls whether date should be hidden in this field. Typically used
-       * in combination with hideTime to make the field showing only the time
+       * Controls whether date is displayed in the field.
        */
       hideDate: {
         type: Boolean,
         value: false
       },
       /**
-       * Controls whether the calendar/clock icon should be hidden
+       * Controls whether the calendar/clock icon are displayed in the field.
        */
       hideIcon: {
         type: Boolean,
         value: false
       },
       /**
-       * Controls whether the buttons will wrap under the field if the horizontal
-       * space is too small.
+       * Controls whether the buttons will wrap under the field if
+       * the horizontal space is too small.
        */
       allowWrap: {
         type: Boolean,
         value: false
       },
       /**
-       * If true, validation will error if the field is empty.
+       * If true, the field will be invalid if empty.
        */
       required: {
         type: Boolean,
@@ -189,7 +186,7 @@ Custom property | Description
         value: true
       },
       /**
-       * Relects if the full input valid is valid.
+       * Reflects if the input field is valid.
        * Set in _validationField()
        * @private
        */
@@ -198,9 +195,8 @@ Custom property | Description
         value: true
       },
       /**
-       * If showing only the date, whether the date is valid,
-       * if showing only the time, whether the time is valid,
-       * if showing both, whether both are valid.
+       * Computed from `fieldIsValid`, `dateIsValid`, `timeIsValid`.
+       * All of them must valid for `isValid` to be true.
        */
       isValid: {
         type: Boolean,
@@ -208,14 +204,14 @@ Custom property | Description
       },
       /**
        * Determines whether to display the validation message or not.
-       * Use mostly by datetime-range-field.
+       * Use mostly by `datetime-range-field`.
        */
       hideValidationMessage:{
         type: Boolean,
         value: false
       },
       /**
-       * Used to display the error message when an entry in not valid
+       * Holds the error message when the field in not valid
        */
       _validationErrorMessage: {
         type: String,
@@ -223,8 +219,7 @@ Custom property | Description
       },
       /**
        * Used to determine if the 'validation-failed' class needs to be applied to '_getWrapperClass'
-       * This attribute is set by px-datetime-range-field
-       * @private
+       * This attribute is set by `px-datetime-range-field`
        */
        _forcedFailedClass: {
         type: Boolean,
@@ -240,7 +235,7 @@ Custom property | Description
         notify: true
       },
       /**
-       * Used to prevent this element's apply from changing the moment objects.
+       * Used to prevents the momentObjs from being set.
        * Used by `px-datetime-range-field`.
        */
       preventApply: {
@@ -275,6 +270,10 @@ Custom property | Description
       'px-moment-invalid': '_handleInvalidMoment'
     },
 
+    observers: [
+      '_applyChanges(momentObj)'
+    ],
+
     /*
      * Will only show the dropdown in the date entry if `hideTime`
      * and `showTimeZone` are true
@@ -288,13 +287,14 @@ Custom property | Description
     },
     /**
      * Key bindings for iron-a11y-keys-behavior
+     * @private
      */
     keyBindings: {
       'esc' : '_onEsc',
       'enter': '_onEnter'
     },
     /*
-     * Jumps from the date field to time field when using arrow keys
+     * Jumps from the date entry to time entry when using arrow keys
      */
     _nextFieldRequired: function(evt) {
       var date = this.$$('#date');
@@ -309,7 +309,7 @@ Custom property | Description
       }
     },
     /*
-     * Jumps from the time field to date field when using arrow keys
+     * Jumps from the time entry to date entry when using arrow keys
      */
     _previousFieldRequired: function (evt) {
       var time = this.$$('#time');
@@ -350,7 +350,7 @@ Custom property | Description
       }
     },
     /**
-     * Adds a margin right if the button are showing
+     * Adds a margin right if the buttons are showing
      */
     _getButtonMarginClass: function (showButtons, allowWrap) {
       var classList = "dt-field-validation-wrapper ";
@@ -445,14 +445,14 @@ Custom property | Description
       return fieldIsValid && dateIsValid && timeIsValid;
     },
     /**
-     * Listener for the validation message to change and reflect the changes to _validationErrorMessage
+     * Reflects the error message changes to _validationErrorMessage
      */
     _handleValidationMessage: function (e) {
       this.set('_validationErrorMessage', e.detail.validationErrorMessage);
     },
     /**
-     * Range validation error has precedence over the field validation error
-     * If the range is invalid then display nothing here
+     * Helper function for a dom-if
+     * Determines whether to display the validation error
      */
     _showValidation: function (isValid, hideValidationMessage) {
       var showValidation = !isValid;
@@ -460,8 +460,9 @@ Custom property | Description
       return showValidation;
     },
     /**
-     * Observer on the momentObj. If valid and buttons are hidden apply changes
-     * will not run from `px-datetime-range-submitted`
+     * Handles validation coming from `_validateInput()`
+     * Set `dateIsValid` and `timeIsValid` to true as needed
+     * Runs validation if buttons are hidden and field is valid
      */
     _handleValidMoment: function (evt) {
       if(evt.detail && evt.detail.element && evt.detail.element.id === 'date') {
@@ -481,7 +482,7 @@ Custom property | Description
       }
     },
     /**
-     * Listener for the cell validation failure event.
+     * Sets `isValid`, `dateIsValid`, and `timeIsValid` to false as needed.
      */
     _handleInvalidMoment: function(evt) {
       this.IsValid = false;
@@ -504,9 +505,8 @@ Custom property | Description
       }
     },
     /**
-     * Listens for a button click and will apply or cancel
+     * Determines whether to apply or cancel the changes
      * based on the event
-     * will not run from `px-datetime-range-submitted`
      */
     _dateTimeButtons: function (evt) {
       if (evt.detail.action) {
@@ -517,25 +517,26 @@ Custom property | Description
       }
     },
     /**
-     * When buttons are showing, it will clear changes
-     * will not run from `px-datetime-range-submitted`
+     * Runs `_cancelChanges()`
      */
     _onEsc: function () {
       this._cancelChanges();
     },
     /**
-     * When buttons are showing, it will apply changes
-     * will not run from `px-datetime-range-submitted`
+     * Runs `_applyChanges()` and blurs the field
      */
     _onEnter: function(evt) {
       this._applyChanges();
       this.blur();
     },
     /**
-     * Validate field
-     * If valid set the momentObj
+     * Sets the momentObj if the field is valid, preventApply is not true,
+     * and the new and old momentObjs are not the same.
      */
-     _applyChanges: function (origin) {
+    _applyChanges: function (origin) {
+      var dateEntry = Polymer.dom(this.root).querySelector('#date');
+      if (this.momentObj === undefined || dateEntry === null) { return; }
+
       var newMomentObj = this._validateField(origin);
       if(this.preventApply && newMomentObj && newMomentObj !== "FieldSame") {
         this.fire('px-field-valid', {"momentObj": newMomentObj});
