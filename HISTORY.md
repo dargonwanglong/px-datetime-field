@@ -1,5 +1,9 @@
-v2.0.3
+v2.0.4
 ==================
+* fixed bug with field blank and applyChanges running too soon
+
+v2.0.3
+=================
 * added observe on `momentObj` and updated api docs
 
 v2.0.2

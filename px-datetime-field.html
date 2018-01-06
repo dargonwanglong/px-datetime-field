@@ -535,7 +535,8 @@ Custom property | Description
      */
     _applyChanges: function (origin) {
       var dateEntry = Polymer.dom(this.root).querySelector('#date');
-      if (this.momentObj === undefined || dateEntry === null) { return; }
+      var timeEntry = Polymer.dom(this.root).querySelector('#time');
+      if (this.momentObj === undefined || (dateEntry === null && !this.hideDate) || (timeEntry === null && !this.hideTime)) { return; }
 
       var newMomentObj = this._validateField(origin);
       if(this.preventApply && newMomentObj && newMomentObj !== "FieldSame") {
@@ -543,6 +544,7 @@ Custom property | Description
       }
       else {
         if(newMomentObj === "FieldBlank"){
+          this._validField();
           this.set('momentObj', null);
           this.fire('px-moment-changed');
         }
