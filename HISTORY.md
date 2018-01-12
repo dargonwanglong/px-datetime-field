@@ -1,3 +1,7 @@
+v2.0.5
+==================
+* separate internal and external validation with `_validateSetMomentObj()`
+
 v2.0.4
 ==================
 * fixed bug with field blank and applyChanges running too soon

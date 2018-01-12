@@ -271,7 +271,7 @@ Custom property | Description
     },
 
     observers: [
-      '_applyChanges(momentObj)'
+      '_validateSetMomentObj(momentObj)'
     ],
 
     /*
@@ -437,6 +437,13 @@ Custom property | Description
       }
 
       return classList;
+    },
+    /**
+     * Run validation on a moment object that has been set from the outside
+     * This will set or unset validation errors
+     */
+    _validateSetMomentObj: function(momentObj) {
+      this._validateMomentObj(momentObj);
     },
     /**
      * computes `isValid`
