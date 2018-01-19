@@ -443,6 +443,7 @@ Custom property | Description
      * This will set or unset validation errors
      */
     _validateSetMomentObj: function(momentObj) {
+      if(momentObj === undefined) {return; }
       this._validateMomentObj(momentObj);
     },
     /**

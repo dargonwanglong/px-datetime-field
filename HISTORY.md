@@ -1,6 +1,11 @@
 v2.0.5
 ==================
+* prevent `_validateMomentObj` from running with `momentObj` is instantiated
+
+v2.0.5
+==================
 * separate internal and external validation with `_validateSetMomentObj()`
+* added `sudo:required` to travis
 
 v2.0.4
 ==================
