@@ -1,3 +1,7 @@
+v2.0.7
+==================
+* added validation on blur
+
 v2.0.6
 ==================
 * prevent `_validateMomentObj` from running with `momentObj` is instantiated

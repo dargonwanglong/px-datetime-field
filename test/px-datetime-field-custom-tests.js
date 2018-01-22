@@ -196,13 +196,15 @@ suite('submit without buttons', function() {
     var listener = function(evt) { i++; };
     field.addEventListener('px-moment-changed', listener);
 
+    // debugger
     //invalid month, should not trigger event
     dateInput.value = '99';
     e.initEvent("blur", true, true);
-    dateInput.dispatchEvent(e);
+    field.dispatchEvent(e);
 
     flush(function() {
       assert.equal(i, 0);
+      // debugger
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
       assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       field.removeEventListener('px-moment-changed', listener);
@@ -220,7 +222,7 @@ suite('submit without buttons', function() {
     //valid month, should trigger event
     dateInput.value = '03';
     e.initEvent("blur", true, true);
-    dateInput.dispatchEvent(e);
+    field.dispatchEvent(e);
 
     flush(function() {
       assert.isFalse(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
@@ -289,19 +291,19 @@ suite('submit with buttons', function() {
     });
   });
 
-  test('event is not fired when changing valid value on blur', function(done) {
+  test('event is fired when changing valid value on blur', function(done) {
     var i = 0,
         e = document.createEvent('Event');
 
-    var listener = function(evt) { i++; };
-    fieldBtn.addEventListener('px-moment-changed', listener);
+        var listener = function(evt) { i++; };
+        fieldBtn.addEventListener('px-moment-changed', listener);
 
     dateInput.value = "11";
     e.initEvent("blur", true, true);
-    dateInput.dispatchEvent(e);
+    fieldBtn.dispatchEvent(e);
 
     flush(function() {
-      assert.equal(i, 0);
+      assert.equal(i, 1);
       fieldBtn.removeEventListener('px-moment-changed', listener);
       done();
     });
