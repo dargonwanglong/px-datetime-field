@@ -1,3 +1,7 @@
+v2.0.8
+==================
+* added the private property `preventCellFocus` to fix a bug in `px-datetime-picker`
+
 v2.0.7
 ==================
 * added validation on blur

@@ -255,6 +255,17 @@ Custom property | Description
       _dropdownHoverFix: {
         type: Boolean,
         value: false
+      },
+      /**
+       * This will prevent the date cell from being focused
+       * when the calendar icon is clicked
+       *
+       * Used by `px-datetime-picker`
+       * @private
+       */
+      preventCellFocus: {
+        type: Boolean,
+        value: false
       }
     },
 
@@ -506,10 +517,10 @@ Custom property | Description
      * Focuses select to the next cell when an icon is clicked
      */
     _iconClicked: function (evt) {
-      if (evt.detail.dateOrTime === "Date") {
+      if (evt.detail.dateOrTime === "Date" && !this.preventCellFocus) {
         this.$$('#date')._focusCell(0);
       }
-      else {
+      else if (evt.detail.dateOrTime === "Time"){
         this.$$('#time')._focusCell(0);
       }
     },
