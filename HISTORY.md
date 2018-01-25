@@ -1,3 +1,7 @@
+v2.0.9
+==================
+* Updated to newest px-datetime-common behavior versions
+
 v2.0.8
 ==================
 * added the private property `preventCellFocus` to fix a bug in `px-datetime-picker`
