@@ -1,3 +1,7 @@
+v2.1.0
+==================
+* Allow for gray line under field to expand to fill full width
+
 v2.0.10
 ==================
 * fixing demo pages for IE11
