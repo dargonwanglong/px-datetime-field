@@ -1,6 +1,6 @@
 {
   "name": "px-datetime-field",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "main": [
     "px-datetime-field.html"
   ],
@@ -41,8 +41,7 @@
     "iron-test-helpers": "^2.0.0"
   },
   "resolutions": {
-    "webcomponentsjs": "^1.0.0",
-    "px-dropdown": "#polymer2.0-preview"
+    "webcomponentsjs": "^1.0.0"
   },
   "variants": {
     "1.x": {
@@ -53,8 +52,7 @@
         "web-component-tester": "^5.0.0"
       },
       "resolutions": {
-        "webcomponentsjs": "^0.7.0",
-        "px-dropdown": "^4.0.0"
+        "webcomponentsjs": "^0.7.0"
       }
     }
   }

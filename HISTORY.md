@@ -1,3 +1,8 @@
+v2.1.1
+==================
+* Added notify to timeIsValid
+* removed px-dropdown resolutions from bower
+
 v2.1.0
 ==================
 * Allow for gray line under field to expand to fill full width
