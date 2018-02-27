@@ -1237,3 +1237,23 @@ suite('Invalid', function() {
     });
   });
 });
+
+/**
+ * FOCUS
+ */
+suite('Focus', function() {
+  let field;
+
+  setup(function(done) {
+    field = fixture('px_datetime_field');
+    flush(()=>{
+      done();
+    });
+  });
+
+  test('Host should propagate focus to the first entry', function() {
+    var entries = Polymer.dom(field.root).querySelectorAll('px-datetime-entry');
+    field.focus()
+    assert.equal(entries[0], Polymer.dom(field.root).activeElement);
+  });
+});
