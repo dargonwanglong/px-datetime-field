@@ -1,3 +1,7 @@
+v2.1.2
+==================
+* Added a `focus` function.
+
 v2.1.1
 ==================
 * Added notify to timeIsValid
