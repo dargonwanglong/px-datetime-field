@@ -1,3 +1,7 @@
+v2.1.3
+==================
+* Updated focus to fix test bug
+
 v2.1.2
 ==================
 * Added a `focus` function.
