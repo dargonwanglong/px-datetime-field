@@ -338,6 +338,11 @@ Custom property | Description
     },
     /*
     */
+    focus: function (){
+      this._focusFirstEntry();
+    },
+    /*
+    */
     _focusFirstEntry: function (forceTimeFocus) {
       if (!this.hideDate && !forceTimeFocus) {
         this.$$('#date')._focusCell(0);
