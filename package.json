@@ -9,7 +9,7 @@
         "type": "git",
         "url": "https://github.com/PredixDev/px-datetime-field.git"
     },
-    "homepage": "http://predix-ui.com/",
+    "homepage": "https://www.predix-ui.com/",
     "devDependencies": {
         "browser-sync": "^2.13.0",
         "gulp": "^3.9.1",
