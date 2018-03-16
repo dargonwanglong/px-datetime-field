@@ -4,6 +4,7 @@
 <link rel="import" href="../px-datetime-common/px-datetime-validate.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-buttons.html"/>
 <link rel="import" href="../px-datetime-common/px-datetime-button-behavior.html"/>
+<link rel="import" href="../px-overlay/px-overlay-behavior.html"/>
 <link rel="import" href="css/px-datetime-field-styles.html"/>
 
 <!--
@@ -54,7 +55,9 @@ Custom property | Description
               max-date="{{maxDate}}"
               resources="[[resources]]"
               language="[[language]]"
-              formats="[[formats]]">
+              formats="[[formats]]"
+              hoist="[[hoist]]"
+              container-type="[[containerType]]">
             </px-datetime-entry>
           </template>
           <template is="dom-if" if="[[!hideTime]]">
@@ -73,7 +76,9 @@ Custom property | Description
               max-date="{{maxDate}}"
               resources="[[resources]]"
               language="[[language]]"
-              formats="[[formats]]">
+              formats="[[formats]]"
+              hoist="[[hoist]]"
+              container-type="[[containerType]]">
             </px-datetime-entry>
           </template>
         </div>
@@ -99,7 +104,8 @@ Custom property | Description
     behaviors: [
       PxDatetimeBehavior.SingleMoment,
       PxDatetimeBehavior.Buttons,
-      PxDatetimeBehavior.Validate
+      PxDatetimeBehavior.Validate,
+      PxOverlayBehavior.sharedProperties
     ],
 
     properties: {
@@ -265,6 +271,13 @@ Custom property | Description
        * @private
        */
       preventCellFocus: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Specifies if the dropdown content should get hoisted to a container in order to escape its current stacking context
+       */
+       hoist: {
         type: Boolean,
         value: false
       }

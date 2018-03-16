@@ -1,3 +1,7 @@
+v2.2.0
+==================
+* Added ability to hoist timezone dropdown
+
 v2.1.3
 ==================
 * Updated focus to fix test bug
