@@ -1,3 +1,7 @@
+v2.2.1
+==================
+* Updated minimum version of px-datetime-common to 3.2.2 to fix #10
+
 v2.2.0
 ==================
 * Added ability to hoist timezone dropdown

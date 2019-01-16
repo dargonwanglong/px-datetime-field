@@ -213,15 +213,13 @@ suite('submit without buttons', function() {
     var listener = function(evt) { i++; };
     field.addEventListener('px-moment-changed', listener);
 
-    // debugger
-    //invalid month, should not trigger event
+    // invalid month, should not trigger event
     dateInput.value = '99';
     e.initEvent("blur", true, true);
     field.dispatchEvent(e);
 
     flush(function() {
       assert.equal(i, 0);
-      // debugger
       var wrapper = Polymer.dom(field.root).querySelector('#fieldWrapper');
       assert.isTrue(wrapper.classList.contains('validation-failed'), "Has validation-failed class");
       field.removeEventListener('px-moment-changed', listener);
@@ -362,9 +360,9 @@ suite('submit with buttons', function() {
   });
 
   test('Cancel reverts to last moment obj', function(done) {
-    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input'),
         buttonsElem = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-buttons'),
         buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
 
@@ -373,7 +371,7 @@ suite('submit with buttons', function() {
     cell2Input[0].value = "11";
     buttons[0].click();
 
-    flush(function() {
+    flush(() => {
       assert.equal(cell0Input[0].value, "2017");
       assert.equal(cell1Input[0].value, "12");
       assert.equal(cell2Input[0].value, "01");
@@ -384,16 +382,16 @@ suite('submit with buttons', function() {
   });
 
   test('Esc reverts to last moment obj', function(done) {
-    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input');
 
     cell0Input[0].value = "2011";
     cell1Input[0].value = "11";
     cell2Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(dateCells[1], 27, [], 'Escape');
 
-    flush(function() {
+    flush(() => {
       assert.equal(cell0Input[0].value, "2017");
       assert.equal(cell1Input[0].value, "12");
       assert.equal(cell2Input[0].value, "01");
@@ -404,9 +402,9 @@ suite('submit with buttons', function() {
   });
 
   test('Cancel clears validation', function(done) {
-    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input'),
         buttonsElem = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-buttons'),
         buttons = Polymer.dom(buttonsElem[0].root).querySelectorAll('button');
         wrapper = Polymer.dom(fieldBtn.root).querySelector('#fieldWrapper');
@@ -431,9 +429,9 @@ suite('submit with buttons', function() {
   });
 
   test('Esc clears validation', function(done) {
-    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input'),
         buttonsElem = Polymer.dom(fieldBtn.root).querySelectorAll('px-datetime-buttons');
 
     cell0Input[0].value = "2011";
@@ -471,15 +469,15 @@ suite('Cancel & Escape with buttons blank show date & time', function() {
     flush(()=>{
       entries = Polymer.dom(fieldBtnBlank.root).querySelectorAll('px-datetime-entry'),
       dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input');
 
       entriesRqd = Polymer.dom(fieldBtnBlankRqd.root).querySelectorAll('px-datetime-entry'),
       dateCellsRqd = Polymer.dom(entriesRqd[0].root).querySelectorAll('px-datetime-entry-cell'),
-      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('#dtEntry'),
-      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('#dtEntry'),
-      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('#dtEntry');
+      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('input'),
+      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('input'),
+      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('input');
 
       done();
     });
@@ -585,15 +583,15 @@ suite('Cancel & Escape with buttons blank hide date', function() {
     flush(()=>{
       entries = Polymer.dom(fieldBtnBlankHDate.root).querySelectorAll('px-datetime-entry'),
       dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input');
 
       entriesRqd = Polymer.dom(fieldBtnBlankHDateRqd.root).querySelectorAll('px-datetime-entry'),
       dateCellsRqd = Polymer.dom(entriesRqd[0].root).querySelectorAll('px-datetime-entry-cell'),
-      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('#dtEntry'),
-      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('#dtEntry'),
-      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('#dtEntry');
+      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('input'),
+      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('input'),
+      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('input');
 
       done();
     });
@@ -699,15 +697,15 @@ suite('Cancel & Escape with buttons blank hide time', function() {
     flush(()=>{
       entries = Polymer.dom(fieldBtnBlankHTime.root).querySelectorAll('px-datetime-entry'),
       dateCells = Polymer.dom(entries[0].root).querySelectorAll('px-datetime-entry-cell'),
-      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+      cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+      cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+      cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input');
 
       entriesRqd = Polymer.dom(fieldBtnBlankHTimeRqd.root).querySelectorAll('px-datetime-entry'),
       dateCellsRqd = Polymer.dom(entriesRqd[0].root).querySelectorAll('px-datetime-entry-cell'),
-      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('#dtEntry'),
-      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('#dtEntry'),
-      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('#dtEntry');
+      cell0InputRqd = Polymer.dom(dateCellsRqd[0].root).querySelectorAll('input'),
+      cell1InputRqd = Polymer.dom(dateCellsRqd[1].root).querySelectorAll('input'),
+      cell2InputRqd = Polymer.dom(dateCellsRqd[2].root).querySelectorAll('input');
 
       done();
     });
@@ -1074,9 +1072,9 @@ suite('Invalid', function() {
   });
 
   test('Invalid if dateEntry is filled out but timeEntry is blank', function(done) {
-    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry');
-        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry');
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input');
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input');
 
     cell0Input[0].value = "2000";
     cell1Input[0].value = "11";
@@ -1091,9 +1089,9 @@ suite('Invalid', function() {
   });
 
   test('Invalid if timeEntry is filled out but dateEntry is blank', function(done) {
-    var cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('#dtEntry'),
-    cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('#dtEntry');
-    cell5Input = Polymer.dom(timeCells[2].root).querySelectorAll('#dtEntry');
+    var cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('input'),
+    cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('input');
+    cell5Input = Polymer.dom(timeCells[2].root).querySelectorAll('input');
 
     cell3Input[0].value = "11";
     cell4Input[0].value = "11";
@@ -1108,7 +1106,7 @@ suite('Invalid', function() {
   });
 
   test('Invalid if one cell has a value and the rest are blank', function(done) {
-    var cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry');
+    var cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input');
 
     cell1Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(dateCells[1], 13, [], 'Enter');
@@ -1121,7 +1119,7 @@ suite('Invalid', function() {
   });
 
   test('Hide date: Invalid if one cell has a value and the rest are blank', function(done) {
-    var cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('#dtEntry');
+    var cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('input');
 
     cell1Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(timeCellsHDate[1], 13, [], 'Enter');
@@ -1134,7 +1132,7 @@ suite('Invalid', function() {
   });
 
   test('Hide time: Invalid if one cell has a value and the rest are blank', function(done) {
-    var cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('#dtEntry');
+    var cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('input');
 
     cell1Input[0].value = "11";
     MockInteractions.pressAndReleaseKeyOn(dateCellsHTime[1], 13, [], 'Enter');
@@ -1147,11 +1145,11 @@ suite('Invalid', function() {
   });
 
   test('Invalid if one cell is blank and the rest are filled out', function(done) {
-    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
-        cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('#dtEntry'),
-        cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('#dtEntry');
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input'),
+        cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('input'),
+        cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('input');
 
     cell0Input[0].value = "11";
     cell1Input[0].value = "11";
@@ -1168,8 +1166,8 @@ suite('Invalid', function() {
   });
 
   test('Hide date: Invalid if one cell is blank and the rest are filled out', function(done) {
-    var cell0Input = Polymer.dom(timeCellsHDate[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('#dtEntry');
+    var cell0Input = Polymer.dom(timeCellsHDate[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('input');
 
     cell0Input[0].value = "11";
     cell1Input[0].value = "11";
@@ -1183,8 +1181,8 @@ suite('Invalid', function() {
   });
 
   test('Hide time: Invalid if one cell is blank and the rest are filled out', function(done) {
-    var cell0Input = Polymer.dom(dateCellsHTime[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('#dtEntry');
+    var cell0Input = Polymer.dom(dateCellsHTime[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('input');
 
     cell0Input[0].value = "11";
     cell1Input[0].value = "11";
@@ -1198,12 +1196,12 @@ suite('Invalid', function() {
   });
 
   test('Valid if all cells have a value', function(done) {
-    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('#dtEntry'),
-        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('#dtEntry'),
-        cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('#dtEntry'),
-        cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('#dtEntry');
-        cell5Input = Polymer.dom(timeCells[2].root).querySelectorAll('#dtEntry');
+    var cell0Input = Polymer.dom(dateCells[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCells[1].root).querySelectorAll('input'),
+        cell2Input = Polymer.dom(dateCells[2].root).querySelectorAll('input'),
+        cell3Input = Polymer.dom(timeCells[0].root).querySelectorAll('input'),
+        cell4Input = Polymer.dom(timeCells[1].root).querySelectorAll('input');
+        cell5Input = Polymer.dom(timeCells[2].root).querySelectorAll('input');
 
     cell0Input[0].value = "11";
     cell1Input[0].value = "11";
@@ -1221,9 +1219,9 @@ suite('Invalid', function() {
   });
 
   test('Hide date: Valid if all cells have a value', function(done) {
-    var cell0Input = Polymer.dom(timeCellsHDate[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('#dtEntry'),
-        cell2Input = Polymer.dom(timeCellsHDate[2].root).querySelectorAll('#dtEntry');
+    var cell0Input = Polymer.dom(timeCellsHDate[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(timeCellsHDate[1].root).querySelectorAll('input'),
+        cell2Input = Polymer.dom(timeCellsHDate[2].root).querySelectorAll('input');
 
     cell0Input[0].value = "11";
     cell1Input[0].value = "11";
@@ -1238,9 +1236,9 @@ suite('Invalid', function() {
   });
 
   test('Hide time: Valid if all cells have a value', function(done) {
-    var cell0Input = Polymer.dom(dateCellsHTime[0].root).querySelectorAll('#dtEntry'),
-        cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('#dtEntry'),
-        cell2Input = Polymer.dom(dateCellsHTime[2].root).querySelectorAll('#dtEntry');
+    var cell0Input = Polymer.dom(dateCellsHTime[0].root).querySelectorAll('input'),
+        cell1Input = Polymer.dom(dateCellsHTime[1].root).querySelectorAll('input'),
+        cell2Input = Polymer.dom(dateCellsHTime[2].root).querySelectorAll('input');
 
     cell0Input[0].value = "11";
     cell1Input[0].value = "11";
