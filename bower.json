@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "polymer": "#1.9 - 2",
-    "px-datetime-common": "git+https://github.com/dargonwanglong/px-datetime-common.git#3.3.4",
+    "px-datetime-common": "git+https://github.com/dargonwanglong/px-datetime-common.git#3.3.5",
     "px-overlay": "^2.0.0"
   },
   "devDependencies": {
