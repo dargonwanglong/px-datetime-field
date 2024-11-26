@@ -1,6 +1,6 @@
 {
   "name": "px-datetime-field",
-  "version": "2.2.1",
+  "version": "2.2.3",
   "main": [
     "px-datetime-field.html"
   ],
@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "polymer": "#1.9 - 2",
-    "px-datetime-common": "^3.2.2",
+    "px-datetime-common": "git+https://github.com/dargonwanglong/px-datetime-common.git#3.3.3",
     "px-overlay": "^2.0.0"
   },
   "devDependencies": {

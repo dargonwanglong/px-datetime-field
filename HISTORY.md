@@ -1,3 +1,11 @@
+v2.2.3
+==================
+* Updated version of px-datetime-common to https://github.com/ServiceMax-Engineering/px-datetime-common.git#3.3.3
+
+v2.2.2
+==================
+* Updated version of px-datetime-common to https://github.com/ServiceMax-Engineering/px-datetime-common.git#3.3.2
+
 v2.2.1
 ==================
 * Updated minimum version of px-datetime-common to 3.2.2 to fix #10
